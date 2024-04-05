@@ -1,0 +1,149 @@
+<div class="row">
+    <div class="col-sm-12 text-center"><h2 class="fw-bold">Formulario para agregar productos</h2></div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>Si solo desea agregar un producto llene el formulario y de clic en finalizar, de lo contrario de clic en agregar otro producto</p>
+    </div>
+</div>
+
+<div class="row mt-4 mb-4">
+    <div class="col-sm-12">
+
+        <mat-card>
+
+            <mat-card-content>
+
+                <mat-tab-group [selectedIndex]="selectedIndex">
+                    @for (tab of tabs; track tab; let index = $index;) {
+                        <mat-tab [label]="'Producto ' + (index+1)">
+                            <div class="p-4">
+
+                                <div class="row">
+
+                                    <div class="col-sm-12">
+                                        <label for="" class="fw-medium">Producto:</label>
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <input matInput placeholder="Ej. Es un producto">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <label for="" class="fw-medium">Marca:</label>
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <input matInput placeholder="Ej. Marca del producto">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <label for="" class="fw-medium">Modelo(s):</label>
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <input matInput placeholder="Ej. Model 62">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <label for="" class="fw-medium">Unidad de medida:</label>
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-select placeholder="Seleccione una medida">
+                                              <mat-option value="option1">Kilo</mat-option>
+                                              <mat-option value="option2">Gramo</mat-option>
+                                              <mat-option value="option3">Metro lineal</mat-option>
+                                              <mat-option value="option3">Metro cubico</mat-option>
+                                            </mat-select>
+                                          </mat-form-field>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <label for="" class="fw-medium">Cantidad total:</label>
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <input matInput placeholder="Ej. 5">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <label for="" class="fw-medium">No. de etiquetas a verificar:</label>
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <input matInput placeholder="Ej. 2">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <label for="" class="fw-medium">Fracción arancelaria:</label>
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-select placeholder="Seleccione una fracción">
+                                              <mat-option value="option1">Fracción 1</mat-option>
+                                              <mat-option value="option2">Fracción 2</mat-option>
+                                            </mat-select>
+                                          </mat-form-field>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <label for="" class="fw-medium">Norma aplicable:</label>
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <input matInput placeholder="Ej. 123456789">
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+
+                                <!-- Contents for {{index}} i -->
+
+                                <div class="row">
+                                    <div class="col-sm-12 text-center">
+                                        <button mat-flat-button
+                                            color="primary"
+                                            class="example-delete-tab-button"
+                                            [disabled]="index === 0"
+                                            (click)="changeIndex(-1)">
+                                            <
+                                        </button>
+
+                                        <button mat-flat-button
+                                            color="primary"
+                                            class="example-delete-tab-button"
+                                            [disabled]="tabs.length === 1"
+                                            (click)="removeTab(index)">
+                                            Eliminar producto
+                                        </button>
+
+                                        <button mat-flat-button
+                                            color="primary"
+                                            class="example-add-tab-button"
+                                            (click)="addTab()">
+                                            Agregar producto
+                                        </button>
+
+                                        <button mat-flat-button
+                                            color="primary"
+                                            class="example-delete-tab-button"
+                                            [disabled]="index === tabs.length-1"
+                                            (click)="changeIndex(1)">
+                                            >
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </mat-tab>
+                    }
+                </mat-tab-group>
+
+            </mat-card-content>
+
+        </mat-card>
+
+        <div class="row mt-3 mb-5">
+            <div class="col-sm-12 text-center">
+                <button mat-flat-button color="primary" class="example-delete-tab-button" (click)="goBack()">
+                    Regresar
+                </button>
+                <button mat-flat-button color="primary" class="example-delete-tab-button">
+                    Guardar solicitud
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

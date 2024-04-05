@@ -1,0 +1,29 @@
+
+<div class="row mt-5">
+
+    <div class="col-sm-12 col-md-6">
+        <div class="row">
+
+            <div class="col-sm-12 col-md-6">
+                <mat-form-field appearance="outline" style="width: 90%;">
+                    <input matInput placeholder="Buscar">
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <mat-form-field style="width: 90%;">
+                    <input matInput [matDatepicker]="picker2" placeholder="Seleccione una fecha">
+                    <mat-hint>DD/MM/AAAA</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 text-md-end">
+        <button mat-flat-button color="primary">Buscar</button>
+    </div>
+
+</div>

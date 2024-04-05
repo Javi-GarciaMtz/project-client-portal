@@ -1,0 +1,145 @@
+<div class="row">
+    <div class="col-sm-12 text-center"><h2 class="fw-bold">Generación de solicitud</h2></div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>Para generar una "Solicitud de Verificación" primero seleccione el tipo de servicio</p>
+
+        Seleccione el tipo de servicio:
+        <mat-radio-group aria-label="Select an option">
+            <mat-radio-button value="1">Constancia</mat-radio-button>
+            <mat-radio-button value="2">Dictamen</mat-radio-button>
+        </mat-radio-group>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-sm-12 text-center"><h2 class="fw-bold">Dictamen</h2></div>
+</div>
+
+<div class="row mt-3">
+
+    <div class="col-sm-12">
+        <label for="" class="fw-medium">Nombre de la empresa:</label>
+        <p>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <!-- <mat-label>Outline form field</mat-label> -->
+              <input matInput placeholder="Placeholder" value="EL BRONZE DE VERACRUZ S.A. DE C.V." [disabled]="true">
+              <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+              <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </p>
+    </div>
+
+    <div class="col-sm-12">
+        <label for="" class="fw-medium">Nombre del solicitante:</label>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <input matInput placeholder="Ej. Jose Luis Hernandez">
+        </mat-form-field>
+    </div>
+
+    <div class="col-sm-12">
+        <label for="" class="fw-medium">Domicilio fiscal:</label>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <input matInput placeholder="Ej. Jose Luis Hernandez" value="AV JIMENEZ No 2087 COL. VERACRUZ CENTRO" [disabled]="true">
+        </mat-form-field>
+    </div>
+
+    <div class="col-sm-12">
+        <label for="" class="fw-medium">Domicilio de verificación:</label>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <input matInput placeholder="Ej. Jose Luis Hernandez" value="AV JIMENEZ No 2087 COL. VERACRUZ CENTRO" [disabled]="true">
+        </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 col-md-6">
+        <label for="" class="fw-medium">Norma aplicable:</label>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-select placeholder="Seleccione una norma">
+              <mat-option value="option1">NOM-004-SE-2021</mat-option>
+              <mat-option value="option2">NOM-015-SCFI-2007</mat-option>
+              <mat-option value="option3">NOM-020-SCFI-1997</mat-option>
+              <mat-option value="option3">NOM-024-SCFI-2013</mat-option>
+              <mat-option value="option3">NOM-050-SCFI-2004</mat-option>
+              <mat-option value="option3">NOM-051-SCFI/SSA1-2010</mat-option>
+              <mat-option value="option3">NOM-141-SSA1/SCFI-2012</mat-option>
+              <mat-option value="option3">NOM-189-SSA1/SCFI-2018</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 col-md-6">
+        <label for="" class="fw-medium">Fase (solo NOM-051):</label>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-select placeholder="No aplica">
+              <mat-option value="option3">FASE 2</mat-option>
+              <mat-option value="option3">FASE 3</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+    <div class="col-sm-12">
+        <label for="" class="fw-medium">Aduana de ingreso:</label>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-select placeholder="Seleccione una aduana de ingreso">
+              <mat-option value="option3">Acapulco</mat-option>
+              <mat-option value="option3">Agua Prieta</mat-option>
+              <mat-option value="option3">Altamira</mat-option>
+              <mat-option value="option3">Aguascalientes</mat-option>
+              <mat-option value="option3">Aeropuerto internacional de la Ciudad de México</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+    <div class="col-sm-12">
+        <label for="" class="fw-medium">Modalidad de etiquetado:</label>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-select placeholder="Seleccione una modalidad">
+              <mat-option value="option3">PA (Etiquetado en Almacén de Depósito)</mat-option>
+              <mat-option value="option3">PB (Etiquetado en Almacén Propio)</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+    <div class="col-sm-12">
+        <label for="" class="fw-medium">Número de factura:</label>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <input matInput placeholder="Ej. 00991122277">
+        </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 col-md-6">
+        <label for="" class="fw-medium">Fecha de internación:</label>
+        <mat-form-field style="width: 100%;">
+            <!-- <mat-label>Choose a date</mat-label> -->
+            <input matInput [matDatepicker]="picker1" placeholder="Seleccione una fecha">
+            <mat-hint>DD/MM/AAAA</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 col-md-6">
+        <label for="" class="fw-medium">Fecha programada para la verificación:</label>
+        <mat-form-field style="width: 100%;">
+            <input matInput [matDatepicker]="picker2" placeholder="Seleccione una fecha">
+            <mat-hint>DD/MM/AAAA</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 mt-3">
+        <label for="" class="fw-medium">Aclaraciones:</label>
+        <mat-form-field class="example-full-width" style="width: 100%;">
+            <!-- <mat-label>Leave a comment</mat-label> -->
+            <textarea matInput placeholder="Ej. Mi producto está..."></textarea>
+          </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 mt-4 mb-4 text-center">
+        <button mat-flat-button color="primary" (click)="onSubmit()">Siguiente</button>
+    </div>
+
+</div>
