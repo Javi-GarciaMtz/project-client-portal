@@ -5,6 +5,7 @@ import { PanelAdminContainerComponent } from './pages/panel-admin-container/pane
 import { AdminRoutingModule } from './admin-routing.module';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { TableRequestComponent } from './components/table-request/table-request.component';
+import { CreateUserComponent } from './components/create-user/create-user.component';
 
 
 
@@ -12,7 +13,8 @@ import { TableRequestComponent } from './components/table-request/table-request.
   declarations: [
     PanelAdminContainerComponent,
     SearchBarComponent,
-    TableRequestComponent
+    TableRequestComponent,
+    CreateUserComponent
   ],
   imports: [
     CommonModule,
