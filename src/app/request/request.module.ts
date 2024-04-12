@@ -5,6 +5,8 @@ import { CreateRequestComponent } from './components/create-request/create-reque
 import { RequestRoutingModule } from './request-routing.module';
 import { AddProductsComponent } from './components/add-products/add-products.component';
 import { RequestContainerComponent } from './pages/request-container/request-container.component';
+import { SerchBarProductsComponent } from './components/serch-bar-products/serch-bar-products.component';
+import { AddProductContainerComponent } from './pages/add-product-container/add-product-container.component';
 
 
 
@@ -12,7 +14,9 @@ import { RequestContainerComponent } from './pages/request-container/request-con
   declarations: [
     CreateRequestComponent,
     AddProductsComponent,
-    RequestContainerComponent
+    RequestContainerComponent,
+    SerchBarProductsComponent,
+    AddProductContainerComponent
   ],
   imports: [
     CommonModule,

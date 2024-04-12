@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MAT_DATE_FORMATS, MatCommonModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatCommonModule, MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -24,10 +24,11 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator'
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CustomMatPaginatorIntl } from '../shared/interfaces/customMatPaginatorIntl';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -71,6 +72,7 @@ const arr = [
   ReactiveFormsModule,
   MatSortModule,
   MatAutocompleteModule,
+  MatNativeDateModule,
 ]
 
 
@@ -80,7 +82,9 @@ const arr = [
   exports: arr,
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS , useValue: { appearance: 'outline' } },
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-MX' },
+    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }
   ]
 })
 
