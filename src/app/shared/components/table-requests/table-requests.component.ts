@@ -3,11 +3,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-  selector: 'app-table-request',
-  templateUrl: './table-request.component.html',
-  styleUrl: './table-request.component.scss'
+  selector: 'app-table-requests',
+  templateUrl: './table-requests.component.html',
+  styleUrl: './table-requests.component.scss'
 })
-export class TableRequestComponent implements AfterViewInit {
+export class TableRequestsComponent implements AfterViewInit {
 
   displayedColumnsFinal: string[] = [
     'key',

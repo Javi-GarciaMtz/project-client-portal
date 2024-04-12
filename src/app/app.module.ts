@@ -8,6 +8,7 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
 import { RequestRoutingModule } from './request/request-routing.module';
 import { AdminRoutingModule } from './admin/admin-routing.module';
 import { AuthRoutingModule } from './auth/auth-routing.module';
+import { UsersRoutingModule } from './users/users-routing.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AuthRoutingModule } from './auth/auth-routing.module';
     AngularMaterialModule,
     RequestRoutingModule,
     AdminRoutingModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    UsersRoutingModule,
   ],
   providers: [
     provideAnimationsAsync()
