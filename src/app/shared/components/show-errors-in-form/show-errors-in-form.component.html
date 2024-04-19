@@ -1,0 +1,21 @@
+<div *ngIf="checkFormTouched() && getInputErrors()" style="margin-top: -15px;margin-bottom: 15px;">
+
+    <span *ngIf="textRequired !== '' && getInputErrors().required ; else elseBlock1" class="text-danger">{{ textRequired }}</span>
+
+    <ng-template #elseBlock1>
+        <span *ngIf="textMinLength !== '' && getInputErrors().minlength ; else elseBlock2" class="text-danger">{{ textMinLength }}</span>
+    </ng-template>
+
+    <ng-template #elseBlock2>
+        <span *ngIf="textMaxLength !== '' && getInputErrors().maxlength ; else elseBlock3" class="text-danger">{{ textMaxLength }}</span>
+    </ng-template>
+
+    <ng-template #elseBlock3>
+        <span *ngIf="textPattern !== '' && getInputErrors().pattern  ; else elseBlock4" class="text-danger">{{ textPattern }}</span>
+    </ng-template>
+
+    <ng-template #elseBlock4>
+        <span *ngIf="textEmail !== '' && getInputErrors().email" class="text-danger">{{ textEmail }}</span>
+    </ng-template>
+
+</div>

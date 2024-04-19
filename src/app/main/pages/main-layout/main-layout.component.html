@@ -11,16 +11,29 @@
       </button>
     </mat-toolbar>
 
-    <mat-nav-list>
+    <!-- <mat-nav-list>
       <mat-list-item
         *ngFor="let item of sidebarItems"
         [routerLink]="item.url"
-        (click)="sidenav.toggle()"
-      >
-        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-        {{ item.label }}
+        (click)="sidenav.toggle()">
+
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          {{ item.label }}
+
       </mat-list-item>
+    </mat-nav-list> -->
+
+    <mat-nav-list>
+      <ng-container *ngFor="let item of sidebarItems">
+        <ng-container *ngIf="checkPermissions(item.permissions)">
+          <mat-list-item [routerLink]="item.url" (click)="sidenav.toggle()">
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            {{ item.label }}
+          </mat-list-item>
+        </ng-container>
+      </ng-container>
     </mat-nav-list>
+
 
   </mat-sidenav>
 
@@ -39,7 +52,7 @@
       <mat-icon>favorite</mat-icon>
     </button> -->
 
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
 

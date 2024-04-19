@@ -29,6 +29,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CustomMatPaginatorIntl } from '../shared/interfaces/customMatPaginatorIntl';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -73,6 +74,7 @@ const arr = [
   MatSortModule,
   MatAutocompleteModule,
   MatNativeDateModule,
+  MatProgressSpinnerModule,
 ]
 
 

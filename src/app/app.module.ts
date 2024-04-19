@@ -9,6 +9,8 @@ import { RequestRoutingModule } from './request/request-routing.module';
 import { AdminRoutingModule } from './admin/admin-routing.module';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { UsersRoutingModule } from './users/users-routing.module';
+import { SessionCheckGuard } from './shared/guards/session/session-check.guard';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -22,8 +24,10 @@ import { UsersRoutingModule } from './users/users-routing.module';
     AdminRoutingModule,
     AuthRoutingModule,
     UsersRoutingModule,
+    SharedModule,
   ],
   providers: [
+    SessionCheckGuard,
     provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]

@@ -1,30 +1,50 @@
-<div class="login-container">
+<form [formGroup]="formLogin" (submit)="onSubmit()">
 
-    <div class="login-form">
-        <h2 class="fw-bold">¡Hola, qué gusto verde de nuevo!</h2>
+    <div class="login-container">
 
-        <p style="width: 95%;">Realiza tus solicitudes de para exportación e importación de productos de manera rápida, segura y eficaz. [NOTA: QUE MENSAJE SE DEBE COLOCAR AQUI]</p>
+        <div class="login-form">
+            <h2 class="fw-bold">¡Hola, qué gusto verde de nuevo!</h2>
 
-        <!-- <label for="" class="fw-medium">Nombre del solicitante:</label> -->
-        <mat-form-field appearance="outline" style="width: 95%;">
-            <input matInput placeholder="Correo electrónico">
-        </mat-form-field>
+            <p style="width: 95%;">Realiza tus solicitudes para exportación de productos de manera rápida, segura y eficaz.</p>
 
-        <!-- <label for="" class="fw-medium">Nombre del solicitante:</label> -->
-        <mat-form-field appearance="outline" style="width: 95%;">
-            <input matInput placeholder="Contraseña">
-        </mat-form-field>
+            <!-- <label for="" class="fw-medium">Nombre del solicitante:</label> -->
+            <mat-form-field appearance="outline" style="width: 95%;">
+                <input type="text" matInput placeholder="Correo electrónico" formControlName="email">
+            </mat-form-field>
+            <app-show-errors-in-form
+                [genericForm]="formLogin"
+                [genericFormControlName]="'email'"
+                [textRequired]="'El email de usuario es obligatorio'"
+                [textEmail]="'No es un email valido'"
+                [textMinLength]="'El email es demasiado corto'"
+                [textMaxLength]="'El email es demasiado largo'">
+            </app-show-errors-in-form>
 
-        <div class="mb-3">
-            <a href="" style="color: #10448f;">¿Olvidaste tu contraseña?</a>
+            <!-- <label for="" class="fw-medium">Nombre del solicitante:</label> -->
+            <mat-form-field appearance="outline" style="width: 95%;">
+                <input type="password" matInput placeholder="Contraseña" formControlName="pwd">
+            </mat-form-field>
+            <app-show-errors-in-form
+                [genericForm]="formLogin"
+                [genericFormControlName]="'pwd'"
+                [textRequired]="'La contraseña es obligatoria'"
+                [textMinLength]="'La contraseña es demasiado corta'"
+                [textMaxLength]="'La contraseña es demasiado larga'">
+            </app-show-errors-in-form>
+
+            <div class="mb-3">
+                <a href="" style="color: #10448f;">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button mat-flat-button color="primary" type="submit" [disabled]="!formLogin.valid">Iniciar sesión</button>
+
         </div>
 
-        <button mat-flat-button color="primary">Iniciar sesión</button>
+        <div class="login-image">
+            <!-- <img src="assets/images/dif-logos/Dif logos_page-0004.jpg" alt="" width=""> -->
+            <div class="frame-gray"></div>
+        </div>
 
     </div>
 
-    <div class="login-image">
-      <div class="frame-gray"></div>
-    </div>
-
-</div>
+</form>

@@ -6,6 +6,8 @@ import { AngularMaterialModule } from '../angular-material/angular-material.modu
 import { SearchBarRequestsComponent } from './components/search-bar-requests/search-bar-requests.component';
 import { TableRequestsComponent } from './components/table-requests/table-requests.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ShowErrorsInFormComponent } from './components/show-errors-in-form/show-errors-in-form.component';
+import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 
 
 
@@ -15,6 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     Error404PageComponent,
     SearchBarRequestsComponent,
     TableRequestsComponent,
+    ShowErrorsInFormComponent,
+    LoadingOverlayComponent,
   ],
   imports: [
     CommonModule,
@@ -26,6 +30,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   exports: [
     SearchBarRequestsComponent,
     TableRequestsComponent,
+    ShowErrorsInFormComponent,
+    LoadingOverlayComponent,
   ]
 })
 export class SharedModule { }
