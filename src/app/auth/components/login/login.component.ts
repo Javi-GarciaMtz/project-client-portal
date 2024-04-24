@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { User } from '../../interfaces/user.interface';
 import { ToastService } from '../../../shared/services/toast/toast.service';
+import { StorageService } from '../../../shared/services/storage/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private loadingOverlayService: LoadingOverlayService,
     private authServicer: AuthService,
     private toasService: ToastService,
+    private storageService: StorageService,
   ) {
     this.formLogin = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email, Validators.minLength(8), Validators.maxLength(30)]),
@@ -41,8 +43,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.arrSubs.push(
       this.authServicer.login(formValue.email, formValue.pwd).subscribe({
         next: (r: User) => {
-          console.log('login correcto', r);
           this.loadingOverlayService.removeLoading();
+          this.storageService.encryptAndStoreData(r, `session`);
+          this.router.navigate(['/']);
 
         },
         error: (e: any) => {
