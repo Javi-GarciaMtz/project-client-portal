@@ -1,17 +1,28 @@
 /* loading-overlay.component.css */
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo negro transparente */
-    z-index: 9999; /* Asegúrate de que esté por encima de otros elementos */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Fondo negro transparente */
+  z-index: 9999;
+  /* Asegúrate de que esté por encima de otros elementos */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .spinner {
-    /* Estilos del spinner de carga (puedes usar bibliotecas de iconos como Font Awesome o Material Icons) */
-  }
+.spinner {
+  /* Estilos del spinner de carga (puedes usar bibliotecas de iconos como Font Awesome o Material Icons) */
+}
+
+.spinner2 {
+  margin-left: 15px;
+}
+
+.text-loading {
+  color: white;
+  font-weight: bold;
+}

@@ -8,6 +8,7 @@ import { TableRequestsComponent } from './components/table-requests/table-reques
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShowErrorsInFormComponent } from './components/show-errors-in-form/show-errors-in-form.component';
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
 
 
 
@@ -19,6 +20,7 @@ import { LoadingOverlayComponent } from './components/loading-overlay/loading-ov
     TableRequestsComponent,
     ShowErrorsInFormComponent,
     LoadingOverlayComponent,
+    SnackbarComponent,
   ],
   imports: [
     CommonModule,

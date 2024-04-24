@@ -11,12 +11,14 @@ import { AuthRoutingModule } from './auth/auth-routing.module';
 import { UsersRoutingModule } from './users/users-routing.module';
 import { SessionCheckGuard } from './shared/guards/session/session-check.guard';
 import { SharedModule } from './shared/shared.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     AngularMaterialModule,

@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
 
   title = 'frontend';
-  public loading: boolean = false;
+  public loading: boolean[] = [];
   public arrSubs: Subscription[] = [];
 
   constructor(
@@ -22,11 +22,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.arrSubs.push(
       this.loadingOverlayService.getLoading.subscribe({
-        next: (res: boolean) => {
+        next: (res: boolean[]) => {
           this.loading = res;
         },
         error: (err: any) => {
-          console.log('loading error', err);
+          // console.log('loading error', err);
 
         }
       })
@@ -36,6 +36,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.arrSubs.forEach((s:Subscription) => s.unsubscribe());
+  }
+
+  checkLoading(): boolean {
+    return this.loading.some((b:boolean) => b === true);
   }
 
 }

@@ -1,0 +1,38 @@
+.mdc-snackbar {
+    // position: absolute !important;
+    // top: calc(-100% + 100px) !important;
+    // right: calc(-100% + 400px) !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+    box-shadow: none !important;
+}
+
+.snackbar-content {
+    display: flex;
+    align-items: center;
+    font-weight: 600 !important;
+
+    span {
+        max-width: 330px;
+        font-size: 0.8rem;
+    }
+}
+
+.snackbar-success {
+    --mdc-snackbar-container-color: #d0e8dd;
+    --mdc-snackbar-supporting-text-color: #016847;
+
+    .mdc-snackbar__surface {
+        border: 1px solid #016847 !important;
+    }
+}
+
+.snackbar-error {
+    --mdc-snackbar-container-color: #ffd8d8;
+    --mdc-snackbar-supporting-text-color: #ff6161;
+
+    .mdc-snackbar__surface {
+        border: 1px solid #ff6161 !important;
+    }
+}

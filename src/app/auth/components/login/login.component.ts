@@ -1,20 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingOverlayService } from '../../../shared/services/loading-overlay/loading-overlay.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { Subscription } from 'rxjs';
+import { User } from '../../interfaces/user.interface';
+import { ToastService } from '../../../shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
+  private arrSubs: Subscription[] = [];
   public formLogin: FormGroup;
 
   constructor(
     private router: Router,
     private loadingOverlayService: LoadingOverlayService,
+    private authServicer: AuthService,
+    private toasService: ToastService,
   ) {
     this.formLogin = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email, Validators.minLength(8), Validators.maxLength(30)]),
@@ -22,40 +29,30 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
+  ngOnDestroy(): void {
+    this.arrSubs.forEach((s:Subscription) => s.unsubscribe());
   }
 
   onSubmit(): void {
-    const email = this.formLogin.get('email')?.value;
-    const pwd = this.formLogin.get('pwd')?.value;
+    const formValue = this.formLogin.value;
+    this.loadingOverlayService.addLoading();
+    this.arrSubs.push(
+      this.authServicer.login(formValue.email, formValue.pwd).subscribe({
+        next: (r: User) => {
+          console.log('login correcto', r);
+          this.loadingOverlayService.removeLoading();
 
-    this.loadingOverlayService.setLoading(true);
-    if( email && pwd ) {
+        },
+        error: (e: any) => {
+          // console.log(`error`, e.error);
+          this.loadingOverlayService.removeLoading();
+          this.toasService.showSnackbar(false, `${ (e.error.message) ? e.error.message : 'Unknown error, try later' }`, 3000);
 
-      if( email === 'admin@correo.com' && pwd === '123Probando' ) {
-        setTimeout(() => {
-          localStorage.setItem('session', JSON.stringify({type: 'admin'}));
-          this.loadingOverlayService.setLoading(false);
-          this.router.navigate(['/']);
-        }, 2000);
-
-      } else if( email === 'user@correo.com' && pwd === '123Probando' ) {
-        setTimeout(() => {
-          localStorage.setItem('session', JSON.stringify({type: 'user'}));
-          this.loadingOverlayService.setLoading(false);
-          this.router.navigate(['/']);
-        }, 2000);
-
-      } else {
-        setTimeout(() => {
-          this.loadingOverlayService.setLoading(false);
-        }, 2000);
-      }
-
-
-
-    }
+        }
+      })
+    );
 
   }
 
