@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from './pages/main-layout/main-layout.component';
-import { SessionCheckGuard } from '../shared/guards/session/session-check.guard';
+import { noSessionGuard } from '../shared/guards/no-session/no-session.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    canActivate: [SessionCheckGuard],
+    canActivate: [noSessionGuard],
     children: [
       // { path: '', component: HomePageComponent },
       { path: '', redirectTo: 'request/create', pathMatch: 'full' },
@@ -23,6 +23,6 @@ const routes: Routes = [
   declarations: [],
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [SessionCheckGuard]
+  providers: [noSessionGuard]
 })
 export class MainRoutingModule { }

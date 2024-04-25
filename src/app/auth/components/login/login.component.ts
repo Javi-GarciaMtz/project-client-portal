@@ -42,9 +42,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loadingOverlayService.addLoading();
     this.arrSubs.push(
       this.authServicer.login(formValue.email, formValue.pwd).subscribe({
-        next: (r: User) => {
+        next: (u: User) => {
           this.loadingOverlayService.removeLoading();
-          this.storageService.encryptAndStoreData(r, `session`);
+          this.storageService.encryptAndStoreUser(u);
           this.router.navigate(['/']);
 
         },

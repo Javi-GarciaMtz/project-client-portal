@@ -9,9 +9,9 @@ import { RequestRoutingModule } from './request/request-routing.module';
 import { AdminRoutingModule } from './admin/admin-routing.module';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { UsersRoutingModule } from './users/users-routing.module';
-import { SessionCheckGuard } from './shared/guards/session/session-check.guard';
 import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
+import { noSessionGuard } from './shared/guards/no-session/no-session.guard';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,7 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
   ],
   providers: [
-    SessionCheckGuard,
+    noSessionGuard,
     provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]

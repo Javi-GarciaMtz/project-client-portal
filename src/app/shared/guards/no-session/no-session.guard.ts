@@ -1,15 +1,9 @@
-// import { CanActivateFn } from '@angular/router';
-
-// export const sessionCheckGuard: CanActivateFn = (route, state) => {
-//   return true;
-// };
-
-
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { ls_user_session } from '../../../environments/environments';
 
 @Injectable()
-export class SessionCheckGuard implements CanActivate {
+export class noSessionGuard implements CanActivate {
 
   constructor(private router: Router) {}
 
@@ -25,7 +19,7 @@ export class SessionCheckGuard implements CanActivate {
 
   isLoggedIn(): boolean {
     // Verificar si existe una sesión en el localStorage
-    const session = localStorage.getItem('session');
+    const session = localStorage.getItem( ls_user_session );
     return !!session; // Si existe una sesión, retorna true, de lo contrario false
   }
 }

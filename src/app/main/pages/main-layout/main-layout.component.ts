@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { sidebarItems } from '../../../data/data';
 import { Router } from '@angular/router';
+import { StorageService } from '../../../shared/services/storage/storage.service';
+import { User } from '../../../auth/interfaces/user.interface';
+import { LoadingOverlayService } from '../../../shared/services/loading-overlay/loading-overlay.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -13,23 +16,26 @@ export class MainLayoutComponent {
 
   constructor(
     private router: Router,
+    private storageService: StorageService,
+    private loadingOverlayService: LoadingOverlayService,
   ) {}
 
   logout(): void {
-    console.log('logout...');
-    localStorage.removeItem('session');
+    this.loadingOverlayService.addLoading();
 
-    this.router.navigate(['/auth/login']);
+    setTimeout(() => {
+      this.storageService.clearDataUser();
+      this.loadingOverlayService.removeLoading();
+      this.router.navigate(['/auth/login']);
+    }, 1500);
 
   }
 
   checkPermissions(permissions: string[]): boolean {
-    const currentUserPermissions = JSON.parse( localStorage.getItem('session')! );
-    // const currentUserPermissions = this.authService.getCurrentUserPermissions();
-    if (currentUserPermissions && currentUserPermissions.type) {
-      return permissions.includes(currentUserPermissions.type);
-    }
-    return false;
+    const dataUser: User = this.storageService.retrieveAndDecryptUser();
+
+    return permissions.includes( dataUser.user.role );
+
   }
 
 }

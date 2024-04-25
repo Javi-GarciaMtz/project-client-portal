@@ -7,13 +7,13 @@ export interface UserClass {
     id:                number;
     name:              string;
     middle_name:       string;
-    last_name:         null;
+    last_name:         string | null;
     rfc:               string;
-    phone:             null;
+    phone:             string | null;
     email:             string;
     role:              string;
-    email_verified_at: null;
-    created_at:        Date;
-    updated_at:        Date;
+    email_verified_at: string | null;
+    created_at:        string;
+    updated_at:        string;
     status:            string;
 }

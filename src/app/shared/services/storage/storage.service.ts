@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { encryption_key } from '../../../environments/environments';
+import { encryption_key, ls_user_session } from '../../../environments/environments';
 import * as CryptoJS from 'crypto-js';
+import { User } from '../../../auth/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,23 +12,25 @@ export class StorageService {
 
   constructor() { }
 
-  encryptAndStoreData(data: any, key: string) {
+  encryptAndStoreUser(data: User) {
     const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), this.encryptionKey).toString();
-    localStorage.setItem(key, encryptedData);
+    localStorage.setItem(ls_user_session, encryptedData);
   }
 
-  retrieveAndDecryptData(key: string): any {
-    const encryptedData = localStorage.getItem(key);
-    if (encryptedData) {
+  retrieveAndDecryptUser(): User {
+    const encryptedData = localStorage.getItem( ls_user_session );
+    if ( encryptedData !== null ) {
       const decryptedBytes = CryptoJS.AES.decrypt(encryptedData, this.encryptionKey);
       const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
       return JSON.parse(decryptedData);
     }
-    return null;
+
+    return { token: '', user: { id: -1, name: '', middle_name: '', last_name: '', rfc: '', phone: '', email: '', role: '', email_verified_at: '', created_at: '', updated_at: '', status: '' } };
+
   }
 
-  clearData(key: string) {
-    localStorage.removeItem(key);
+  clearDataUser() {
+    localStorage.removeItem( ls_user_session );
   }
 
 }
