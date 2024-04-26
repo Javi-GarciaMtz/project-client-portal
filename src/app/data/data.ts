@@ -5,3 +5,13 @@ export const sidebarItems = [
     { label: 'Crear cuenta', icon: 'person_add', url: './admin/create-user', permissions: ['admin'] },
     { label: 'Mis solicitudes', icon: 'list_alt', url: './users/my-requests', permissions: ['customer'] },
 ];
+
+// * Patterns
+export const namePattern: RegExp = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+export const companyNamePattern: RegExp = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\d\-.,\/_]+$/;
+export const addressPattern: RegExp = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,#\-\/]+$/;
+
+// export const phoneNumberPattern: RegExp = /^\+?\d{1,3}?[-.\s]?\(?(\d{2,3})\)?[-.\s]?(\d{3})[-.\s]?(\d{2})[-.\s]?(\d{2})$/;
+export const phoneNumberPattern: RegExp = /^\+?\d+$/;
+
+export const rfcPattern: RegExp = /^[A-ZÑ&-]{4}\d{6}[A-ZÑ\d]{3}$/;

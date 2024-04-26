@@ -1,81 +1,179 @@
-<div class="row">
+<form [formGroup]="formCreateAccount" (submit)="onSubmit()">
+  <div class="row">
     <div class="login-container">
 
-        <div class="login-form">
-            <h2 class="fw-bold">Creación de cuenta</h2>
+      <div class="login-form">
+        <h2 class="fw-bold">Creación de cuenta</h2>
 
-            <p style="width: 100%;">En el siguiente formulario puedes vaciar la información necesaria para registrar a un nuevo usuario.</p>
+        <p style="width: 100%;">En el siguiente formulario puedes vaciar la información necesaria para registrar
+          a un nuevo usuario.</p>
 
-            <div class="row mt-3" style="width: 100%;">
+        <div class="row mt-3" style="width: 100%;">
 
-                <div class="col-sm-12">
-                    <label for="" class="fw-medium">Nombre(s):</label>
-                    <mat-form-field appearance="outline" style="width: 100%;">
-                        <input matInput placeholder="Ej. Jose Luis">
-                    </mat-form-field>
-                </div>
+          <div class="col-sm-12">
+            <label for="" class="fw-medium">Nombre(s):</label>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. Jose Luis" formControlName="name">
+            </mat-form-field>
+          </div>
+          <app-show-errors-in-form
+            [genericForm]="formCreateAccount"
+            [genericFormControlName]="'name'"
+            [textRequired]="'El nombre es obligatorio'"
+            [textMinLength]="'El nombre es demasiado corto'"
+            [textMaxLength]="'El nombre es demasiado largo'"
+            [textPattern]="'El nombre contiene caracteres inválidos'">
+          </app-show-errors-in-form>
 
-                <div class="col-sm-12 col-md-6">
-                    <label for="" class="fw-medium">Apellido paterno:</label>
-                    <mat-form-field appearance="outline" style="width: 100%;">
-                        <input matInput placeholder="Ej. Estrada">
-                    </mat-form-field>
-                </div>
+          <div class="col-sm-12">
+            <label for="" class="fw-medium">Apellidos:</label>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. Estrada" formControlName="lastName">
+            </mat-form-field>
+          </div>
+          <app-show-errors-in-form
+            [genericForm]="formCreateAccount"
+            [genericFormControlName]="'lastName'"
+            [textRequired]="'El apellido es obligatorio'"
+            [textMinLength]="'El apellido es demasiado corto'"
+            [textMaxLength]="'El apellido es demasiado largo'"
+            [textPattern]="'El apellido contiene caracteres inválidos'">
+          </app-show-errors-in-form>
 
-                <div class="col-sm-12 col-md-6">
+          <!-- <div class="col-sm-12 col-md-6">
                     <label for="" class="fw-medium">Apellido materno:</label>
                     <mat-form-field appearance="outline" style="width: 100%;">
                         <input matInput placeholder="Ej. Perez">
                     </mat-form-field>
-                </div>
+                </div> -->
 
-                <div class="col-sm-12">
-                    <label for="" class="fw-medium">Email:</label>
-                    <mat-form-field appearance="outline" style="width: 100%;">
-                        <input matInput placeholder="Ej. joseluis@correo.com">
-                    </mat-form-field>
-                </div>
+          <div class="col-sm-12">
+            <label for="" class="fw-medium">Email:</label>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. joseluis@correo.com" formControlName="email">
+            </mat-form-field>
+          </div>
+          <app-show-errors-in-form
+            [genericForm]="formCreateAccount"
+            [genericFormControlName]="'email'"
+            [textRequired]="'El email de usuario es obligatorio'"
+            [textEmail]="'El email no es valido'"
+            [textMinLength]="'El email es demasiado corto'"
+            [textMaxLength]="'El email es demasiado largo'">
+          </app-show-errors-in-form>
 
-                <div class="col-sm-12">
-                    <label for="" class="fw-medium">Telefono:</label>
-                    <mat-form-field appearance="outline" style="width: 100%;">
-                        <input matInput placeholder="Ej. 55 4272 9988">
-                    </mat-form-field>
-                </div>
+          <div class="col-sm-12">
+            <label for="" class="fw-medium">Empresa:</label>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. Empresa del monte" formControlName="company">
+            </mat-form-field>
+          </div>
+          <app-show-errors-in-form
+            [genericForm]="formCreateAccount"
+            [genericFormControlName]="'company'"
+            [textRequired]="'La empresa es obligatoria'"
+            [textMinLength]="'La empresa es demasiado corta'"
+            [textMaxLength]="'La empresa es demasiado larga'"
+            [textPattern]="'La empresa contiene caracteres inválidos'">
+          </app-show-errors-in-form>
 
-                <div class="col-sm-12">
-                    <label for="" class="fw-medium">RFC:</label>
-                    <mat-form-field appearance="outline" style="width: 100%;">
-                        <input matInput placeholder="Ej. VECJ880326">
-                    </mat-form-field>
-                </div>
+          <div class="col-sm-12">
+            <label for="" class="fw-medium">Domicilio fiscal:</label>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. Av. siempre viva no.100" formControlName="taxAddress">
+            </mat-form-field>
+          </div>
+          <app-show-errors-in-form
+            [genericForm]="formCreateAccount"
+            [genericFormControlName]="'taxAddress'"
+            [textRequired]="'El domicilio fiscal es obligatorio'"
+            [textMinLength]="'El domicilio fiscal es demasiado corto'"
+            [textMaxLength]="'El domicilio fiscal es demasiado largo'"
+            [textPattern]="'El domicilio fiscal contiene caracteres inválidos'">
+          </app-show-errors-in-form>
 
-                <div class="col-sm-12">
-                    <label for="" class="fw-medium">Contraseña:</label>
-                    <mat-form-field appearance="outline" style="width: 100%;">
-                        <input matInput placeholder="***********">
-                    </mat-form-field>
-                </div>
+          <div class="col-sm-12">
+            <label for="" class="fw-medium">Teléfono:</label>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. 55 4272 9988" formControlName="phone">
+            </mat-form-field>
+          </div>
+          <app-show-errors-in-form
+            [genericForm]="formCreateAccount"
+            [genericFormControlName]="'phone'"
+            [textRequired]="'El teléfono es obligatorio'"
+            [textMinLength]="'El teléfono es demasiado corto'"
+            [textMaxLength]="'El teléfono es demasiado largo'"
+            [textPattern]="'El teléfono contiene caracteres inválidos'">
+          </app-show-errors-in-form>
 
-            </div>
+          <div class="col-sm-12">
+            <label for="" class="fw-medium">RFC:</label>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. VECJ880326" formControlName="rfc" (input)="toUpperCaseRFC()">
+            </mat-form-field>
+          </div>
+          <app-show-errors-in-form
+            [genericForm]="formCreateAccount"
+            [genericFormControlName]="'rfc'"
+            [textRequired]="'El RFC es obligatorio'"
+            [textMinLength]="'El RFC es demasiado corto'"
+            [textMaxLength]="'El RFC es demasiado largo'"
+            [textPattern]="'El RFC contiene caracteres inválidos'">
+          </app-show-errors-in-form>
 
-            <!-- <label for="" class="fw-medium">Nombre del solicitante:</label> -->
-            <!-- <mat-form-field appearance="outline" style="width: 95%;">
+          <div class="col-sm-12">
+            <label for="" class="fw-medium">Contraseña:</label>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <input type="password" matInput placeholder="***********" formControlName="pwd" (input)="checkConfirmPwd()">
+            </mat-form-field>
+          </div>
+          <app-show-errors-in-form
+            [genericForm]="formCreateAccount"
+            [genericFormControlName]="'pwd'"
+            [textRequired]="'La contraseña es obligatoria'"
+            [textMinLength]="'La contraseña es demasiado corta'"
+            [textMaxLength]="'La contraseña es demasiado larga'">
+          </app-show-errors-in-form>
+
+          <div class="col-sm-12">
+            <label for="" class="fw-medium">Confirmar contraseña:</label>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <input type="password" matInput placeholder="***********" formControlName="pwd2" (input)="checkConfirmPwd()">
+            </mat-form-field>
+          </div>
+          <span *ngIf="!confirmPwd ; else showErrors" class="text-danger" style="margin-top: -15px;margin-bottom: 15px;">Las contraseñas no coinciden</span>
+          <ng-template #showErrors>
+            <app-show-errors-in-form
+              [genericForm]="formCreateAccount"
+              [genericFormControlName]="'pwd2'"
+              [textRequired]="'La contraseña es obligatoria'"
+              [textMinLength]="'La contraseña es demasiado corta'"
+              [textMaxLength]="'La contraseña es demasiado larga'">
+            </app-show-errors-in-form>
+          </ng-template>
+
+        </div>
+
+        <!-- <label for="" class="fw-medium">Nombre del solicitante:</label> -->
+        <!-- <mat-form-field appearance="outline" style="width: 95%;">
                 <input matInput placeholder="Correo electrónico">
             </mat-form-field> -->
 
-            <!-- <label for="" class="fw-medium">Nombre del solicitante:</label> -->
-            <!-- <mat-form-field appearance="outline" style="width: 95%;">
+        <!-- <label for="" class="fw-medium">Nombre del solicitante:</label> -->
+        <!-- <mat-form-field appearance="outline" style="width: 95%;">
                 <input matInput placeholder="Contraseña">
             </mat-form-field> -->
 
-            <button mat-flat-button color="primary">Crear cuenta</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="!formCreateAccount.valid || !confirmPwd">Crear
+          cuenta</button>
 
-        </div>
+      </div>
 
-        <div class="login-image">
-            <div class="frame-gray"></div>
-        </div>
+      <div class="login-image">
+        <div class="frame-gray"></div>
+      </div>
 
     </div>
-</div>
+  </div>
+</form>
