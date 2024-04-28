@@ -14,4 +14,6 @@ export const addressPattern: RegExp = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,#\
 // export const phoneNumberPattern: RegExp = /^\+?\d{1,3}?[-.\s]?\(?(\d{2,3})\)?[-.\s]?(\d{3})[-.\s]?(\d{2})[-.\s]?(\d{2})$/;
 export const phoneNumberPattern: RegExp = /^\+?\d+$/;
 
-export const rfcPattern: RegExp = /^[A-ZÑ&-]{4}\d{6}[A-ZÑ\d]{3}$/;
+// export const rfcPatternMoral: RegExp = /^[A-ZÑ&-]{4}\d{6}[A-ZÑ\d]{3}$/;
+export const rfcPatternMoral: RegExp = /^(?:[A-ZÑ&]-|[A-ZÑ&]{2}-|[A-ZÑ&]{3}-|[A-ZÑ&]{4})\d{6}[A-ZÑ\d]{3}$/;
+export const rfcPatternPhysical: RegExp = /^[A-ZÑ&]{4}\d{6}[A-ZÑ\d]{3}$/;

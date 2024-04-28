@@ -108,6 +108,14 @@
           </app-show-errors-in-form>
 
           <div class="col-sm-12">
+            <label id="radio-type-person" class="fw-medium">Persona física o moral:</label>
+            <mat-radio-group aria-labelledby="radio-type-person" (change)="onChangeTypePerson()" formControlName="typePerson">
+              <mat-radio-button [value]="'physical'">Física</mat-radio-button>
+              <mat-radio-button [value]="'moral'">Moral</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="col-sm-12">
             <label for="" class="fw-medium">RFC:</label>
             <mat-form-field appearance="outline" style="width: 100%;">
               <input matInput placeholder="Ej. VECJ880326" formControlName="rfc" (input)="toUpperCaseRFC()">

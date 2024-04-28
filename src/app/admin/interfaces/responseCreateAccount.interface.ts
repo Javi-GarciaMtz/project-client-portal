@@ -1,18 +1,32 @@
 export interface ResponseCreateAccount {
   code:   number;
   status: boolean;
-  data:   DataUser;
+  data:   Data;
 }
 
-export interface DataUser {
+export interface Data {
+  company: Company;
+  user:    User;
+}
+
+export interface Company {
+  name:        string;
+  tax_address: string;
+  updated_at:  string;
+  created_at:  string;
+  id:          number;
+}
+
+export interface User {
   name:        string;
   company_id:  number;
   email:       string;
-  last_name:   string | null;
+  last_name:   null;
   middle_name: string;
-  phone:       string;
+  phone:       null;
   rfc:         string;
   role:        string;
+  entity_type: string;
   updated_at:  string;
   created_at:  string;
   id:          number;

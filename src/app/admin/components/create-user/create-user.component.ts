@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { addressPattern, companyNamePattern, namePattern, phoneNumberPattern, rfcPattern } from '../../../data/data';
+import { addressPattern, companyNamePattern, namePattern, phoneNumberPattern, rfcPatternMoral, rfcPatternPhysical } from '../../../data/data';
 import { AccountService } from '../../services/account/account.service';
 import { FormCreateAccount } from '../../interfaces/formCreateAccount.interface';
-import { ResponseCreateCompany } from '../../interfaces/responseCreateCompany.interface';
 import { LoadingOverlayService } from '../../../shared/services/loading-overlay/loading-overlay.service';
-import { ResponseCreateAccount } from '../../interfaces/responseCreateAccount.interface';
 import { ToastService } from '../../../shared/services/toast/toast.service';
+import { ResponseCreateAccount } from '../../interfaces/responseCreateAccount.interface';
 
 @Component({
   selector: 'app-create-user',
@@ -35,7 +34,9 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       taxAddress: new FormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(50), Validators.pattern(addressPattern)]),
       phone: new FormControl(null, [Validators.required, Validators.minLength(10), Validators.maxLength(50), Validators.pattern(phoneNumberPattern)]),
 
-      rfc: new FormControl(null, [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(rfcPattern)]),
+      typePerson: new FormControl('physical', [Validators.required]),
+      rfc: new FormControl(null, [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(rfcPatternPhysical)]),
+
       pwd: new FormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(50)]),
       pwd2: new FormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(50)]),
     });
@@ -53,34 +54,34 @@ export class CreateUserComponent implements OnInit, OnDestroy {
 
     this.loadingOverlayService.addLoading();
     this.arrSubs.push(
-      this.accountService.createCompany(data).subscribe({
-        next: (r: ResponseCreateCompany) => {
-          // console.log('compañia creada', r);
-          this.toastService.showSnackbar(true, `Compañía creada correctamente.`, 3000);
-
-          this.arrSubs.push(
-            this.accountService.createAccount(data, r).subscribe({
-              next: (re: ResponseCreateAccount) => {
-                // console.log('cuenta creada', re);
-                this.formCreateAccount.reset();
-
-                this.loadingOverlayService.removeLoading();
-                this.toastService.showSnackbar(true, `Usuario creado correctamente.`, 3000);
-
-              },
-              error: (e: any) => {
-                this.loadingOverlayService.removeLoading();
-                this.toastService.showSnackbar(false, `Error desconocido durante la ejecución, por favor intenta más tarde. (CODE: 01)`, 5000);
-              }
-            })
-          );
+      this.accountService.createAccount(data).subscribe({
+        next: (r: ResponseCreateAccount) => {
+          this.loadingOverlayService.removeLoading();
+          this.toastService.showSnackbar(true, `Usuario creado correctamente`, 4000);
+          this.formCreateAccount.reset();
         },
         error: (e: any) => {
           this.loadingOverlayService.removeLoading();
-          this.toastService.showSnackbar(false, `Error desconocido durante la ejecución, por favor intenta más tarde. (CODE: 02)`, 5000);
+          this.toastService.showSnackbar(false, `Error desconocido al crear al usuario, por favor intenta más tarde.`, 5000);
         }
       })
     );
+
+  }
+
+  onChangeTypePerson(): void {
+    const type = this.formCreateAccount.get('typePerson')!.value;
+    const validatorsMoral = [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(rfcPatternMoral)];
+    const validatorsPhysical = [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(rfcPatternPhysical)]
+    const controlRFC = this.formCreateAccount.get('rfc');
+
+    if( type === 'physical' ) {
+      controlRFC!.setValidators(validatorsPhysical);
+      controlRFC!.updateValueAndValidity();
+    } else if( type === 'moral' ) {
+      controlRFC!.setValidators(validatorsMoral);
+      controlRFC!.updateValueAndValidity();
+    }
 
   }
 
