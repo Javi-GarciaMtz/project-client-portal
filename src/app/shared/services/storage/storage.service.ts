@@ -25,7 +25,7 @@ export class StorageService {
       return JSON.parse(decryptedData);
     }
 
-    return { token: '', user: { id: -1, name: '', middle_name: '', last_name: '', rfc: '', phone: '', email: '', role: '', email_verified_at: '', created_at: '', updated_at: '', status: '' } };
+    return { token: '', user: { id: -1, name: '', middle_name: '', last_name: '', rfc: '', phone: '', email: '', role: '', email_verified_at: '', created_at: '', updated_at: '', status: '', company_id: -1, entity_type: '' } };
 
   }
 

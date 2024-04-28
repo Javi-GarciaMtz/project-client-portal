@@ -38,8 +38,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.arrSubs.forEach((s:Subscription) => s.unsubscribe());
   }
 
-  checkLoading(): boolean {
-    return this.loading.some((b:boolean) => b === true);
+  checkLoading(): any {
+    setTimeout(() => {
+      return this.loading.some((b:boolean) => b === true);
+    }, 0);
   }
 
 }

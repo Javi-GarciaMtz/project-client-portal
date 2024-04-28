@@ -22,12 +22,12 @@
 
 <div class="row mt-3">
 
-    <div class="col-sm-12">
+    <div *ngIf="company" class="col-sm-12">
         <label for="" class="fw-medium">Nombre de la empresa:</label>
         <p>
             <mat-form-field appearance="outline" style="width: 100%;">
               <!-- <mat-label>Outline form field</mat-label> -->
-              <input matInput placeholder="Placeholder" value="EL BRONZE DE VERACRUZ S.A. DE C.V." [disabled]="true">
+              <input matInput placeholder="Placeholder" [value]="company.name" [disabled]="true">
               <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
               <!-- <mat-hint>Hint</mat-hint> -->
             </mat-form-field>
@@ -37,19 +37,19 @@
     <div class="col-sm-12">
         <label for="" class="fw-medium">Nombre del solicitante:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
-            <input matInput placeholder="Ej. Jose Luis Hernandez">
+            <input matInput placeholder="Ej. Jose Luis Hernandez" [disabled]="true" [value]="user.user.name + ' ' + user.user.middle_name">
         </mat-form-field>
     </div>
 
-    <div class="col-sm-12">
+    <div *ngIf="company" class="col-sm-12">
         <label for="" class="fw-medium">Domicilio fiscal:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
-            <input matInput placeholder="Ej. Jose Luis Hernandez" value="AV JIMENEZ No 2087 COL. VERACRUZ CENTRO" [disabled]="true">
+            <input matInput placeholder="Ej. Jose Luis Hernandez" [value]="company.tax_address" [disabled]="true">
         </mat-form-field>
     </div>
 
     <div class="col-sm-12">
-        <label for="" class="fw-medium">Domicilio de inspección:</label>
+        <label for="" class="fw-medium">Domicilio donde se realizará la inspección:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. Av Jose Hernandez No. 14">
         </mat-form-field>
@@ -82,7 +82,7 @@
     </div>
 
     <div *ngIf="typeForm === 2" class="col-sm-12">
-        <label for="" class="fw-medium">Aduana de ingreso:</label>
+        <label for="" class="fw-medium">Aduana de ingreso de la mercancía</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-select placeholder="Seleccione una aduana de ingreso">
               <mat-option value="option3">Acapulco</mat-option>
@@ -112,7 +112,7 @@
     </div>
 
     <div *ngIf="typeForm === 2" class="col-sm-12 col-md-6">
-        <label for="" class="fw-medium">Fecha de internación:</label>
+        <label for="" class="fw-medium">Fecha probable de internación:</label>
         <mat-form-field style="width: 100%;">
             <!-- <mat-label>Choose a date</mat-label> -->
             <input matInput [matDatepicker]="picker1" placeholder="Seleccione una fecha">
@@ -122,8 +122,8 @@
         </mat-form-field>
     </div>
 
-    <div class="col-sm-12 col-md-6">
-        <label for="" class="fw-medium">Fecha programada para la verificación:</label>
+    <div *ngIf="typeForm === 2" class="col-sm-12 col-md-6">
+        <label for="" class="fw-medium">Fecha tentativa para la inspección:</label>
         <mat-form-field style="width: 100%;">
             <input matInput [matDatepicker]="picker2" placeholder="Seleccione una fecha">
             <mat-hint>DD/MM/AAAA</mat-hint>

@@ -5,11 +5,11 @@ export interface ResponseCreateAccount {
 }
 
 export interface Data {
-  company: Company;
-  user:    User;
+  company: CompanyCreateAccount;
+  user:    UserCreateAccount;
 }
 
-export interface Company {
+export interface CompanyCreateAccount {
   name:        string;
   tax_address: string;
   updated_at:  string;
@@ -17,7 +17,7 @@ export interface Company {
   id:          number;
 }
 
-export interface User {
+export interface UserCreateAccount {
   name:        string;
   company_id:  number;
   email:       string;
