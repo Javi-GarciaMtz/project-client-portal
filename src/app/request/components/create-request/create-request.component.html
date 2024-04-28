@@ -2,20 +2,22 @@
     <div class="col-sm-12 text-center"><h1 class="fw-bold">Generación de solicitud</h1></div>
 </div>
 
+<form [formGroup]="formCreateRequest" (submit)="onSubmit()">
+
 <div class="row">
     <div class="col-sm-12">
         <p>Para generar una "Solicitud de Verificación" primero seleccione el tipo de servicio</p>
 
         Seleccione el tipo de servicio:
-        <mat-radio-group aria-label="Select an option">
-            <mat-radio-button value="1">Constancia</mat-radio-button>
-            <mat-radio-button value="2">Dictamen</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" formControlName="type" (change)="changeTypeForm()">
+            <mat-radio-button [value]="1">Constancia</mat-radio-button>
+            <mat-radio-button [value]="2">Dictamen</mat-radio-button>
         </mat-radio-group>
     </div>
 </div>
 
 <div class="row mt-3">
-    <div class="col-sm-12 text-center"><h1 class="fw-bold">Dictamen</h1></div>
+    <div class="col-sm-12 text-center"><h1 class="fw-bold">{{ titleRequest }}</h1></div>
 </div>
 
 <div class="row mt-3">
@@ -79,7 +81,7 @@
           </mat-form-field>
     </div>
 
-    <div class="col-sm-12">
+    <div *ngIf="typeForm === 2" class="col-sm-12">
         <label for="" class="fw-medium">Aduana de ingreso:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-select placeholder="Seleccione una aduana de ingreso">
@@ -92,7 +94,7 @@
           </mat-form-field>
     </div>
 
-    <div class="col-sm-12">
+    <div *ngIf="typeForm === 2" class="col-sm-12">
         <label for="" class="fw-medium">Modalidad de etiquetado:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-select placeholder="Seleccione una modalidad">
@@ -102,14 +104,14 @@
           </mat-form-field>
     </div>
 
-    <div class="col-sm-12">
+    <div *ngIf="typeForm === 2" class="col-sm-12">
         <label for="" class="fw-medium">Número de factura:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. 00991122277">
         </mat-form-field>
     </div>
 
-    <div class="col-sm-12 col-md-6">
+    <div *ngIf="typeForm === 2" class="col-sm-12 col-md-6">
         <label for="" class="fw-medium">Fecha de internación:</label>
         <mat-form-field style="width: 100%;">
             <!-- <mat-label>Choose a date</mat-label> -->
@@ -143,3 +145,5 @@
     </div>
 
 </div>
+
+</form>

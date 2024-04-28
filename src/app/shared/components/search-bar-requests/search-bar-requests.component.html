@@ -11,12 +11,24 @@
             </div>
 
             <div class="col-sm-12 col-md-6">
-                <mat-form-field style="width: 90%;">
+
+                <!-- <mat-form-field style="width: 90%;">
                     <input matInput [matDatepicker]="picker2" placeholder="Seleccione una fecha">
                     <mat-hint>DD/MM/AAAA</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field> -->
+
+                <mat-form-field style="width: 90%;">
+                  <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate placeholder="Fecha inicial">
+                    <input matEndDate placeholder="Fecha final">
+                  </mat-date-range-input>
+                  <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
+
             </div>
 
         </div>
