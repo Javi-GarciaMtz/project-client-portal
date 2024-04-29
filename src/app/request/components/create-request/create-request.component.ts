@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { RequestService } from '../../services/request/request.service';
 import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -31,6 +31,19 @@ export class CreateRequestComponent implements OnInit, OnDestroy{
     this.user = this.storageService.retrieveAndDecryptUser();
     this.formCreateRequest = new FormGroup({
       type: new FormControl(1, [Validators.required]),
+      inspectionAddress: new FormControl(null, [Validators.required]),
+
+      rule: new FormControl(null, [Validators.required]),
+      phaseNom051: new FormControl(null),
+
+      customsOfEntry: new FormControl(null),
+      labelingMode: new FormControl(null),
+      invoiceNumber: new FormControl(null),
+
+      probableInternmentDate: new FormControl(null),
+      tentativeInspectionDate: new FormControl(null),
+
+      clarifications: new FormControl(null, [Validators.required])
     });
 
   }
@@ -57,6 +70,26 @@ export class CreateRequestComponent implements OnInit, OnDestroy{
     this.requestService.setOption(1);
   }
 
+  handlerNewValidators(): void {
+    if(this.typeForm === 1) {
+      this.formCreateRequest.get('customsOfEntry')!.setValidators([]);
+      this.formCreateRequest.get('labelingMode')!.setValidators([]);
+      this.formCreateRequest.get('invoiceNumber')!.setValidators([]);
+      this.formCreateRequest.get('probableInternmentDate')!.setValidators([]);
+      this.formCreateRequest.get('tentativeInspectionDate')!.setValidators([]);
+
+    } else if(this.typeForm === 2){
+      this.formCreateRequest.get('customsOfEntry')!.setValidators([Validators.required]);
+      this.formCreateRequest.get('labelingMode')!.setValidators([Validators.required]);
+      this.formCreateRequest.get('invoiceNumber')!.setValidators([Validators.required]);
+      this.formCreateRequest.get('probableInternmentDate')!.setValidators([Validators.required]);
+      this.formCreateRequest.get('tentativeInspectionDate')!.setValidators([Validators.required]);
+
+    }
+    this.formCreateRequest.updateValueAndValidity();
+
+  }
+
   changeTypeForm(): void {
     const type = this.formCreateRequest.get('type')!.value;
     this.typeForm = type;
@@ -65,6 +98,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy{
     } else if(type === 2){
       this.titleRequest = 'Dictamen';
     }
+    this.handlerNewValidators();
 
   }
 

@@ -1,4 +1,4 @@
-<div class="overlay">
+<div *ngIf="(loader.isLoading$ | async)" class="overlay">
     <div class="spinner">
         <mat-spinner class="spinner2"></mat-spinner>
         <h2 class="text-loading">Cargando...</h2>

@@ -51,14 +51,14 @@
     <div class="col-sm-12">
         <label for="" class="fw-medium">Domicilio donde se realizará la inspección:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
-            <input matInput placeholder="Ej. Av Jose Hernandez No. 14">
+            <input matInput placeholder="Ej. Av Jose Hernandez No. 14" formControlName="inspectionAddress">
         </mat-form-field>
     </div>
 
     <div class="col-sm-12 col-md-6">
         <label for="" class="fw-medium">Norma aplicable:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
-            <mat-select placeholder="Seleccione una norma">
+            <mat-select placeholder="Seleccione una norma" formControlName="rule">
               <mat-option value="option1">NOM-004-SE-2021</mat-option>
               <mat-option value="option2">NOM-015-SCFI-2007</mat-option>
               <mat-option value="option3">NOM-020-SCFI-1997</mat-option>
@@ -72,9 +72,9 @@
     </div>
 
     <div class="col-sm-12 col-md-6">
-        <label for="" class="fw-medium">Fase (solo NOM-051):</label>
+        <label for="" class="fw-medium">Fase (solo NOM-051-SCFI/SSA1-2010):</label>
         <mat-form-field appearance="outline" style="width: 100%;">
-            <mat-select placeholder="No aplica">
+            <mat-select placeholder="No aplica" formControlName="phaseNom051">
               <mat-option value="option3">NOM-051-SCFI/SSA1-2010 FASE 2</mat-option>
               <mat-option value="option3">NOM-051-SCFI/SSA1-2010 FASE 3</mat-option>
             </mat-select>
@@ -84,7 +84,7 @@
     <div *ngIf="typeForm === 2" class="col-sm-12">
         <label for="" class="fw-medium">Aduana de ingreso de la mercancía</label>
         <mat-form-field appearance="outline" style="width: 100%;">
-            <mat-select placeholder="Seleccione una aduana de ingreso">
+            <mat-select placeholder="Seleccione una aduana de ingreso" formControlName="customsOfEntry">
               <mat-option value="option3">Acapulco</mat-option>
               <mat-option value="option3">Agua Prieta</mat-option>
               <mat-option value="option3">Altamira</mat-option>
@@ -97,7 +97,7 @@
     <div *ngIf="typeForm === 2" class="col-sm-12">
         <label for="" class="fw-medium">Modalidad de etiquetado:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
-            <mat-select placeholder="Seleccione una modalidad">
+            <mat-select placeholder="Seleccione una modalidad" formControlName="labelingMode">
               <mat-option value="option3">PA (Etiquetado en Almacén de Depósito)</mat-option>
               <mat-option value="option3">PB (Etiquetado en Almacén Propio)</mat-option>
             </mat-select>
@@ -107,7 +107,7 @@
     <div *ngIf="typeForm === 2" class="col-sm-12">
         <label for="" class="fw-medium">Número de factura:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
-            <input matInput placeholder="Ej. 00991122277">
+            <input matInput placeholder="Ej. 00991122277" formControlName="invoiceNumber">
         </mat-form-field>
     </div>
 
@@ -115,7 +115,7 @@
         <label for="" class="fw-medium">Fecha probable de internación:</label>
         <mat-form-field style="width: 100%;">
             <!-- <mat-label>Choose a date</mat-label> -->
-            <input matInput [matDatepicker]="picker1" placeholder="Seleccione una fecha">
+            <input matInput [matDatepicker]="picker1" placeholder="Seleccione una fecha" formControlName="probableInternmentDate">
             <mat-hint>DD/MM/AAAA</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
@@ -125,7 +125,7 @@
     <div *ngIf="typeForm === 2" class="col-sm-12 col-md-6">
         <label for="" class="fw-medium">Fecha tentativa para la inspección:</label>
         <mat-form-field style="width: 100%;">
-            <input matInput [matDatepicker]="picker2" placeholder="Seleccione una fecha">
+            <input matInput [matDatepicker]="picker2" placeholder="Seleccione una fecha" formControlName="tentativeInspectionDate">
             <mat-hint>DD/MM/AAAA</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
@@ -136,12 +136,12 @@
         <label for="" class="fw-medium">Aclaraciones:</label>
         <mat-form-field class="example-full-width" style="width: 100%;">
             <!-- <mat-label>Leave a comment</mat-label> -->
-            <textarea matInput placeholder="Ej. Mi producto está..."></textarea>
+            <textarea matInput placeholder="Ej. Mi producto está..." formControlName="clarifications"></textarea>
           </mat-form-field>
     </div>
 
     <div class="col-sm-12 mt-4 mb-4 text-center">
-        <button mat-flat-button color="primary" (click)="onSubmit()">Siguiente</button>
+        <button mat-flat-button color="primary" [disabled]="!formCreateRequest.valid" type="submit">Siguiente</button>
     </div>
 
 </div>

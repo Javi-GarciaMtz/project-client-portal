@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoadingOverlayService } from '../../services/loading-overlay/loading-overlay.service';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './loading-overlay.component.scss'
 })
 export class LoadingOverlayComponent {
+
+  constructor(public loader: LoadingOverlayService) { }
 
 }
