@@ -1,0 +1,44 @@
+
+<div class="row mt-5">
+
+  <div class="col-sm-12 col-md-6">
+      <div class="row">
+
+          <div class="col-sm-12 col-md-10">
+              <label for="" class="fw-medium">Ingresa nombre de producto o número de folio:</label>
+
+              <mat-form-field appearance="outline" style="width: 90%;">
+
+                  <input type="text"
+                    placeholder="Ingresa los datos"
+                    aria-label="Number"
+                    matInput
+                    [formControl]="controlAutocomplete"
+                    [matAutocomplete]="auto"
+                  >
+
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected( $event )">
+
+                    <ng-container *ngIf="(filteredProducts | async)!.length > 0; else noProducts">
+
+                      @for (product of filteredProducts | async; track product) {
+                        <mat-option [value]="[product, 'name']">{{product.name}}</mat-option>
+                        <mat-option [value]="[product, 'invoice']">{{product.invoice}}</mat-option>
+                      }
+
+                    </ng-container>
+
+                    <ng-template #noProducts>
+                      <mat-option disabled>No hay productos que coincidan con los datos de la búsqueda</mat-option>
+                    </ng-template>
+
+                  </mat-autocomplete>
+
+              </mat-form-field>
+
+          </div>
+
+      </div>
+  </div>
+
+</div>

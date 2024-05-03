@@ -13,12 +13,12 @@ export class RequestContainerComponent implements OnDestroy {
   private _arraySubscriptions: Subscription[] = [];
 
   constructor(
-    private _requestService: RequestService,
+    private requestService: RequestService,
   ) {
-    this._requestService.setOption(this.option);
+    this.requestService.setOption(this.option);
 
     this._arraySubscriptions.push(
-      this._requestService.getOption.subscribe({
+      this.requestService.getOption.subscribe({
         next: (response: number) => {
           this.option = response;
         }
@@ -29,6 +29,8 @@ export class RequestContainerComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this._arraySubscriptions.forEach( (e: Subscription) => { e.unsubscribe(); });
+    this.requestService.resetFormRequestData();
+    this.requestService.productsRequestData = [];
   }
 
 }

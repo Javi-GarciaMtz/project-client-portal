@@ -1,0 +1,74 @@
+<div *ngIf="product" class="row">
+
+  <div class="col-sm-12">
+      <label for="" class="fw-medium">Producto:</label>
+      <mat-form-field appearance="outline" style="width: 100%;">
+          <input matInput placeholder="Ej. Es un producto" [(ngModel)]="product.name" (input)="checkIfICanSedProduct2Autocomplete()">
+      </mat-form-field>
+  </div>
+
+  <div class="col-sm-12">
+      <label for="" class="fw-medium">Marca:</label>
+      <mat-form-field appearance="outline" style="width: 100%;">
+          <input matInput placeholder="Ej. Marca del producto" [(ngModel)]="product.brand" (input)="checkIfICanSedProduct2Autocomplete()">
+      </mat-form-field>
+  </div>
+
+  <div class="col-sm-12">
+      <label for="" class="fw-medium">Modelo(s):</label>
+      <mat-form-field appearance="outline" style="width: 100%;">
+          <input matInput placeholder="Ej. Model 62" [(ngModel)]="product.model" (input)="checkIfICanSedProduct2Autocomplete()">
+      </mat-form-field>
+  </div>
+
+  <div class="col-sm-12">
+      <label for="" class="fw-medium">Folio:</label>
+      <mat-form-field appearance="outline" style="width: 100%;">
+          <input matInput placeholder="Ej.123456789" [(ngModel)]="product.invoice" (input)="checkIfICanSedProduct2Autocomplete()">
+      </mat-form-field>
+  </div>
+
+  <div class="col-sm-12 col-md-6">
+      <label for="" class="fw-medium">Unidad de medida:</label>
+      <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-select placeholder="Seleccione una medida" [(ngModel)]="product.unit_measurement_id" (valueChange)="checkIfICanSedProduct2Autocomplete()">
+            <mat-option [value]="1">Kilo</mat-option>
+            <mat-option [value]="2">Gramo</mat-option>
+            <mat-option [value]="3">Metro lineal</mat-option>
+            <mat-option [value]="4">Metro cubico</mat-option>
+          </mat-select>
+        </mat-form-field>
+  </div>
+
+  <div class="col-sm-12 col-md-6">
+      <label for="" class="fw-medium">Cantidad total:</label>
+      <mat-form-field appearance="outline" style="width: 100%;">
+          <input matInput placeholder="Ej. 5" [(ngModel)]="product.total_quantity" type="number" (input)="checkIfICanSedProduct2Autocomplete()">
+      </mat-form-field>
+  </div>
+
+  <div class="col-sm-12 col-md-6">
+      <label for="" class="fw-medium">No. de etiquetas a inspeccionar:</label>
+      <mat-form-field appearance="outline" style="width: 100%;">
+          <input matInput placeholder="Ej. 2" [(ngModel)]="product.labels_to_inspecc" type="number" (input)="checkIfICanSedProduct2Autocomplete()">
+      </mat-form-field>
+  </div>
+
+  <!-- <div class="col-sm-12 col-md-6">
+      <label for="" class="fw-medium">Fracción arancelaria:</label>
+      <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-select placeholder="Seleccione una fracción" [(ngModel)]="product.tariff_fraction" (valueChange)="checkIfICanSedProduct2Autocomplete()">
+            <mat-option [value]="1">Fracción 1</mat-option>
+            <mat-option [value]="2">Fracción 2</mat-option>
+          </mat-select>
+        </mat-form-field>
+  </div> -->
+
+  <div class="col-sm-12 col-md-6">
+    <label for="" class="fw-medium">Fracción arancelaria:</label>
+    <mat-form-field appearance="outline" style="width: 100%;">
+        <input matInput placeholder="Ej.12345678" [(ngModel)]="product.tariff_fraction" (input)="checkIfICanSedProduct2Autocomplete()">
+    </mat-form-field>
+  </div>
+
+</div>

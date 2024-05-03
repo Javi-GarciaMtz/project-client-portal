@@ -58,15 +58,8 @@
     <div class="col-sm-12 col-md-6">
         <label for="" class="fw-medium">Norma aplicable:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
-            <mat-select placeholder="Seleccione una norma" formControlName="rule">
-              <mat-option value="option1">NOM-004-SE-2021</mat-option>
-              <mat-option value="option2">NOM-015-SCFI-2007</mat-option>
-              <mat-option value="option3">NOM-020-SCFI-1997</mat-option>
-              <mat-option value="option3">NOM-024-SCFI-2013</mat-option>
-              <mat-option value="option3">NOM-050-SCFI-2004</mat-option>
-              <mat-option value="option3">NOM-051-SCFI/SSA1-2010</mat-option>
-              <mat-option value="option3">NOM-141-SSA1/SCFI-2012</mat-option>
-              <mat-option value="option3">NOM-189-SSA1/SCFI-2018</mat-option>
+            <mat-select placeholder="Seleccione una norma" (selectionChange)="changeRule()" formControlName="rule">
+              <mat-option *ngFor="let rule of rules" [value]="rule.id">{{ rule.name }}</mat-option>
             </mat-select>
           </mat-form-field>
     </div>
@@ -75,13 +68,12 @@
         <label for="" class="fw-medium">Fase (solo NOM-051-SCFI/SSA1-2010):</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-select placeholder="No aplica" formControlName="phaseNom051">
-              <mat-option value="option3">NOM-051-SCFI/SSA1-2010 FASE 2</mat-option>
-              <mat-option value="option3">NOM-051-SCFI/SSA1-2010 FASE 3</mat-option>
+              <mat-option *ngFor="let phase of phases51" [value]="phase.id">{{ phase.name + ' ' + phase.phase }}</mat-option>
             </mat-select>
           </mat-form-field>
     </div>
 
-    <div *ngIf="typeForm === 2" class="col-sm-12">
+    <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12">
         <label for="" class="fw-medium">Aduana de ingreso de la mercancía</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-select placeholder="Seleccione una aduana de ingreso" formControlName="customsOfEntry">
@@ -94,7 +86,7 @@
           </mat-form-field>
     </div>
 
-    <div *ngIf="typeForm === 2" class="col-sm-12">
+    <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12">
         <label for="" class="fw-medium">Modalidad de etiquetado:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-select placeholder="Seleccione una modalidad" formControlName="labelingMode">
@@ -104,14 +96,14 @@
           </mat-form-field>
     </div>
 
-    <div *ngIf="typeForm === 2" class="col-sm-12">
+    <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12">
         <label for="" class="fw-medium">Número de factura:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. 00991122277" formControlName="invoiceNumber">
         </mat-form-field>
     </div>
 
-    <div *ngIf="typeForm === 2" class="col-sm-12 col-md-6">
+    <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12 col-md-6">
         <label for="" class="fw-medium">Fecha probable de internación:</label>
         <mat-form-field style="width: 100%;">
             <!-- <mat-label>Choose a date</mat-label> -->
@@ -122,7 +114,7 @@
         </mat-form-field>
     </div>
 
-    <div *ngIf="typeForm === 2" class="col-sm-12 col-md-6">
+    <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12 col-md-6">
         <label for="" class="fw-medium">Fecha tentativa para la inspección:</label>
         <mat-form-field style="width: 100%;">
             <input matInput [matDatepicker]="picker2" placeholder="Seleccione una fecha" formControlName="tentativeInspectionDate">

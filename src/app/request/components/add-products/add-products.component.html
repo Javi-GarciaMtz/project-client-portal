@@ -11,80 +11,10 @@
                         <mat-tab [label]="'Producto ' + (index+1)">
                             <div class="p-4">
 
-                                <div class="row">
-
-                                    <div class="col-sm-12">
-                                        <label for="" class="fw-medium">Producto:</label>
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <input matInput placeholder="Ej. Es un producto">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div class="col-sm-12">
-                                        <label for="" class="fw-medium">Marca:</label>
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <input matInput placeholder="Ej. Marca del producto">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div class="col-sm-12">
-                                        <label for="" class="fw-medium">Modelo(s):</label>
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <input matInput placeholder="Ej. Model 62">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div class="col-sm-12">
-                                        <label for="" class="fw-medium">Folio:</label>
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <input matInput placeholder="Ej.123456789">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div class="col-sm-12 col-md-6">
-                                        <label for="" class="fw-medium">Unidad de medida:</label>
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-select placeholder="Seleccione una medida">
-                                              <mat-option value="option1">Kilo</mat-option>
-                                              <mat-option value="option2">Gramo</mat-option>
-                                              <mat-option value="option3">Metro lineal</mat-option>
-                                              <mat-option value="option3">Metro cubico</mat-option>
-                                            </mat-select>
-                                          </mat-form-field>
-                                    </div>
-
-                                    <div class="col-sm-12 col-md-6">
-                                        <label for="" class="fw-medium">Cantidad total:</label>
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <input matInput placeholder="Ej. 5">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div class="col-sm-12 col-md-6">
-                                        <label for="" class="fw-medium">No. de etiquetas a inspeccionar:</label>
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <input matInput placeholder="Ej. 2">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div class="col-sm-12 col-md-6">
-                                        <label for="" class="fw-medium">Fracción arancelaria:</label>
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-select placeholder="Seleccione una fracción">
-                                              <mat-option value="option1">Fracción 1</mat-option>
-                                              <mat-option value="option2">Fracción 2</mat-option>
-                                            </mat-select>
-                                          </mat-form-field>
-                                    </div>
-
-                                    <!-- <div class="col-sm-12">
-                                        <label for="" class="fw-medium">Norma aplicable:</label>
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <input matInput placeholder="Ej. 123456789">
-                                        </mat-form-field>
-                                    </div> -->
-
-                                </div>
+                                <app-product-tab
+                                  (eventSendProducts)="handlerSendProducts($event)"
+                                  [product]="tab">
+                                </app-product-tab>
 
                                 <!-- Contents for {{index}} i -->
 

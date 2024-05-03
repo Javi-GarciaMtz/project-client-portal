@@ -1,19 +1,21 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import { RequestService } from '../../services/request/request.service';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '../../../shared/services/storage/storage.service';
 import { User } from '../../../auth/interfaces/user.interface';
 import { LoadingOverlayService } from '../../../shared/services/loading-overlay/loading-overlay.service';
 import { Company, ResponseAllCompanies } from '../../interfaces/responseAllCompanies.interface';
 import { ToastService } from '../../../shared/services/toast/toast.service';
+import { Rule } from '../../interfaces/responseAllRules.interface';
+import { nom_51_phases } from '../../../environments/environments';
 
 @Component({
   selector: 'app-create-request',
   templateUrl: './create-request.component.html',
   styleUrl: './create-request.component.scss'
 })
-export class CreateRequestComponent implements OnInit, OnDestroy{
+export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
 
   private arrSubs: Subscription[] = [];
   public formCreateRequest: FormGroup;
@@ -21,6 +23,8 @@ export class CreateRequestComponent implements OnInit, OnDestroy{
   public typeForm: number = 1;
   public user: User;
   public company!: Company;
+  public rules: Rule[] = [];
+  public phases51: any[] = nom_51_phases;
 
   constructor(
     private requestService: RequestService,
@@ -50,40 +54,73 @@ export class CreateRequestComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.loadingOverlayService.addLoading();
-    this.requestService.getAllCompanies().subscribe({
-      next: (r: ResponseAllCompanies) => {
-        this.company = r.data.find((c:Company) => c.id === this.user.user.company_id)!;
-        this.loadingOverlayService.removeLoading();
-      },
-      error: (e: any) => {
-        this.toastService.showSnackbar(false, `Error desconocido, intente más tarde. (CODE: 001)`, 5000);
+
+    this.arrSubs.push(
+      forkJoin({
+        companies: this.requestService.getAllCompanies(),
+        rules: this.requestService.getAllRules(),
+      }).subscribe({
+        next: (r: any) => {
+          // console.log('respons', r);
+
+          this.rules = r.rules.data;
+          this.company = r.companies.data.find((c:Company) => c.id === this.user.user.company_id)!;
+
+          this.proccessRules();
+          this.loadingOverlayService.removeLoading();
+        },
+        error: (e: any) => {
+          console.log('error', e);
+          this.toastService.showSnackbar(false, 'Error desconocido. (CODE: 001)', 7000);
+          // this.loadingOverlayService.removeLoading();
+        }
+      })
+    );
+
+    this.formCreateRequest.get('phaseNom051')!.disable();
+
+    if( this.requestService.formRequestData.type !== -1 ) {
+      this.formCreateRequest.patchValue( this.requestService.formRequestData );
+      if( this.requestService.formRequestData.rule === 51 ) {
+        this.formCreateRequest.get('phaseNom051')!.enable();
       }
-    });
+    }
 
   }
 
   ngOnDestroy(): void {
-
+    this.arrSubs.forEach((s:Subscription) => s.unsubscribe());
   }
 
+  ngDoCheck(): void {}
+
   onSubmit(): void {
+    this.requestService.formRequestData = this.formCreateRequest.value;
     this.requestService.setOption(1);
+
   }
 
   handlerNewValidators(): void {
-    if(this.typeForm === 1) {
-      this.formCreateRequest.get('customsOfEntry')!.setValidators([]);
-      this.formCreateRequest.get('labelingMode')!.setValidators([]);
-      this.formCreateRequest.get('invoiceNumber')!.setValidators([]);
-      this.formCreateRequest.get('probableInternmentDate')!.setValidators([]);
-      this.formCreateRequest.get('tentativeInspectionDate')!.setValidators([]);
+    const controls = [
+      'customsOfEntry',
+      'labelingMode',
+      'invoiceNumber',
+      'probableInternmentDate',
+      'tentativeInspectionDate'
+    ];
 
-    } else if(this.typeForm === 2){
-      this.formCreateRequest.get('customsOfEntry')!.setValidators([Validators.required]);
-      this.formCreateRequest.get('labelingMode')!.setValidators([Validators.required]);
-      this.formCreateRequest.get('invoiceNumber')!.setValidators([Validators.required]);
-      this.formCreateRequest.get('probableInternmentDate')!.setValidators([Validators.required]);
-      this.formCreateRequest.get('tentativeInspectionDate')!.setValidators([Validators.required]);
+    if (this.typeForm === 1) {
+      controls.forEach( (c:string) => {
+        this.formCreateRequest.get(c)!.clearValidators();
+        this.formCreateRequest.get(c)!.setValue(null);
+        this.formCreateRequest.get(c)!.updateValueAndValidity();
+      });
+
+    } else if (this.typeForm === 2) {
+      controls.forEach( (c:string) => {
+        this.formCreateRequest.get(c)!.setValidators([Validators.required]);
+        this.formCreateRequest.get(c)!.updateValueAndValidity();
+      });
 
     }
     this.formCreateRequest.updateValueAndValidity();
@@ -99,6 +136,35 @@ export class CreateRequestComponent implements OnInit, OnDestroy{
       this.titleRequest = 'Dictamen';
     }
     this.handlerNewValidators();
+
+  }
+
+  changeRule(): void {
+    const ruleId = this.formCreateRequest.get('rule')!.value;
+    const nom51 = this.formCreateRequest.get('phaseNom051')!;
+    if( ruleId === 51 ) {
+      nom51.enable();
+      nom51.setValue(null);
+      nom51.setValidators([Validators.required]);
+      nom51.updateValueAndValidity();
+    } else {
+      nom51.disable();
+      nom51.setValue(null);
+      nom51.clearValidators();
+      nom51.updateValueAndValidity();
+    }
+    this.formCreateRequest.updateValueAndValidity();
+
+  }
+
+  proccessRules(): void {
+    this.rules = this.rules.filter((r:Rule) => r.name !== "NOM-051-SCFI/SSA1-2010");
+    this.rules.push({ id: 51, name: "NOM-051-SCFI/SSA1-2010", phase: null, description: null, status: '', created_at:  ``, updated_at:  `` });
+    this.rules.sort((a:Rule, b:Rule) => {
+      const yearA = parseInt(a.name.split("-").pop()!);
+      const yearB = parseInt(b.name.split("-").pop()!);
+      return yearA - yearB;
+    });
 
   }
 
