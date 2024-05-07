@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subscription, map, startWith } from 'rxjs';
 import { RequestService } from '../../services/request/request.service';
 import { Product } from '../../interfaces/product.interface';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-search-bar-products',
@@ -11,6 +11,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   styleUrl: './search-bar-products.component.scss'
 })
 export class SearchBarProductsComponent implements OnInit, OnDestroy {
+
+  @ViewChild(MatAutocomplete) autocomplete!: MatAutocomplete;
 
   private arrSubs: Subscription[] = [];
 
@@ -35,6 +37,7 @@ export class SearchBarProductsComponent implements OnInit, OnDestroy {
       this.requestService.getProducts.subscribe({
         next: (p:Product[]) => {
           this.products = p;
+          this.controlAutocomplete.setValue(null);
           this.handlerNewProducts();
         }
       })
@@ -61,8 +64,8 @@ export class SearchBarProductsComponent implements OnInit, OnDestroy {
     }
 
     return this.products.filter((product: Product) =>
-      product.name.toLowerCase().includes(filterValue) ||
-      product.invoice.toLowerCase().includes(filterValue)
+      (product.name.toLowerCase().includes(filterValue) ||
+      product.invoice.toLowerCase().includes(filterValue)) && product.isReady
     );
   }
 

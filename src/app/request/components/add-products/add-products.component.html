@@ -13,7 +13,7 @@
 
                                 <app-product-tab
                                   (eventSendProducts)="handlerSendProducts($event)"
-                                  [product]="tab">
+                                  [productIndex]="tab.index!">
                                 </app-product-tab>
 
                                 <!-- Contents for {{index}} i -->
@@ -67,7 +67,7 @@
                 <button mat-flat-button color="primary" class="example-delete-tab-button" (click)="goBack()">
                     Regresar
                 </button>
-                <button mat-flat-button color="primary" class="example-delete-tab-button">
+                <button mat-flat-button color="primary" class="example-delete-tab-button" (click)="saveRequest()">
                     Guardar solicitud
                 </button>
             </div>

@@ -8,4 +8,5 @@ export interface Product {
   labels_to_inspecc:   number;
   tariff_fraction:     string;
   index?:              number;
+  isReady?:            boolean;
 }
