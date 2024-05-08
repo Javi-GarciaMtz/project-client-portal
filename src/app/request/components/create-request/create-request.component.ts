@@ -3,12 +3,11 @@ import { RequestService } from '../../services/request/request.service';
 import { Subscription, forkJoin } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '../../../shared/services/storage/storage.service';
-import { User } from '../../../auth/interfaces/user.interface';
+import { CustomsRuleUser, User } from '../../../auth/interfaces/user.interface';
 import { LoadingOverlayService } from '../../../shared/services/loading-overlay/loading-overlay.service';
-import { Company, ResponseAllCompanies } from '../../interfaces/responseAllCompanies.interface';
+import { CompanyAllCompanies } from '../../interfaces/responseAllCompanies.interface';
 import { ToastService } from '../../../shared/services/toast/toast.service';
-import { Rule } from '../../../admin/interfaces/responseAllRules.interface';
-import { nom_51_phases } from '../../../environments/environments';
+import { CustomOfficeAllCustoms } from '../../interfaces/responseAllCustomsOffices.interface';
 
 @Component({
   selector: 'app-create-request',
@@ -18,13 +17,18 @@ import { nom_51_phases } from '../../../environments/environments';
 export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
 
   private arrSubs: Subscription[] = [];
+
   public formCreateRequest: FormGroup;
   public titleRequest: string = 'Constancia';
   public typeForm: number = 1;
+
   public user: User;
-  public company!: Company;
-  public rules: Rule[] = [];
-  public phases51: any[] = nom_51_phases;
+  public company!: CompanyAllCompanies;
+
+  public rules: CustomsRuleUser[] = [];
+  public phases51: CustomsRuleUser[] = [];
+
+  public customsOffices: CustomOfficeAllCustoms[] = [];
 
   constructor(
     private requestService: RequestService,
@@ -55,18 +59,20 @@ export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
   ngOnInit(): void {
     this.loadingOverlayService.addLoading();
 
+    // * Traemos los datos de la compañia y de las reglas
     this.arrSubs.push(
       forkJoin({
         companies: this.requestService.getAllCompanies(),
-        rules: this.requestService.getAllRules(),
+        customsOffices: this.requestService.getAllCustomsOffices(),
       }).subscribe({
         next: (r: any) => {
-          // console.log('respons', r);
+          // * Guardamos la informacion
+          this.company = r.companies.data.find((c:CompanyAllCompanies) => c.id === this.user.user.company_id)!;
+          this.customsOffices = r.customsOffices.data;
 
-          this.rules = r.rules.data;
-          this.company = r.companies.data.find((c:Company) => c.id === this.user.user.company_id)!;
-
+          // * Procesamos las normas
           this.proccessRules();
+
           this.loadingOverlayService.removeLoading();
         },
         error: (e: any) => {
@@ -77,8 +83,10 @@ export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
       })
     );
 
+    // * Deshabilitamos el select de la fase
     this.formCreateRequest.get('phaseNom051')!.disable();
 
+    // * Si ya existen datos de una solicitud previa
     if( this.requestService.formRequestData.type !== -1 ) {
       this.formCreateRequest.patchValue( this.requestService.formRequestData );
       if( this.requestService.formRequestData.rule === 51 ) {
@@ -94,12 +102,14 @@ export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
 
   ngDoCheck(): void {}
 
+  // * Manejo del evento de continuar con la solicitud
   onSubmit(): void {
     this.requestService.formRequestData = this.formCreateRequest.value;
     this.requestService.setOption(1);
 
   }
 
+  // * Manejo del evento de cuando hay nuevos validadores, es decir ahora hay mas campos que debe o no, ser obligatorios
   handlerNewValidators(): void {
     const controls = [
       'customsOfEntry',
@@ -127,6 +137,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
 
   }
 
+  // * Manejo del evento que maneja el cambio de una constancia a dictamen, y viceversa
   changeTypeForm(): void {
     const type = this.formCreateRequest.get('type')!.value;
     this.typeForm = type;
@@ -139,6 +150,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
 
   }
 
+  // * Manejo del evento cuando se cambia la norma, si la norma es la 051, habilitamos el select de las fases y revisamos de nuevo los validadores
   changeRule(): void {
     const ruleId = this.formCreateRequest.get('rule')!.value;
     const nom51 = this.formCreateRequest.get('phaseNom051')!;
@@ -157,14 +169,30 @@ export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
 
   }
 
+  // * Se precesan las normas, de manera que las normas 051 creamos solo una norma 051 y en las fases estan directamente las dos normas
   proccessRules(): void {
-    this.rules = this.rules.filter((r:Rule) => r.name !== "NOM-051-SCFI/SSA1-2010");
-    this.rules.push({ id: 51, name: "NOM-051-SCFI/SSA1-2010", phase: null, description: null, status: '', created_at:  ``, updated_at:  `` });
-    this.rules.sort((a:Rule, b:Rule) => {
-      const yearA = parseInt(a.name.split("-").pop()!);
-      const yearB = parseInt(b.name.split("-").pop()!);
-      return yearA - yearB;
-    });
+    const nameRule51 = 'NOM-051-SCFI/SSA1-2010';
+    const userRules = this.user.customs_rules;
+    const rules51 = userRules.filter(rule => rule.name === nameRule51 );
+
+    // * Actualizamos las normas que tiene disponible el usuario
+    this.rules = userRules;
+
+    // * Si el usuario tiene normas 51 disponibles, las mostramos
+    if( rules51.length > 0 ) {
+      // * Quitamos todas las normas 51
+      this.rules = this.rules.filter((r:any) => r.name !== nameRule51);
+      // * Agregamos solo una norma 51, con el id 51
+      this.rules.push({ id: 51, name: "NOM-051-SCFI/SSA1-2010", phase: null, description: null, status: '', created_at:  ``, updated_at:  ``, pivot: { user_id: -1, custom_rule_id: -2 } });
+      // * Ordenamos por nombre de las normas
+      this.rules.sort((a:any, b:any) => {
+        const yearA = parseInt(a.name.split("-").pop()!);
+        const yearB = parseInt(b.name.split("-").pop()!);
+        return yearA - yearB;
+      });
+      // * Agregamos las fases de la 51
+      this.phases51 = rules51;
+    }
 
   }
 

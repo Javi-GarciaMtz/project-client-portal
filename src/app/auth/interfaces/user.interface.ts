@@ -1,17 +1,17 @@
 export interface User {
   user:          UserClass;
   token:         string;
-  customs_rules: CustomsRule[];
+  customs_rules: CustomsRuleUser[];
 }
 
-export interface CustomsRule {
+export interface CustomsRuleUser {
   id:          number;
   name:        string;
-  phase:       null;
+  phase:       string | null;
   description: null;
   status:      string;
-  created_at:  Date;
-  updated_at:  Date;
+  created_at:  string;
+  updated_at:  string;
   pivot:       Pivot;
 }
 

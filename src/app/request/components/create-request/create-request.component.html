@@ -77,11 +77,7 @@
         <label for="" class="fw-medium">Aduana de ingreso de la mercancía</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-select placeholder="Seleccione una aduana de ingreso" formControlName="customsOfEntry">
-              <mat-option value="option3">Acapulco</mat-option>
-              <mat-option value="option3">Agua Prieta</mat-option>
-              <mat-option value="option3">Altamira</mat-option>
-              <mat-option value="option3">Aguascalientes</mat-option>
-              <mat-option value="option3">Aeropuerto internacional de la Ciudad de México</mat-option>
+              <mat-option *ngFor="let customOffice of customsOffices" [value]="customOffice.id">{{ customOffice.name }}</mat-option>
             </mat-select>
           </mat-form-field>
     </div>
@@ -90,8 +86,8 @@
         <label for="" class="fw-medium">Modalidad de etiquetado:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-select placeholder="Seleccione una modalidad" formControlName="labelingMode">
-              <mat-option value="option3">PA (Etiquetado en Almacén de Depósito)</mat-option>
-              <mat-option value="option3">PB (Etiquetado en Almacén Propio)</mat-option>
+              <mat-option [value]="'PA'">PA (Etiquetado en Almacén de Depósito)</mat-option>
+              <mat-option [value]="'PB'">PB (Etiquetado en Almacén Propio)</mat-option>
             </mat-select>
           </mat-form-field>
     </div>

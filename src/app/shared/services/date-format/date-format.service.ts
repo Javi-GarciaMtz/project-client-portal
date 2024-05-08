@@ -8,7 +8,7 @@ export class DateFormatService {
 
   constructor() { }
 
-  getMomentObj(ogDate: Date): moment.Moment {
+  getMomentObj(ogDate: string): moment.Moment {
     return moment(ogDate);
   }
 

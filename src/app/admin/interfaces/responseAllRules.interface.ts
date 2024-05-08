@@ -1,10 +1,10 @@
 export interface ResponseAllRules {
   code:   number;
   status: boolean;
-  data:   Rule[];
+  data:   RuleAllRules[];
 }
 
-export interface Rule {
+export interface RuleAllRules {
   id:          number;
   name:        string;
   phase:       null | string;

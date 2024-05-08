@@ -7,7 +7,7 @@ import { FormCreateAccount } from '../../interfaces/formCreateAccount.interface'
 import { LoadingOverlayService } from '../../../shared/services/loading-overlay/loading-overlay.service';
 import { ToastService } from '../../../shared/services/toast/toast.service';
 import { ResponseCreateAccount } from '../../interfaces/responseCreateAccount.interface';
-import { ResponseAllRules, Rule } from '../../interfaces/responseAllRules.interface';
+import { ResponseAllRules, RuleAllRules } from '../../interfaces/responseAllRules.interface';
 
 @Component({
   selector: 'app-create-user',
@@ -17,7 +17,7 @@ import { ResponseAllRules, Rule } from '../../interfaces/responseAllRules.interf
 export class CreateUserComponent implements OnInit, OnDestroy {
 
   private arrSubs: Subscription[] = [];
-  public rules: Rule[] = []
+  public rules: RuleAllRules[] = []
   public formCreateAccount: FormGroup;
   public confirmPwd: boolean = true;
 

@@ -1,10 +1,10 @@
 export interface ResponseAllCompanies {
   code:   number;
   status: boolean;
-  data:   Company[];
+  data:   CompanyAllCompanies[];
 }
 
-export interface Company {
+export interface CompanyAllCompanies {
   id:          number;
   name:        string;
   tax_address: string;
