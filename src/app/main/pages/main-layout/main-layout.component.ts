@@ -21,13 +21,13 @@ export class MainLayoutComponent {
   ) {}
 
   logout(): void {
-    this.loadingOverlayService.addLoading();
+    // this.loadingOverlayService.addLoading();
 
-    setTimeout(() => {
+    // setTimeout(() => {
       this.storageService.clearDataUser();
-      this.loadingOverlayService.removeLoading();
+      // this.loadingOverlayService.removeLoading();
       this.router.navigate(['/auth/login']);
-    }, 1500);
+    // }, 1500);
 
   }
 
