@@ -9,6 +9,7 @@ import { FormRequest } from '../../interfaces/formRequest.interface';
 import { Product } from '../../interfaces/product.interface';
 import { DateFormatService } from '../../../shared/services/date-format/date-format.service';
 import { ResponseAllCustomsOffices } from '../../interfaces/responseAllCustomsOffices.interface';
+import { ResponseAllMeasurements } from '../../interfaces/responseAllMeasurements.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +89,19 @@ export class RequestService {
     };
 
     return this.http.get<ResponseAllCustomsOffices>(url, httpOptions);
+  }
+
+  // * Metodo para obtener las unidades de medida
+  getAllMeasurements(): Observable<ResponseAllMeasurements> {
+    const url = `${url_customs_gen}units-measurements`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.storageService.retrieveAndDecryptUser().token}`
+      })
+    };
+
+    return this.http.get<ResponseAllMeasurements>(url, httpOptions);
   }
 
   // * Metodo para guarda la solicitud

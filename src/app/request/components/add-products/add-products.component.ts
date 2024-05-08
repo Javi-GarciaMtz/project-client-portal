@@ -4,6 +4,7 @@ import { Product } from '../../interfaces/product.interface';
 import { Subscription } from 'rxjs';
 import { LoadingOverlayService } from '../../../shared/services/loading-overlay/loading-overlay.service';
 import { ToastService } from '../../../shared/services/toast/toast.service';
+import { MeasurementAllMeasurements, ResponseAllMeasurements } from '../../interfaces/responseAllMeasurements.interface';
 
 @Component({
   selector: 'app-add-products',
@@ -12,9 +13,10 @@ import { ToastService } from '../../../shared/services/toast/toast.service';
 })
 export class AddProductsComponent implements OnInit, OnDestroy {
 
+  private arrSubs: Subscription[] = [];
   public tabs: Product[] = [];
   public selectedIndex: number = 0;
-  private arrSubs: Subscription[] = [];
+  public unitsMeasurements: MeasurementAllMeasurements[] = [];
 
   constructor(
     private requestService: RequestService,
@@ -26,6 +28,20 @@ export class AddProductsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    this.loadingOverlayService.addLoading();
+    this.arrSubs.push(
+      this.requestService.getAllMeasurements().subscribe({
+        next: (r: ResponseAllMeasurements) => {
+          this.unitsMeasurements = r.data;
+          this.loadingOverlayService.removeLoading();
+        },
+        error: (e: any) => {
+          this.toastService.showSnackbar(false, 'Error desconocido durante la ejecución (CODE: 001)', 7000);
+        }
+      })
+    );
+
     if(this.requestService.productsRequestData.length > 0) {
       this.tabs = this.requestService.productsRequestData;
       this.requestService.setProducts( this.tabs );

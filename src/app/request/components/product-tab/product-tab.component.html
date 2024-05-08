@@ -35,10 +35,7 @@
         <label for="" class="fw-medium">Unidad de medida:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-select placeholder="Seleccione una medida" (valueChange)="checkIfICanSedProduct2Autocomplete()" formControlName="unit_measurement_id">
-              <mat-option [value]="1">Kilo</mat-option>
-              <mat-option [value]="2">Gramo</mat-option>
-              <mat-option [value]="3">Metro lineal</mat-option>
-              <mat-option [value]="4">Metro cubico</mat-option>
+              <mat-option *ngFor="let measurent of unitsMeasurements" [value]="measurent.id">{{ measurent.name }}</mat-option>
             </mat-select>
           </mat-form-field>
     </div>

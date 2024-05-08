@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Product } from '../../interfaces/product.interface';
 import { RequestService } from '../../services/request/request.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MeasurementAllMeasurements } from '../../interfaces/responseAllMeasurements.interface';
 
 @Component({
   selector: 'app-product-tab',
@@ -11,6 +12,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class ProductTabComponent implements OnInit {
 
   // @Input() public product!: Product;
+  @Input() public unitsMeasurements: MeasurementAllMeasurements[] = [];
   @Input() public productIndex = -1;
   @Output() public eventSendProducts: EventEmitter<[boolean, Product]> = new EventEmitter();
   public productTabForm: FormGroup;
