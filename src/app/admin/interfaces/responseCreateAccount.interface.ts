@@ -7,6 +7,7 @@ export interface ResponseCreateAccount {
 export interface Data {
   company: CompanyCreateAccount;
   user:    UserCreateAccount;
+  customs_rules: CustomsRuleCreateAccount[];
 }
 
 export interface CompanyCreateAccount {
@@ -30,4 +31,12 @@ export interface UserCreateAccount {
   updated_at:  string;
   created_at:  string;
   id:          number;
+}
+
+export interface CustomsRuleCreateAccount {
+  user_id:        number;
+  custom_rule_id: number;
+  updated_at:     string;
+  created_at:     string;
+  id:             number;
 }

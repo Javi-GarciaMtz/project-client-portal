@@ -4,10 +4,11 @@ import { Company } from '../../../shared/interfaces/company.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { url_customs_gen } from '../../../environments/environments';
 import { ResponseAllCompanies } from '../../interfaces/responseAllCompanies.interface';
-import { ResponseAllRules } from '../../interfaces/responseAllRules.interface';
+import { ResponseAllRules } from '../../../admin/interfaces/responseAllRules.interface';
 import { StorageService } from '../../../shared/services/storage/storage.service';
 import { FormRequest } from '../../interfaces/formRequest.interface';
 import { Product } from '../../interfaces/product.interface';
+import { DateFormatService } from '../../../shared/services/date-format/date-format.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ export class RequestService {
   constructor(
     private http: HttpClient,
     private storageService: StorageService,
+    private dateFormaService: DateFormatService,
   ) { }
 
   get option(): number { return this._option; }
@@ -79,6 +81,34 @@ export class RequestService {
     };
 
     return this.http.get<ResponseAllRules>(url, httpOptions);
+  }
+
+  saveRequest(dataRequest: FormRequest, products: Product[]) {
+    const user = this.storageService.retrieveAndDecryptUser();
+    const data = {
+      user_id: user.user.id,
+      company_id: user.user.company_id,
+
+      customs_rule_id: dataRequest.rule,
+      customs_office_id: dataRequest.customsOfEntry,
+
+      applicant_name: `${user.user.name} ${user.user.middle_name}`,
+      verification_address: dataRequest.inspectionAddress,
+
+      labeling_mode: dataRequest.labelingMode,
+      request_type: ``,
+
+      invoice_number: dataRequest.invoiceNumber,
+      // entry_date: `${this.dateFormaService.getMomentObj(dataRequest.tentativeInspectionDate).format("YYYY-MM-DD")}`,
+
+      scheduled_verification_date: ``,
+      clarifications: dataRequest.clarifications,
+
+      products: products
+    };
+
+    console.log('To send', data);
+
   }
 
 }

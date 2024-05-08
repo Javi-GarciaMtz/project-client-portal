@@ -106,6 +106,11 @@ export class AddProductsComponent implements OnInit, OnDestroy {
       return;
     }
 
+
+    console.log('data request', this.requestService.formRequestData);
+    console.log('data products', this.tabs);
+
+
   }
 
 }

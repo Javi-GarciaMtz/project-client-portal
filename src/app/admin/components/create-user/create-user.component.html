@@ -109,7 +109,7 @@
 
           <div class="col-sm-12">
             <label id="radio-type-person" class="fw-medium">Persona física o moral:</label>
-            <mat-radio-group aria-labelledby="radio-type-person" (change)="onChangeTypePerson()" formControlName="typePerson">
+            <mat-radio-group aria-labelledby="radio-type-person" formControlName="typePerson">
               <mat-radio-button [value]="'physical'">Física</mat-radio-button>
               <mat-radio-button [value]="'moral'">Moral</mat-radio-button>
             </mat-radio-group>
@@ -129,6 +129,18 @@
             [textMaxLength]="'El RFC es demasiado largo'"
             [textPattern]="'El RFC contiene caracteres inválidos'">
           </app-show-errors-in-form>
+
+          <div class="col-sm-12">
+            <label for="" class="fw-medium">Normas asociadas al usuario:</label>
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-select multiple placeholder="Selecciona las normas asociadas al usuario" formControlName="rules">
+                @for (rule of rules; track rule) {
+                  <mat-option [value]="rule.id">{{ rule.name + ' ' + (rule.phase ? rule.phase : '') }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+          </div>
 
           <div class="col-sm-12">
             <label for="" class="fw-medium">Contraseña:</label>
@@ -163,18 +175,9 @@
 
         </div>
 
-        <!-- <label for="" class="fw-medium">Nombre del solicitante:</label> -->
-        <!-- <mat-form-field appearance="outline" style="width: 95%;">
-                <input matInput placeholder="Correo electrónico">
-            </mat-form-field> -->
-
-        <!-- <label for="" class="fw-medium">Nombre del solicitante:</label> -->
-        <!-- <mat-form-field appearance="outline" style="width: 95%;">
-                <input matInput placeholder="Contraseña">
-            </mat-form-field> -->
-
-        <button mat-flat-button color="primary" type="submit" [disabled]="!formCreateAccount.valid || !confirmPwd">Crear
-          cuenta</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="!formCreateAccount.valid || !confirmPwd">
+          Crear cuenta
+        </button>
 
       </div>
 

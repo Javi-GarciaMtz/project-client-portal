@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { addressPattern, companyNamePattern, namePattern, phoneNumberPattern, rfcPatternMoral, rfcPatternPhysical } from '../../../data/data';
+import { addressPattern, companyNamePattern, namePattern, phoneNumberPattern, rfcPatternPhysical } from '../../../data/data';
 import { AccountService } from '../../services/account/account.service';
 import { FormCreateAccount } from '../../interfaces/formCreateAccount.interface';
 import { LoadingOverlayService } from '../../../shared/services/loading-overlay/loading-overlay.service';
 import { ToastService } from '../../../shared/services/toast/toast.service';
 import { ResponseCreateAccount } from '../../interfaces/responseCreateAccount.interface';
+import { ResponseAllRules, Rule } from '../../interfaces/responseAllRules.interface';
 
 @Component({
   selector: 'app-create-user',
@@ -16,6 +17,7 @@ import { ResponseCreateAccount } from '../../interfaces/responseCreateAccount.in
 export class CreateUserComponent implements OnInit, OnDestroy {
 
   private arrSubs: Subscription[] = [];
+  public rules: Rule[] = []
   public formCreateAccount: FormGroup;
   public confirmPwd: boolean = true;
 
@@ -37,13 +39,29 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       typePerson: new FormControl('physical', [Validators.required]),
       rfc: new FormControl(null, [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(rfcPatternPhysical)]),
 
+      rules: new FormControl(null, [Validators.required]),
+
       pwd: new FormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(50)]),
       pwd2: new FormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(50)]),
     });
 
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadingOverlayService.addLoading();
+    this.arrSubs.push(
+      this.accountService.getAllRules().subscribe({
+        next: (r: ResponseAllRules) => {
+          this.rules = r.data;
+          this.loadingOverlayService.removeLoading();
+        },
+        error: (e: any) => {
+          this.toastService.showSnackbar(false, 'Error desconocido durante la ejecución. (CODE: 001)', 5000);
+        }
+      })
+    );
+
+  }
 
   ngOnDestroy(): void {
     this.arrSubs.forEach((s:Subscription) => s.unsubscribe());
@@ -66,22 +84,6 @@ export class CreateUserComponent implements OnInit, OnDestroy {
         }
       })
     );
-
-  }
-
-  onChangeTypePerson(): void {
-    const type = this.formCreateAccount.get('typePerson')!.value;
-    const validatorsMoral = [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(rfcPatternMoral)];
-    const validatorsPhysical = [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(rfcPatternPhysical)]
-    const controlRFC = this.formCreateAccount.get('rfc');
-
-    if( type === 'physical' ) {
-      controlRFC!.setValidators(validatorsPhysical);
-      controlRFC!.updateValueAndValidity();
-    } else if( type === 'moral' ) {
-      controlRFC!.setValidators(validatorsMoral);
-      controlRFC!.updateValueAndValidity();
-    }
 
   }
 

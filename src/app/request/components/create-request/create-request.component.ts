@@ -7,7 +7,7 @@ import { User } from '../../../auth/interfaces/user.interface';
 import { LoadingOverlayService } from '../../../shared/services/loading-overlay/loading-overlay.service';
 import { Company, ResponseAllCompanies } from '../../interfaces/responseAllCompanies.interface';
 import { ToastService } from '../../../shared/services/toast/toast.service';
-import { Rule } from '../../interfaces/responseAllRules.interface';
+import { Rule } from '../../../admin/interfaces/responseAllRules.interface';
 import { nom_51_phases } from '../../../environments/environments';
 
 @Component({
