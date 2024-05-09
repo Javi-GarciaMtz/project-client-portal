@@ -6,6 +6,7 @@ import { FormCreateAccount } from '../../interfaces/formCreateAccount.interface'
 import { ResponseCreateAccount } from '../../interfaces/responseCreateAccount.interface';
 import { ResponseAllRules } from '../../interfaces/responseAllRules.interface';
 import { StorageService } from '../../../shared/services/storage/storage.service';
+import { ResponseCertificates } from '../../../shared/interfaces/responseCertificates.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,19 @@ export class AccountService {
     });
 
     return this.http.post<ResponseCreateAccount>(url, body, { headers: headers });
+
+  }
+
+  getAllCertificates(): Observable<ResponseCertificates> {
+    const url = `${url_customs_gen}certificate`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.storageService.retrieveAndDecryptUser().token}`
+      })
+    };
+
+    return this.http.get<ResponseCertificates>(url, httpOptions);
 
   }
 
