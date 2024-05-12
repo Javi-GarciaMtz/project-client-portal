@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { encryption_key, ls_user_session } from '../../../environments/environments';
+import { encryption_key, ls_user_session, ls_version_system, version_system } from '../../../environments/environments';
 import * as CryptoJS from 'crypto-js';
 import { User } from '../../../auth/interfaces/user.interface';
 
@@ -12,7 +12,10 @@ export class StorageService {
 
   constructor() { }
 
+  // * Metodo para almacenar el usuario en login de usuario
+
   encryptAndStoreUser(data: User) {
+    this.encryptAndStoreVersionSystem();
     const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), this.encryptionKey).toString();
     localStorage.setItem(ls_user_session, encryptedData);
   }
@@ -31,6 +34,29 @@ export class StorageService {
 
   clearDataUser() {
     localStorage.removeItem( ls_user_session );
+  }
+
+  // * Metodos para la version del sistema
+
+  encryptAndStoreVersionSystem() {
+    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify( version_system ), this.encryptionKey).toString();
+    localStorage.setItem(ls_version_system, encryptedData);
+  }
+
+  retrieveAndDecryptVersionSystem(): string | null {
+    const versionE = localStorage.getItem( ls_version_system );
+    if ( versionE !== null ) {
+      const decryptedBytes = CryptoJS.AES.decrypt(versionE, this.encryptionKey);
+      const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+      return JSON.parse(decryptedData);
+    }
+    return versionE;
+  }
+
+  // * Metodo para borrar todo el local storage
+
+  clearAll(): void {
+    localStorage.clear();
   }
 
 }
