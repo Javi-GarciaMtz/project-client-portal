@@ -24,7 +24,7 @@ export class AddProductsComponent implements OnInit, OnDestroy {
     private loadingOverlayService: LoadingOverlayService,
     private toastService: ToastService,
   ) {
-    this.tabs.push({ unit_measurement_id: 0, name: '', brand: '', model: '', invoice: '', total_quantity: 0, labels_to_inspecc: 0, tariff_fraction: ''});
+    this.tabs.push({ unit_measurement_id: 0, name: '', brand: '', model: '', total_quantity: 0, labels_to_inspecc: 0, tariff_fraction: ''});
 
   }
 
@@ -77,7 +77,7 @@ export class AddProductsComponent implements OnInit, OnDestroy {
 
   // * Metodo que se encarga de añadir una pestaña de productos
   addTab() {
-    this.tabs.push({ unit_measurement_id: 0, name: '', brand: '', model: '', invoice: '', total_quantity: 0, labels_to_inspecc: 0, tariff_fraction: '' });
+    this.tabs.push({ unit_measurement_id: 0, name: '', brand: '', model: '', total_quantity: 0, labels_to_inspecc: 0, tariff_fraction: '' });
     this.setIndexTabs();
     this.selectedIndex = this.tabs.length-1;
   }

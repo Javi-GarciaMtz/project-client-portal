@@ -47,7 +47,7 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
   ) {}
 
   ngOnInit(): void {
-    this.generatePDF();
+    // this.generatePDF();
   }
 
   ngAfterViewInit() {
@@ -69,6 +69,11 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
 
   getDateString(dateS: string): string {
     return this.dateFormatService.getMomentObj(dateS).format("DD/MM/YYYY HH:mm");
+  }
+
+  generatePDF2(certifcate: CertificatesResponse): void {
+    // this.generatePdfService.generatePDF(certifcate);
+    this.generatePdfService.generatePDF2(certifcate);
   }
 
   generatePDF(): void {

@@ -64,8 +64,9 @@ export class SearchBarProductsComponent implements OnInit, OnDestroy {
     }
 
     return this.products.filter((product: Product) =>
-      (product.name.toLowerCase().includes(filterValue) ||
-      product.invoice.toLowerCase().includes(filterValue)) && product.isReady
+      (product.name.toLowerCase().includes(filterValue)
+      // || product.invoice.toLowerCase().includes(filterValue)
+      ) && product.isReady
     );
   }
 

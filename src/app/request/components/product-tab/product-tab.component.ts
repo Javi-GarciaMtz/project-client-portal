@@ -23,7 +23,7 @@ export class ProductTabComponent implements OnInit {
   ) {
     this.productTabForm = new FormGroup({
       brand: new FormControl(null, [Validators.required]),
-      invoice: new FormControl(null, [Validators.required]),
+      // invoice: new FormControl(null, [Validators.required]),
       labels_to_inspecc: new FormControl(null, [Validators.required]),
       model: new FormControl(null, [Validators.required]),
       name: new FormControl(null, [Validators.required]),
@@ -38,7 +38,7 @@ export class ProductTabComponent implements OnInit {
   fillProductWithFormValues() {
     this.product = {
       brand: this.productTabForm.get('brand')!.value,
-      invoice: this.productTabForm.get('invoice')!.value,
+      // invoice: this.productTabForm.get('invoice')!.value,
       labels_to_inspecc: this.productTabForm.get('labels_to_inspecc')!.value,
       model: this.productTabForm.get('model')!.value,
       name: this.productTabForm.get('name')!.value,
