@@ -8,6 +8,8 @@ import { HttpClient } from '@angular/common/http';
 import moment from 'moment';
 import { LoadingOverlayService } from '../loading-overlay/loading-overlay.service';
 
+import { Montserrat64_Bold } from "./fontsBase64/montserrat-bold";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,6 +22,44 @@ export class GeneratePdfService {
     private loadingOverlayService: LoadingOverlayService,
     private http: HttpClient,
   ) { }
+
+  private getImageBase64(url: string): Promise<string> {
+    return fetch(url)
+      .then(response => response.blob())
+      .then(blob => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      }));
+  }
+
+  private setOpacity(imgBase64: string, opacity: number): Promise<string> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d')!;
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.globalAlpha = opacity;
+        ctx.drawImage(img, 0, 0);
+        const newBase64 = canvas.toDataURL('image/png');
+        resolve(newBase64);
+      };
+      img.src = imgBase64;
+    });
+  }
+
+  private async addImg2Doc(doc:jsPDF, imgUrl:string, opacity:number): Promise<void> {
+    const imgBase64 = await this.getImageBase64(imgUrl);
+    const newBase64 = await this.setOpacity(imgBase64, opacity);
+
+    console.log('base64', newBase64);
+
+
+    doc.addImage(newBase64, 'PNG', 10, 10, 500, 500);
+  }
 
   addHeaderAndFooter(doc:jsPDF): void {
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -142,9 +182,15 @@ export class GeneratePdfService {
 
   }
 
-  generatePDF2(certi: CertificatesResponse): void {
+  async generatePDF2(certi: CertificatesResponse): Promise<void> {
     this.certificate = certi;
     const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: 'letter',compress:true });
+
+    // * Agregar la fuente convertida al documento
+    doc.addFileToVFS("Montserrat64_Bold.ttf", Montserrat64_Bold);
+    doc.addFont("Montserrat64_Bold.ttf", "Montserrat64_Bold", "normal");
+
+    await this.addImg2Doc(doc, `./assets/images/logo-vec-ingcom-final-2.png`, 0.25);
 
     // doc.setDrawColor(0, 255, 0); // Verde
     // doc.rect(50, 50, 512, 642, 'S'); // 'S' significa 'Stroke' (solo borde)
@@ -217,7 +263,8 @@ export class GeneratePdfService {
     let sealsPosition: any = [];
 
     data.forEach(( s:any ) => {
-      doc.setFont(s.font, s.bold);
+      // doc.setFont(s.font, s.bold);
+      doc.setFont("Montserrat64_Bold", "normal");
       fontSize = s.fontSize;
       doc.setFontSize(fontSize);
 
@@ -237,7 +284,8 @@ export class GeneratePdfService {
             doc.addPage();
             this.addHeaderAndFooter(doc);
 
-            doc.setFont(s.font, s.bold);
+            // doc.setFont(s.font, s.bold);
+            doc.setFont("Montserrat64_Bold", "normal");
             fontSize = s.fontSize;
             doc.setFontSize(fontSize);
 
