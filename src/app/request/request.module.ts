@@ -9,6 +9,7 @@ import { AddProductContainerComponent } from './pages/add-product-container/add-
 import { SearchBarProductsComponent } from './components/search-bar-products/search-bar-products.component';
 import { FormsModule } from '@angular/forms';
 import { ProductTabComponent } from './components/product-tab/product-tab.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -26,6 +27,7 @@ import { ProductTabComponent } from './components/product-tab/product-tab.compon
     RequestRoutingModule,
     AngularMaterialModule,
     FormsModule,
+    SharedModule,
   ]
 })
 export class RequestModule { }

@@ -53,6 +53,11 @@
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. Av Jose Hernandez No. 14" formControlName="inspectionAddress">
         </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="formCreateRequest"
+          [genericFormControlName]="'inspectionAddress'"
+          [textRequired]="'El domicilio es obligatorio.'">
+        </app-show-errors-in-form>
     </div>
 
     <div class="col-sm-12 col-md-6">
@@ -61,7 +66,12 @@
             <mat-select placeholder="Seleccione una norma" (selectionChange)="changeRule()" formControlName="rule">
               <mat-option *ngFor="let rule of rules" [value]="rule.id">{{ rule.name }}</mat-option>
             </mat-select>
-          </mat-form-field>
+        </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="formCreateRequest"
+          [genericFormControlName]="'rule'"
+          [textRequired]="'La norma aplicable es obligatoria.'">
+        </app-show-errors-in-form>
     </div>
 
     <div class="col-sm-12 col-md-6">
@@ -70,7 +80,12 @@
             <mat-select placeholder="No aplica" formControlName="phaseNom051">
               <mat-option *ngFor="let phase of phases51" [value]="phase.id">{{ phase.name + ' ' + phase.phase }}</mat-option>
             </mat-select>
-          </mat-form-field>
+        </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="formCreateRequest"
+          [genericFormControlName]="'phaseNom051'"
+          [textRequired]="'La fase es obligatoria.'">
+        </app-show-errors-in-form>
     </div>
 
     <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12">
@@ -79,7 +94,12 @@
             <mat-select placeholder="Seleccione una aduana de ingreso" formControlName="customsOfEntry">
               <mat-option *ngFor="let customOffice of customsOffices" [value]="customOffice.id">{{ customOffice.name }}</mat-option>
             </mat-select>
-          </mat-form-field>
+        </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="formCreateRequest"
+          [genericFormControlName]="'customsOfEntry'"
+          [textRequired]="'La aduana de ingreso es obligatoria.'">
+        </app-show-errors-in-form>
     </div>
 
     <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12">
@@ -89,7 +109,12 @@
               <mat-option [value]="'PA'">PA (Etiquetado en Almacén de Depósito)</mat-option>
               <mat-option [value]="'PB'">PB (Etiquetado en Almacén Propio)</mat-option>
             </mat-select>
-          </mat-form-field>
+        </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="formCreateRequest"
+          [genericFormControlName]="'labelingMode'"
+          [textRequired]="'La modalidad de etiquetado es obligatoria.'">
+        </app-show-errors-in-form>
     </div>
 
     <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12">
@@ -97,6 +122,11 @@
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. 00991122277" formControlName="invoiceNumber">
         </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="formCreateRequest"
+          [genericFormControlName]="'invoiceNumber'"
+          [textRequired]="'El número de factura es obligatorio.'">
+        </app-show-errors-in-form>
     </div>
 
     <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12 col-md-6">
@@ -108,6 +138,12 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="formCreateRequest"
+          [genericFormControlName]="'probableInternmentDate'"
+          [textRequired]="'La fecha probable de internación es obligatoria.'"
+          style="display: block;margin-top: 15px;">
+        </app-show-errors-in-form>
     </div>
 
     <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12 col-md-6">
@@ -118,6 +154,12 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="formCreateRequest"
+          [genericFormControlName]="'tentativeInspectionDate'"
+          [textRequired]="'La fecha tentativa para la inspección es obligatoria.'"
+          style="display: block;margin-top: 15px;">
+        </app-show-errors-in-form>
     </div>
 
     <div class="col-sm-12 mt-3">
@@ -125,7 +167,12 @@
         <mat-form-field class="example-full-width" style="width: 100%;">
             <!-- <mat-label>Leave a comment</mat-label> -->
             <textarea matInput placeholder="Ej. Mi producto está..." formControlName="clarifications"></textarea>
-          </mat-form-field>
+        </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="formCreateRequest"
+          [genericFormControlName]="'clarifications'"
+          [textRequired]="'Las aclaraciones son obligatorias.'">
+        </app-show-errors-in-form>
     </div>
 
     <div class="col-sm-12 mt-4 mb-4 text-center">

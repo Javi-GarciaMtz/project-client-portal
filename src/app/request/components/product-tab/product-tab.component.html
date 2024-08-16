@@ -4,10 +4,15 @@
   <div class="row">
 
     <div class="col-sm-12">
-        <label for="" class="fw-medium">Producto:</label>
+        <label for="" class="fw-medium">Descripción del producto:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. Es un producto" (input)="checkIfICanSedProduct2Autocomplete()" formControlName="name">
         </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="productTabForm"
+          [genericFormControlName]="'name'"
+          [textRequired]="'La descripción del producto es obligatoria.'">
+        </app-show-errors-in-form>
     </div>
 
     <div class="col-sm-12">
@@ -15,6 +20,11 @@
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. Marca del producto" (input)="checkIfICanSedProduct2Autocomplete()" formControlName="brand">
         </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="productTabForm"
+          [genericFormControlName]="'brand'"
+          [textRequired]="'La marca del producto es obligatoria.'">
+        </app-show-errors-in-form>
     </div>
 
     <div class="col-sm-12">
@@ -22,6 +32,11 @@
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. Model 62" (input)="checkIfICanSedProduct2Autocomplete()" formControlName="model">
         </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="productTabForm"
+          [genericFormControlName]="'model'"
+          [textRequired]="'El modelo del producto es obligatorio.'">
+        </app-show-errors-in-form>
     </div>
 
     <!-- <div class="col-sm-12">
@@ -37,7 +52,12 @@
             <mat-select placeholder="Seleccione una medida" (valueChange)="checkIfICanSedProduct2Autocomplete()" formControlName="unit_measurement_id">
               <mat-option *ngFor="let measurent of unitsMeasurements" [value]="measurent.id">{{ measurent.name }}</mat-option>
             </mat-select>
-          </mat-form-field>
+        </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="productTabForm"
+          [genericFormControlName]="'unit_measurement_id'"
+          [textRequired]="'La unidad de medida es obligatoria.'">
+        </app-show-errors-in-form>
     </div>
 
     <div class="col-sm-12 col-md-6">
@@ -45,6 +65,11 @@
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. 5" type="number" (input)="checkIfICanSedProduct2Autocomplete()" formControlName="total_quantity">
         </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="productTabForm"
+          [genericFormControlName]="'total_quantity'"
+          [textRequired]="'La cantidad total es obligatoria.'">
+        </app-show-errors-in-form>
     </div>
 
     <div class="col-sm-12 col-md-6">
@@ -52,6 +77,11 @@
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. 2" type="number" (input)="checkIfICanSedProduct2Autocomplete()" formControlName="labels_to_inspecc">
         </mat-form-field>
+        <app-show-errors-in-form
+          [genericForm]="productTabForm"
+          [genericFormControlName]="'labels_to_inspecc'"
+          [textRequired]="'El no. de etiquetas a inspeccionar es obligatorio.'">
+        </app-show-errors-in-form>
     </div>
 
     <!-- <div class="col-sm-12 col-md-6">
@@ -69,6 +99,11 @@
       <mat-form-field appearance="outline" style="width: 100%;">
           <input matInput placeholder="Ej.12345678" (input)="checkIfICanSedProduct2Autocomplete()" formControlName="tariff_fraction">
       </mat-form-field>
+      <app-show-errors-in-form
+          [genericForm]="productTabForm"
+          [genericFormControlName]="'tariff_fraction'"
+          [textRequired]="'La fracción arancelaria es obligatoria.'">
+        </app-show-errors-in-form>
     </div>
 
   </div>
