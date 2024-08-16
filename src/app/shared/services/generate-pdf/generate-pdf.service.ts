@@ -317,6 +317,8 @@ export class GeneratePdfService {
   }
 
   async generatePDF2(certi: CertificatesResponse): Promise<void> {
+    this.loadingOverlayService.addLoading();
+
     this.certificate = certi;
 
     // * Generamos la intancia de un documento
@@ -338,6 +340,7 @@ export class GeneratePdfService {
 
     doc.save('solicitud.pdf');
 
+    this.loadingOverlayService.removeLoading();
     throw new Error('XD');
 
 
