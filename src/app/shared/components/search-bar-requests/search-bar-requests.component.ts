@@ -1,9 +1,11 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { User } from '../../../auth/interfaces/user.interface';
 import { StorageService } from '../../services/storage/storage.service';
 import { Subscription } from 'rxjs';
 import { ExportXlsxService } from '../../services/export-xlsx/export-xlsx.service';
 import moment from 'moment';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DataToSearchCertificates } from '../../interfaces/dataToSearchCertificates.interface';
 
 @Component({
   selector: 'app-search-bar-requests',
@@ -12,8 +14,17 @@ import moment from 'moment';
 })
 export class SearchBarRequestsComponent implements OnDestroy {
 
+  @Output() eventSearch = new EventEmitter<[DataToSearchCertificates, boolean]>();
+
   private arrSubs: Subscription[] = [];
   public user: User;
+  public flagClean: boolean = false;
+
+  public formSearch: FormGroup = new FormGroup({
+    searchText: new FormControl('', []),
+    searchStartDate: new FormControl(null, []),
+    searchEndDate: new FormControl(null, [])
+  });
 
   constructor(
     private storageService: StorageService,
@@ -50,6 +61,27 @@ export class SearchBarRequestsComponent implements OnDestroy {
         }
       })
     );
+  }
+
+  onSearch(): void {
+    const data = this.formSearch.value;
+    this.eventSearch.emit([data, false]);
+    this.flagClean = true;
+  }
+
+  clean(): void {
+    const data = this.formSearch.value;
+    this.eventSearch.emit([data, true]);
+    this.flagClean = false;
+  }
+
+  canISearch(): boolean {
+    const data:DataToSearchCertificates  = this.formSearch.value;
+    if( data.searchText !== '' || ( data.searchStartDate !== null && data.searchEndDate !== null ) ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

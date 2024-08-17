@@ -8,7 +8,9 @@
     </div>
 </div>
 
-<app-search-bar-requests></app-search-bar-requests>
+<app-search-bar-requests
+  (eventSearch)="handlerSearchEvent($event)">
+</app-search-bar-requests>
 
 <app-table-requests
   [role]="user.user.role"

@@ -1,4 +1,4 @@
-
+<form [formGroup]="formSearch" (submit)="onSearch()">
 <div class="row mt-5">
 
     <div class="col-sm-12 col-md-6">
@@ -6,7 +6,7 @@
 
             <div class="col-sm-12 col-md-6">
                 <mat-form-field appearance="outline" style="width: 90%;">
-                    <input matInput placeholder="Buscar">
+                    <input matInput placeholder="Buscar" formControlName="searchText">
                 </mat-form-field>
             </div>
 
@@ -21,8 +21,8 @@
 
                 <mat-form-field style="width: 90%;">
                   <mat-date-range-input [rangePicker]="picker">
-                    <input matStartDate placeholder="Fecha inicial">
-                    <input matEndDate placeholder="Fecha final">
+                    <input matStartDate placeholder="Fecha inicial" formControlName="searchStartDate">
+                    <input matEndDate placeholder="Fecha final" formControlName="searchEndDate">
                   </mat-date-range-input>
                   <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -35,8 +35,11 @@
     </div>
 
     <div class="col-sm-12 col-md-4 d-flex align-items-center justify-content-md-end">
-        <button mat-flat-button color="primary">Buscar</button>
+      <button mat-flat-button color="primary" [disabled]="!flagClean" (click)="clean()">Limpiar</button>
+        <button mat-flat-button color="primary" [disabled]="!canISearch()" style="margin-left: 20px;">Buscar</button>
         <button *ngIf="user.user.role === 'customer'" mat-flat-button color="primary" style="margin-left: 20px;" (click)="exportXLSXUser()">Exportar</button>
     </div>
 
 </div>
+</form>
+
