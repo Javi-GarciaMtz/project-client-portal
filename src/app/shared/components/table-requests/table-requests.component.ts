@@ -38,8 +38,6 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
   ];
   public dataSourceFinal = new MatTableDataSource<CertificatesResponse>(this.certificates);
 
-  public exampleData: string[] = [`hola 1`, `hola 2`, `hola 3`, `hola 4`, `hola 5`];
-
   constructor(
     private dateFormatService: DateFormatService,
     private generatePdfService: GeneratePdfService,
@@ -49,7 +47,11 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
   ) {}
 
   ngOnInit(): void {
-    // this.generatePDF();
+    // * Si el rol es admin habilitamos el modificar estatus
+    if( this.role === 'admin' ) {
+      const index = this.displayedColumnsFinal.indexOf('pdf');
+      if (index !== -1) { this.displayedColumnsFinal.splice(index, 0, 'modifyStatus'); }
+    }
   }
 
   ngAfterViewInit() {
@@ -77,7 +79,9 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
     this.generatePdfService.generatePDF2(certifcate);
   }
 
-  modifyCertificate(): void {}
+  modifyCertificate(certifcate: CertificatesResponse): void {}
+
+  modifyStatus(certifcate: CertificatesResponse): void {}
 
   getStatusCertificate(status: string): string {
     // 'review', 'cancelled', 'accepted
