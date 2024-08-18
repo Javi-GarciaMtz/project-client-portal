@@ -5,13 +5,10 @@ import { CertificatesResponse } from '../../interfaces/responseCertificates.inte
 import { DateFormatService } from '../../services/date-format/date-format.service';
 import { GeneratePdfService } from '../../services/generate-pdf/generate-pdf.service';
 
-// import { jsPDF } from 'jspdf';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { LoadingOverlayService } from '../../services/loading-overlay/loading-overlay.service';
-import { HttpClient } from '@angular/common/http';
 import moment from 'moment';
-import { DomSanitizer } from '@angular/platform-browser';
+import { ModifyStatusCertificateComponent } from '../modify-status-certificate/modify-status-certificate.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-table-requests',
@@ -42,8 +39,7 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
     private dateFormatService: DateFormatService,
     private generatePdfService: GeneratePdfService,
     private loadingOverlayService: LoadingOverlayService,
-    private http: HttpClient,
-    private sanitizer: DomSanitizer
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -64,7 +60,9 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
       if( current.length > 0 ) {
         this.certificates = current;
         this.dataSourceFinal.data = this.certificates;
-
+      } else {
+        this.certificates = [];
+        this.dataSourceFinal.data = this.certificates;
       }
 
     }
@@ -81,7 +79,31 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
 
   modifyCertificate(certifcate: CertificatesResponse): void {}
 
-  modifyStatus(certifcate: CertificatesResponse): void {}
+  updateCertificateStatusLocal(certificates: CertificatesResponse[], id: number, newStatus: string): CertificatesResponse[] {
+    return certificates.map(certificate =>
+      certificate.id === id
+        ? { ...certificate, status_certificate: newStatus }
+        : certificate
+    );
+  };
+
+  modifyStatus(certifcate: CertificatesResponse): void {
+    const dialogRef = this.dialog.open(ModifyStatusCertificateComponent, {
+      width: '400px',
+      data: { certificate: certifcate },
+      autoFocus: false,       // Deshabilita el autofocus
+      disableClose: true,      // Deshabilita el cierre al hacer clic fuera del modal o presionar ESC
+    });
+
+    dialogRef.afterClosed().subscribe((result: number) => {
+      if( result < 0 ) return;
+      // 'cancelled' → 2 , 'accepted' → 3
+      const statusString = ( result === 2 ) ? `cancelled` : `accepted`;
+      this.certificates = this.updateCertificateStatusLocal(this.certificates, certifcate.id, statusString);
+      this.dataSourceFinal.data = this.certificates;
+
+    });
+  }
 
   getStatusCertificate(status: string): string {
     // 'review', 'cancelled', 'accepted
@@ -95,7 +117,7 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
         break;
       case 'cancelled':
         alertClass = 'alert-danger';
-        alertMessage = 'Rechazada';
+        alertMessage = 'Cancelada';
         break;
       case 'accepted':
         alertClass = 'alert-success';

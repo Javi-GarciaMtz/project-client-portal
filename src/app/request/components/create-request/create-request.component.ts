@@ -8,6 +8,7 @@ import { LoadingOverlayService } from '../../../shared/services/loading-overlay/
 import { CompanyAllCompanies } from '../../interfaces/responseAllCompanies.interface';
 import { ToastService } from '../../../shared/services/toast/toast.service';
 import { CustomOfficeAllCustoms } from '../../interfaces/responseAllCustomsOffices.interface';
+import moment from 'moment';
 
 @Component({
   selector: 'app-create-request',
@@ -30,12 +31,20 @@ export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
 
   public customsOffices: CustomOfficeAllCustoms[] = [];
 
+  public minDate: Date;
+  public maxDate: Date;
+
   constructor(
     private requestService: RequestService,
     private storageService: StorageService,
     private loadingOverlayService: LoadingOverlayService,
     private toastService: ToastService,
   ) {
+    // * Seteamos el limite de seleccion de la fecha
+    const today = moment(); // * Fecha actual
+    this.minDate = today.toDate(); // * Convierte la fecha actual a un objeto Date
+    this.maxDate = today.add(30, 'days').toDate(); // * Agrega 30 días a la fecha actual y convierte a Date
+
     this.user = this.storageService.retrieveAndDecryptUser();
     this.formCreateRequest = new FormGroup({
       type: new FormControl(1, [Validators.required]),

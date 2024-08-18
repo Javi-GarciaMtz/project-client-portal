@@ -73,6 +73,11 @@ export class SearchBarRequestsComponent implements OnDestroy {
     const data = this.formSearch.value;
     this.eventSearch.emit([data, true]);
     this.flagClean = false;
+    this.formSearch.setValue({
+      searchText: '',
+      searchStartDate: null,
+      searchEndDate: null
+    });
   }
 
   canISearch(): boolean {

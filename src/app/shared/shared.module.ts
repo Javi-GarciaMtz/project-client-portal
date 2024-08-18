@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShowErrorsInFormComponent } from './components/show-errors-in-form/show-errors-in-form.component';
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
+import { ModifyStatusCertificateComponent } from './components/modify-status-certificate/modify-status-certificate.component';
 
 
 
@@ -21,6 +22,7 @@ import { SnackbarComponent } from './components/snackbar/snackbar.component';
     ShowErrorsInFormComponent,
     LoadingOverlayComponent,
     SnackbarComponent,
+    ModifyStatusCertificateComponent,
   ],
   imports: [
     CommonModule,

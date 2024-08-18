@@ -133,7 +133,12 @@
         <label for="" class="fw-medium">Fecha probable de internación:</label>
         <mat-form-field style="width: 100%;">
             <!-- <mat-label>Choose a date</mat-label> -->
-            <input matInput [matDatepicker]="picker1" placeholder="Seleccione una fecha" formControlName="probableInternmentDate">
+            <input matInput
+              [matDatepicker]="picker1"
+              placeholder="Seleccione una fecha"
+              formControlName="probableInternmentDate"
+              [min]="minDate"
+              [max]="maxDate">
             <mat-hint>DD/MM/AAAA</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
@@ -149,7 +154,12 @@
     <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12 col-md-6">
         <label for="" class="fw-medium">Fecha tentativa para la inspección:</label>
         <mat-form-field style="width: 100%;">
-            <input matInput [matDatepicker]="picker2" placeholder="Seleccione una fecha" formControlName="tentativeInspectionDate">
+            <input matInput
+              [matDatepicker]="picker2"
+              placeholder="Seleccione una fecha"
+              formControlName="tentativeInspectionDate"
+              [min]="minDate"
+              [max]="maxDate">
             <mat-hint>DD/MM/AAAA</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>

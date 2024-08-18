@@ -1,0 +1,32 @@
+
+<form [formGroup]="formChangeStatus">
+  <div class="p-2">
+
+    <h1 mat-dialog-title>Modificación de estatus</h1>
+
+    <div mat-dialog-content>
+      <p>Selecciona a continuación el nuevo estatus para la solicitud con número:</p>
+
+      <p class="fw-semibold">{{ data.certificate.code }}</p>
+
+      <div class="col-sm-12">
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-select placeholder="Estatus" formControlName="status">
+            @for (state of status; track state) {
+              <mat-option [value]="state.value">{{ state.title }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div mat-dialog-actions style="display: flex; justify-content: flex-end;">
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="!formChangeStatus.valid" (click)="updateStatus()">Aceptar</button>
+    </div>
+
+  </div>
+</form>
+
+
