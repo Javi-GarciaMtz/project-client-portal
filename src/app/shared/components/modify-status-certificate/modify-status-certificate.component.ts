@@ -35,10 +35,7 @@ export class ModifyStatusCertificateComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit(): void {
-    console.log('modal certificate', this.data);
-
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.arrSubs.forEach( (s:Subscription) => {s.unsubscribe()});

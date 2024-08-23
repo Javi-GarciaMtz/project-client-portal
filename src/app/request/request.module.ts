@@ -10,6 +10,9 @@ import { SearchBarProductsComponent } from './components/search-bar-products/sea
 import { FormsModule } from '@angular/forms';
 import { ProductTabComponent } from './components/product-tab/product-tab.component';
 import { SharedModule } from '../shared/shared.module';
+import { ModifyRequestComponent } from './components/modify-request/modify-request.component';
+import { ModifyProductsComponent } from './components/modify-products/modify-products.component';
+import { DeleteRequestComponent } from './components/delete-request/delete-request.component';
 
 
 
@@ -20,7 +23,10 @@ import { SharedModule } from '../shared/shared.module';
     RequestContainerComponent,
     AddProductContainerComponent,
     SearchBarProductsComponent,
-    ProductTabComponent
+    ProductTabComponent,
+    ModifyRequestComponent,
+    ModifyProductsComponent,
+    DeleteRequestComponent
   ],
   imports: [
     CommonModule,
