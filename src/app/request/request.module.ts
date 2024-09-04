@@ -13,6 +13,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ModifyRequestComponent } from './components/modify-request/modify-request.component';
 import { ModifyProductsComponent } from './components/modify-products/modify-products.component';
 import { DeleteRequestComponent } from './components/delete-request/delete-request.component';
+import { TabsModifyComponent } from './components/tabs-modify/tabs-modify.component';
 
 
 
@@ -26,7 +27,8 @@ import { DeleteRequestComponent } from './components/delete-request/delete-reque
     ProductTabComponent,
     ModifyRequestComponent,
     ModifyProductsComponent,
-    DeleteRequestComponent
+    DeleteRequestComponent,
+    TabsModifyComponent
   ],
   imports: [
     CommonModule,

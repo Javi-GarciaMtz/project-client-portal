@@ -9,8 +9,8 @@ import { LoadingOverlayService } from '../../services/loading-overlay/loading-ov
 import moment from 'moment';
 import { ModifyStatusCertificateComponent } from '../modify-status-certificate/modify-status-certificate.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ModifyRequestComponent } from '../../../request/components/modify-request/modify-request.component';
 import { DeleteRequestComponent } from '../../../request/components/delete-request/delete-request.component';
+import { TabsModifyComponent } from '../../../request/components/tabs-modify/tabs-modify.component';
 
 @Component({
   selector: 'app-table-requests',
@@ -85,11 +85,21 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
   }
 
   modifyCertificate(certifcate: CertificatesResponse): void {
-    const dialogRef = this.dialog.open(ModifyRequestComponent, {
+    const dialogRef = this.dialog.open(TabsModifyComponent, {
       // width: '400px',
       data: { certificate: certifcate },
       autoFocus: false, // * Deshabilita el autofocus
-      disableClose: true, // * Deshabilita el cierre al hacer clic fuera del modal o presionar ESC
+      // disableClose: true, // * Deshabilita el cierre al hacer clic fuera del modal o presionar ESC
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if(result !== undefined && result !== -1) {
+        console.log('result', result);
+        console.log('mandar el reinicio del ng on init');
+
+
+      }
+
     });
 
   }

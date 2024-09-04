@@ -46,6 +46,11 @@ export class PanelAdminContainerComponent implements OnInit, OnDestroy {
       })
     );
 
+    // * subscripcion para saber cuando reiniciar el mattable
+    // setTimeout(() => {
+    //   this.ngOnInit();
+    // }, 20000);
+
   }
 
   ngOnDestroy(): void {

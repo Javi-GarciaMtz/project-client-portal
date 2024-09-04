@@ -17,3 +17,7 @@ export const phoneNumberPattern: RegExp = /^\+?\d+$/;
 // export const rfcPatternMoral: RegExp = /^[A-ZÑ&-]{4}\d{6}[A-ZÑ\d]{3}$/;
 // export const rfcPatternMoral: RegExp = /^(?:[A-ZÑ&]-|[A-ZÑ&]{2}-|[A-ZÑ&]{3}-|[A-ZÑ&]{4})\d{6}[A-ZÑ\d]{3}$/;
 export const rfcPatternPhysical: RegExp = /^[A-ZÑ&]{4}\d{6}[A-ZÑ\d]{3}$/;
+
+export const NOM051SCFISSA12010_FASE2_ID: number = 6;
+export const NOM051SCFISSA12010_FASE3_ID: number = 7;
+

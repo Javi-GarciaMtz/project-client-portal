@@ -1,31 +1,185 @@
+<div class="container" *ngIf="certificate">
 
-<!-- <form [formGroup]="formChangeStatus"> -->
-  <div class="p-2">
+<form [formGroup]="formModifyRequest">
 
-    <h1 mat-dialog-title>Modificación de la solicitud</h1>
+  <div class="row mt-3">
+    <div class="col-sm-12 text-center"><h1 class="fw-bold">{{ titleRequest }}</h1></div>
+  </div>
 
-    <div mat-dialog-content>
+  <div class="row mt-3">
 
-      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-
-        <mat-tab label="Modificar la solicitud">
-          Modificar la solicitud
-        </mat-tab>
-
-        <mat-tab label="Modificar los productos">
-          Modificar los productos
-        </mat-tab>
-      </mat-tab-group>
-
-
+    <div *ngIf="company" class="col-sm-12">
+        <label for="" class="fw-medium">Nombre de la empresa:</label>
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <input matInput placeholder="Placeholder" [value]="company.name" [disabled]="true">
+        </mat-form-field>
     </div>
 
-    <!-- <div mat-dialog-actions style="display: flex; justify-content: flex-end;">
-      <button mat-button (click)="onNoClick()">Cancelar</button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="!formChangeStatus.valid" (click)="updateStatus()">Aceptar</button>
-    </div> -->
+      <div class="col-sm-12">
+          <label for="" class="fw-medium">Nombre del solicitante:</label>
+          <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. Jose Luis Hernandez" [disabled]="true" [value]="user.user.name + ' ' + user.user.middle_name">
+          </mat-form-field>
+      </div>
+
+      <div *ngIf="company" class="col-sm-12">
+          <label for="" class="fw-medium">Domicilio fiscal:</label>
+          <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. Jose Luis Hernandez" [value]="company.tax_address" [disabled]="true">
+          </mat-form-field>
+      </div>
+
+      <!-- ? --------------------------------------------------------------------------------------------------- -->
+
+      <div class="col-sm-12">
+          <label for="" class="fw-medium">Domicilio donde se realizará la inspección:</label>
+          <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. Av Jose Hernandez No. 14" formControlName="inspectionAddress">
+          </mat-form-field>
+          <app-show-errors-in-form
+            [genericForm]="formModifyRequest"
+            [genericFormControlName]="'inspectionAddress'"
+            [textRequired]="'El domicilio es obligatorio.'">
+          </app-show-errors-in-form>
+      </div>
+
+      <div class="col-sm-12 col-md-6">
+          <label for="" class="fw-medium">Norma aplicable:</label>
+          <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-select placeholder="Seleccione una norma" (selectionChange)="changeRule()" formControlName="rule">
+                <mat-option *ngFor="let rule of rules" [value]="rule.id">{{ rule.name }}</mat-option>
+              </mat-select>
+          </mat-form-field>
+          <app-show-errors-in-form
+            [genericForm]="formModifyRequest"
+            [genericFormControlName]="'rule'"
+            [textRequired]="'La norma aplicable es obligatoria.'">
+          </app-show-errors-in-form>
+      </div>
+
+      <div class="col-sm-12 col-md-6">
+          <label for="" class="fw-medium">Fase (solo NOM-051-SCFI/SSA1-2010):</label>
+          <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-select placeholder="No aplica" formControlName="phaseNom051">
+                <mat-option *ngFor="let phase of phases51" [value]="phase.id">{{ phase.name + ' ' + phase.phase }}</mat-option>
+              </mat-select>
+          </mat-form-field>
+          <app-show-errors-in-form
+            [genericForm]="formModifyRequest"
+            [genericFormControlName]="'phaseNom051'"
+            [textRequired]="'La fase es obligatoria.'">
+          </app-show-errors-in-form>
+      </div>
+
+      <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12">
+          <label for="" class="fw-medium">Aduana de ingreso de la mercancía</label>
+          <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-select placeholder="Seleccione una aduana de ingreso" formControlName="customsOfEntry">
+                <mat-option *ngFor="let customOffice of customsOffices" [value]="customOffice.id">{{ customOffice.name }}</mat-option>
+              </mat-select>
+          </mat-form-field>
+          <app-show-errors-in-form
+            [genericForm]="formModifyRequest"
+            [genericFormControlName]="'customsOfEntry'"
+            [textRequired]="'La aduana de ingreso es obligatoria.'">
+          </app-show-errors-in-form>
+      </div>
+
+      <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12">
+          <label for="" class="fw-medium">Modalidad de etiquetado:</label>
+          <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-select placeholder="Seleccione una modalidad" formControlName="labelingMode">
+                <mat-option [value]="'PA'">PA (Etiquetado en Almacén de Depósito)</mat-option>
+                <mat-option [value]="'PB'">PB (Etiquetado en Almacén Propio)</mat-option>
+              </mat-select>
+          </mat-form-field>
+          <app-show-errors-in-form
+            [genericForm]="formModifyRequest"
+            [genericFormControlName]="'labelingMode'"
+            [textRequired]="'La modalidad de etiquetado es obligatoria.'">
+          </app-show-errors-in-form>
+      </div>
+
+      <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12">
+          <label for="" class="fw-medium">Número de factura:</label>
+          <mat-form-field appearance="outline" style="width: 100%;">
+              <input matInput placeholder="Ej. 00991122277" formControlName="invoiceNumber">
+          </mat-form-field>
+          <app-show-errors-in-form
+            [genericForm]="formModifyRequest"
+            [genericFormControlName]="'invoiceNumber'"
+            [textRequired]="'El número de factura es obligatorio.'">
+          </app-show-errors-in-form>
+      </div>
+
+      <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12 col-md-6">
+          <label for="" class="fw-medium">Fecha probable de internación:</label>
+          <mat-form-field style="width: 100%;">
+              <!-- <mat-label>Choose a date</mat-label> -->
+              <input matInput
+                [matDatepicker]="picker1"
+                placeholder="Seleccione una fecha"
+                formControlName="probableInternmentDate"
+                [min]="minDate"
+                [max]="maxDate">
+              <mat-hint>DD/MM/AAAA</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <app-show-errors-in-form
+            [genericForm]="formModifyRequest"
+            [genericFormControlName]="'probableInternmentDate'"
+            [textRequired]="'La fecha probable de internación es obligatoria.'"
+            style="display: block;margin-top: 15px;">
+          </app-show-errors-in-form>
+      </div>
+
+      <div [ngClass]="{'display-block': typeForm === 2, 'display-none': typeForm !== 2}" class="col-sm-12 col-md-6">
+          <label for="" class="fw-medium">Fecha tentativa para la inspección:</label>
+          <mat-form-field style="width: 100%;">
+              <input matInput
+                [matDatepicker]="picker2"
+                placeholder="Seleccione una fecha"
+                formControlName="tentativeInspectionDate"
+                [min]="minDate"
+                [max]="maxDate">
+              <mat-hint>DD/MM/AAAA</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+          <app-show-errors-in-form
+            [genericForm]="formModifyRequest"
+            [genericFormControlName]="'tentativeInspectionDate'"
+            [textRequired]="'La fecha tentativa para la inspección es obligatoria.'"
+            style="display: block;margin-top: 15px;">
+          </app-show-errors-in-form>
+      </div>
+
+      <div class="col-sm-12 mt-3">
+          <label for="" class="fw-medium">Aclaraciones:</label>
+          <mat-form-field class="example-full-width" style="width: 100%;">
+              <!-- <mat-label>Leave a comment</mat-label> -->
+              <textarea matInput placeholder="Ej. Mi producto está..." formControlName="clarifications"></textarea>
+          </mat-form-field>
+          <app-show-errors-in-form
+            [genericForm]="formModifyRequest"
+            [genericFormControlName]="'clarifications'"
+            [textRequired]="'Las aclaraciones son obligatorias.'">
+          </app-show-errors-in-form>
+      </div>
+
+      <div class="col-sm-12 mt-4 mb-4 text-center">
+        <button mat-button class="me-2" (click)="cancel()">Cancelar</button>
+        <button mat-flat-button color="primary" [disabled]="checkSubmit()" (click)="onSubmit()">Guardar cambios</button>
+      </div>
 
   </div>
-<!-- </form> -->
+
+</form>
 
 
+</div>
+
+<div class="container" *ngIf="!certificate">
+  <h3>Cargando solicitud...</h3>
+</div>

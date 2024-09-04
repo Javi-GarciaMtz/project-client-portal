@@ -11,6 +11,7 @@ import { DateFormatService } from '../../../shared/services/date-format/date-for
 import { ResponseAllCustomsOffices } from '../../interfaces/responseAllCustomsOffices.interface';
 import { ResponseAllMeasurements } from '../../interfaces/responseAllMeasurements.interface';
 import { ResponseCreateCertificate } from '../../interfaces/responsesCreateCertificate.interface';
+import { ResponseUpdateOnlyCertificate } from '../../interfaces/responseUpdateOnlyCertificate.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -140,6 +141,43 @@ export class RequestService {
     });
 
     return this.http.post<ResponseCreateCertificate>(url, body, { headers: headers });
+
+  }
+
+  // * Metodo para actualizar SOLO la solicitud
+  updateOnlyRequest(dataRequest: FormRequest, idCertificate: number, typeForm: number): Observable<ResponseUpdateOnlyCertificate> {
+    const user = this.storageService.retrieveAndDecryptUser();
+    const entryDate = (dataRequest.tentativeInspectionDate) ? this.dateFormaService.getMomentObj(dataRequest.tentativeInspectionDate).format("YYYY-MM-DD") : null;
+    const scheVeriDate = (dataRequest.probableInternmentDate) ? this.dateFormaService.getMomentObj(dataRequest.probableInternmentDate).format("YYYY-MM-DD") : null;
+    const customRuleId = ( dataRequest.rule === 51 ) ? dataRequest.phaseNom051 : dataRequest.rule;
+
+    const body = {
+      opinion_id: idCertificate,
+      certificate_id: idCertificate,
+
+      customs_rule_id: customRuleId,
+      customs_office_id: dataRequest.customsOfEntry,
+
+      applicant_name: `${user.user.name} ${user.user.middle_name}`,
+      verification_address: dataRequest.inspectionAddress,
+
+      labeling_mode: dataRequest.labelingMode,
+      request_type: (dataRequest.type === 1) ? `certificate` : `opinion`,
+
+      invoice_number: dataRequest.invoiceNumber,
+      entry_date: entryDate,
+
+      scheduled_verification_date: scheVeriDate,
+      clarifications: dataRequest.clarifications,
+    };
+
+    const url = (typeForm === 1) ? `${url_customs_gen}certificate/update-certificate` : `${url_customs_gen}certificate/update-opinion`;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.patch<ResponseUpdateOnlyCertificate>(url, body, { headers: headers });
 
   }
 
