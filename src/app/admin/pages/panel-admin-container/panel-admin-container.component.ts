@@ -8,6 +8,7 @@ import { User } from '../../../auth/interfaces/user.interface';
 import { StorageService } from '../../../shared/services/storage/storage.service';
 import moment from 'moment';
 import { DataToSearchCertificates } from '../../../shared/interfaces/dataToSearchCertificates.interface';
+import { RequestService } from '../../../request/services/request/request.service';
 
 @Component({
   selector: 'app-panel-admin-container',
@@ -26,6 +27,7 @@ export class PanelAdminContainerComponent implements OnInit, OnDestroy {
     private accountService: AccountService,
     private toastService: ToastService,
     private stoareService: StorageService,
+    private requestService: RequestService,
   ) {
     this.user = this.stoareService.retrieveAndDecryptUser();
   }
@@ -46,10 +48,17 @@ export class PanelAdminContainerComponent implements OnInit, OnDestroy {
       })
     );
 
-    // * subscripcion para saber cuando reiniciar el mattable
-    // setTimeout(() => {
-    //   this.ngOnInit();
-    // }, 20000);
+    // * Subscripcion para saber cuando reiniciar el mattable
+    this.arrSubs.push(
+      this.requestService.getRestartTable.subscribe({
+        next: (res: boolean) => {
+          if(res) {
+            this.ngOnInit();
+            this.requestService.setRestartTable(false);
+          }
+        }
+      })
+    );
 
   }
 

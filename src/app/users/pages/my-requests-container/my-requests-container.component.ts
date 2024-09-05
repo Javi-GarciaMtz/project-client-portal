@@ -8,6 +8,7 @@ import { LoadingOverlayService } from '../../../shared/services/loading-overlay/
 import { ToastService } from '../../../shared/services/toast/toast.service';
 import { DataToSearchCertificates } from '../../../shared/interfaces/dataToSearchCertificates.interface';
 import moment, { Moment } from 'moment';
+import { RequestService } from '../../../request/services/request/request.service';
 
 @Component({
   selector: 'app-my-requests-container',
@@ -26,6 +27,7 @@ export class MyRequestsContainerComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     private loadingOverlayService: LoadingOverlayService,
     private toastService: ToastService,
+    private requestService: RequestService,
   ) {
     this.user = this.storageService.retrieveAndDecryptUser();
   }
@@ -41,6 +43,18 @@ export class MyRequestsContainerComponent implements OnInit, OnDestroy {
         },
         error: (e: any) => {
           this.toastService.showSnackbar(false, 'Error desconocido durante la ejecución. (CODE: 001)', 5000);
+        }
+      })
+    );
+
+    // * Subscripcion para saber cuando reiniciar el mattable
+    this.arrSubs.push(
+      this.requestService.getRestartTable.subscribe({
+        next: (res: boolean) => {
+          if(res) {
+            this.ngOnInit();
+            this.requestService.setRestartTable(false);
+          }
         }
       })
     );

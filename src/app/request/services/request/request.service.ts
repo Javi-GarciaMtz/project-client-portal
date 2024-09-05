@@ -30,6 +30,9 @@ export class RequestService {
   private _formRequestData: FormRequest = { type: -1, inspectionAddress: '', rule: -2, phaseNom051: null, customsOfEntry: null, labelingMode: null, invoiceNumber: null, probableInternmentDate: null, tentativeInspectionDate: null, clarifications: '' };
   private _productsRequestData: Product[] = [];
 
+  private _restartTable: boolean = false;
+  private restartTableSubject = new Subject<boolean>();
+
   constructor(
     private http: HttpClient,
     private storageService: StorageService,
@@ -71,6 +74,14 @@ export class RequestService {
   // * Metodos para la persistencia de la informacion de los productos capturados por el usuario
   set productsRequestData(produts: Product[]) { this._productsRequestData = produts; }
   get productsRequestData(): Product[] { return this._productsRequestData; }
+
+  // * Metodos para el control de cuando se necesita volver a cargar todo el mat table
+  get restartTable(): boolean { return this._restartTable; }
+  get getRestartTable(): Observable<boolean> { return this.restartTableSubject.asObservable(); }
+  setRestartTable(value: boolean): void {
+    this._restartTable = value;
+    this.restartTableSubject.next( this._restartTable );
+  }
 
   // * --------------> Http Petitions <--------------
 

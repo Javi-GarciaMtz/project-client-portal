@@ -11,6 +11,7 @@ import { ModifyStatusCertificateComponent } from '../modify-status-certificate/m
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteRequestComponent } from '../../../request/components/delete-request/delete-request.component';
 import { TabsModifyComponent } from '../../../request/components/tabs-modify/tabs-modify.component';
+import { RequestService } from '../../../request/services/request/request.service';
 
 @Component({
   selector: 'app-table-requests',
@@ -42,7 +43,8 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
     private dateFormatService: DateFormatService,
     private generatePdfService: GeneratePdfService,
     private loadingOverlayService: LoadingOverlayService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private requestService: RequestService,
   ) {}
 
   ngOnInit(): void {
@@ -94,9 +96,8 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if(result !== undefined && result !== -1) {
-        console.log('result', result);
-        console.log('mandar el reinicio del ng on init');
-
+        // console.log('result', result);
+        this.requestService.setRestartTable(true);
 
       }
 
