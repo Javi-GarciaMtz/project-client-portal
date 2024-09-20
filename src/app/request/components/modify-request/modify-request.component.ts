@@ -22,7 +22,7 @@ import { ResponseUpdateOnlyCertificate } from '../../interfaces/responseUpdateOn
 })
 export class ModifyRequestComponent implements OnInit, OnDestroy {
 
-  @Input() public dialogRef!: MatDialogRef<ModifyStatusCertificateComponent>;
+  @Input() public dialogRef!: MatDialogRef<ModifyRequestComponent>;
   @Input() public certificate!: CertificatesResponse;
 
   private arrSubs: Subscription[] = [];

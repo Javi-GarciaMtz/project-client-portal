@@ -95,11 +95,11 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      if(result !== undefined && result !== -1) {
+      // if(result !== undefined && result !== -1) {
         // console.log('result', result);
         this.requestService.setRestartTable(true);
 
-      }
+      // }
 
     });
 

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { RequestService } from '../../services/request/request.service';
 import { Product } from '../../interfaces/product.interface';
 import { Subscription } from 'rxjs';
@@ -6,6 +6,10 @@ import { LoadingOverlayService } from '../../../shared/services/loading-overlay/
 import { ToastService } from '../../../shared/services/toast/toast.service';
 import { MeasurementAllMeasurements, ResponseAllMeasurements } from '../../interfaces/responseAllMeasurements.interface';
 import { ResponseCreateCertificate } from '../../interfaces/responsesCreateCertificate.interface';
+import { CertificatesResponse, ProductCertificatesResponse } from '../../../shared/interfaces/responseCertificates.interfaces';
+import { MatDialogRef } from '@angular/material/dialog';
+import { ModifyStatusCertificateComponent } from '../../../shared/components/modify-status-certificate/modify-status-certificate.component';
+import { ResponseDeleteProduct } from '../../interfaces/responseDeleteProduct.interface';
 
 @Component({
   selector: 'app-add-products',
@@ -13,6 +17,10 @@ import { ResponseCreateCertificate } from '../../interfaces/responsesCreateCerti
   styleUrl: './add-products.component.scss'
 })
 export class AddProductsComponent implements OnInit, OnDestroy {
+
+  @Input() public isModifyProducts: boolean = false;
+  @Input() public certificate!: CertificatesResponse;
+  @Input() public dialogRef!: MatDialogRef<AddProductsComponent>;
 
   private arrSubs: Subscription[] = [];
   public tabs: Product[] = [];
@@ -30,12 +38,14 @@ export class AddProductsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // * Obtenemos todas las unidades de medida
-    this.loadingOverlayService.addLoading();
+    if(!this.isModifyProducts)
+      this.loadingOverlayService.addLoading();
     this.arrSubs.push(
       this.requestService.getAllMeasurements().subscribe({
         next: (r: ResponseAllMeasurements) => {
           this.unitsMeasurements = r.data;
-          this.loadingOverlayService.removeLoading();
+          if(!this.isModifyProducts)
+            this.loadingOverlayService.removeLoading();
         },
         error: (e: any) => {
           this.toastService.showSnackbar(false, 'Error desconocido durante la ejecución (CODE: 001)', 7000);
@@ -47,6 +57,33 @@ export class AddProductsComponent implements OnInit, OnDestroy {
     if(this.requestService.productsRequestData.length > 0) {
       this.tabs = this.requestService.productsRequestData;
       this.requestService.setProducts( this.tabs );
+    }
+
+    // * Verificamos si estamos en el caso de edicion de certificado
+    if(this.isModifyProducts && this.certificate.products.length > 0) {
+      this.tabs = [];
+      this.certificate.products.forEach( ( p : ProductCertificatesResponse ) => {
+        if(p.status !== `inactive`) {
+          this.tabs.push(
+            {
+              unit_measurement_id: p.unit_measurement_id,
+              name: p.name,
+              brand: p.brand,
+              model: p.model,
+              total_quantity: parseInt(p.total_quantity, 10),
+              labels_to_inspecc: p.labels_to_inspecc,
+              tariff_fraction: p.tariff_fraction,
+              idDb: p.id,
+            }
+          );
+        }
+      });
+
+      this.requestService.setProducts( this.tabs );
+    }
+
+    if(this.tabs.length === 0) {
+      this.tabs.push({ unit_measurement_id: 0, name: '', brand: '', model: '', total_quantity: 0, labels_to_inspecc: 0, tariff_fraction: ''});
     }
 
     // * Obtenemos el indice de las tabs en las que nos encontramso, y suscribimos a los cambios del indice para desplazar hasta el
@@ -77,13 +114,39 @@ export class AddProductsComponent implements OnInit, OnDestroy {
 
   // * Metodo que se encarga de añadir una pestaña de productos
   addTab() {
-    this.tabs.push({ unit_measurement_id: 0, name: '', brand: '', model: '', total_quantity: 0, labels_to_inspecc: 0, tariff_fraction: '' });
+    this.tabs.push({ unit_measurement_id: 0, name: '', brand: '', model: '', total_quantity: 0, labels_to_inspecc: 0, tariff_fraction: '', idDb: -1});
     this.setIndexTabs();
     this.selectedIndex = this.tabs.length-1;
   }
 
+  deleteProductDB(i: number): void {
+    if(this.tabs[i].idDb! === -1) return;
+
+    this.loadingOverlayService.addLoading();
+    this.requestService.deleteProduct(this.tabs[i].idDb!).subscribe({
+      next: (r: ResponseDeleteProduct) => {
+        this.loadingOverlayService.removeLoading();
+        this.toastService.showSnackbar(true, `${r.data.message}`, 5000);
+
+        this.certificate.products = this.certificate.products.map((p:any) =>
+          p.id === this.tabs[i].idDb!
+            ? { ...p, status: `inactive` }
+            : p
+        );
+      },
+      error: (e: any) => {
+        // console.log('e', e);
+        this.toastService.showSnackbar(false, `Ha ocurrido un error desconocido al intentar eliminar el producto. Por favor, inténtalo de nuevo más tarde`, 5000);
+      }
+    })
+  }
+
   // * Metodo que se encarga de eliminar una pestaña de los productos
   removeTab(index: number) {
+    // * Se revisa si esta en modificar, se borra en DB
+    if(this.isModifyProducts)
+      this.deleteProductDB(index);
+
     this.tabs.splice(index, 1);
     this.setIndexTabs();
     this.requestService.setProducts( this.tabs );
@@ -142,6 +205,37 @@ export class AddProductsComponent implements OnInit, OnDestroy {
         }
       })
     );
+
+  }
+
+  storeProduct(p:Product): void {
+    console.log('store product', p);
+
+  }
+
+  updateProduct(p: Product): void {
+    console.log('update product', p);
+    this.requestService.updateProduct(p).subscribe({
+      next: (r:any) => {
+        console.log('success', r);
+
+      },
+      error: (e:any) => {
+        console.log(e);
+
+      }
+    });
+  }
+
+  saveProduct(index: number): void {
+    const p = this.tabs.find((pr:Product) => pr.index === index);
+
+    if(p!.idDb && p!.idDb !== -1) {
+      this.updateProduct(p!);
+    } else {
+      this.storeProduct(p!);
+    }
+
 
   }
 

@@ -14,7 +14,8 @@
                                 <app-product-tab
                                   (eventSendProducts)="handlerSendProducts($event)"
                                   [productIndex]="tab.index!"
-                                  [unitsMeasurements]="unitsMeasurements">
+                                  [unitsMeasurements]="unitsMeasurements"
+                                  [productRecieved]="tab">
                                 </app-product-tab>
 
                                 <!-- Contents for {{index}} i -->
@@ -52,6 +53,22 @@
                                             >
                                         </button>
                                     </div>
+                                    <div *ngIf="isModifyProducts" class="col-sm-12 text-center">
+
+                                      <button mat-flat-button
+                                          color="primary"
+                                          class="example-delete-tab-button"
+                                          (click)="saveProduct(index)">
+                                          Guardar cambio en el producto
+                                      </button>
+
+                                      <!-- <button mat-flat-button
+                                          color="primary"
+                                          class="example-add-tab-button"
+                                          (click)="addTab()">
+                                          Agregar producto
+                                      </button> -->
+                                  </div>
                                 </div>
 
                             </div>
@@ -64,7 +81,7 @@
         </mat-card>
 
         <div class="row mt-3 mb-5">
-            <div class="col-sm-12 text-center">
+            <div *ngIf="!isModifyProducts" class="col-sm-12 text-center">
                 <button mat-flat-button color="primary" class="example-delete-tab-button" (click)="goBack()">
                     Regresar
                 </button>

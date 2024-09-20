@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Product } from '../../interfaces/product.interface';
 import { RequestService } from '../../services/request/request.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -9,11 +9,12 @@ import { MeasurementAllMeasurements } from '../../interfaces/responseAllMeasurem
   templateUrl: './product-tab.component.html',
   styleUrl: './product-tab.component.scss'
 })
-export class ProductTabComponent implements OnInit {
+export class ProductTabComponent implements OnInit, OnChanges {
 
   // @Input() public product!: Product;
   @Input() public unitsMeasurements: MeasurementAllMeasurements[] = [];
   @Input() public productIndex = -1;
+  @Input() public productRecieved!: Product;
   @Output() public eventSendProducts: EventEmitter<[boolean, Product]> = new EventEmitter();
   public productTabForm: FormGroup;
   public product!: Product;
@@ -31,9 +32,29 @@ export class ProductTabComponent implements OnInit {
       total_quantity: new FormControl(null, [Validators.required]),
       unit_measurement_id: new FormControl(null, [Validators.required]),
     });
+
   }
 
   ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['productRecieved'] && changes['productRecieved'].currentValue){
+      const p: Product = changes['productRecieved'].currentValue;
+
+      this.productTabForm.patchValue({
+        brand: p.brand,
+        labels_to_inspecc: p.labels_to_inspecc,
+        model: p.model,
+        name: p.name,
+        tariff_fraction: p.tariff_fraction,
+        total_quantity: p.total_quantity,
+        unit_measurement_id: p.unit_measurement_id,
+      });
+
+      this.checkIfICanSedProduct2Autocomplete();
+    }
+
+  }
 
   fillProductWithFormValues() {
     this.product = {

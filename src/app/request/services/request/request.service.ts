@@ -12,6 +12,7 @@ import { ResponseAllCustomsOffices } from '../../interfaces/responseAllCustomsOf
 import { ResponseAllMeasurements } from '../../interfaces/responseAllMeasurements.interface';
 import { ResponseCreateCertificate } from '../../interfaces/responsesCreateCertificate.interface';
 import { ResponseUpdateOnlyCertificate } from '../../interfaces/responseUpdateOnlyCertificate.interface';
+import { ResponseDeleteProduct } from '../../interfaces/responseDeleteProduct.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -189,6 +190,52 @@ export class RequestService {
     });
 
     return this.http.patch<ResponseUpdateOnlyCertificate>(url, body, { headers: headers });
+
+  }
+
+  // * Metodo para eliminar un producto
+  deleteProduct(id: number): Observable<ResponseDeleteProduct> {
+    const url = `${url_customs_gen}products/delete`;
+
+    const deleteStatus = 2;
+    const body = {
+      product_id: id,
+      status: deleteStatus
+    };
+
+    const options = {
+      body: body,
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.storageService.retrieveAndDecryptUser().token}`
+      })
+    };
+
+    return this.http.request<ResponseDeleteProduct>('DELETE', url, options);
+  }
+
+  // * Metodo para actualizar un producto
+  updateProduct(p: Product): Observable<any> {
+    const url = `${url_customs_gen}products/update`;
+
+    const body = {
+      product_id: p.idDb,
+      unit_measurement_id: p.unit_measurement_id,
+      name: p.name,
+      brand: p.brand,
+      model: p.model,
+      // folio: p.,
+      total_quantity: p.total_quantity,
+      labels_to_inspecc: p.labels_to_inspecc,
+      tariff_fraction: p.tariff_fraction
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.storageService.retrieveAndDecryptUser().token}`
+    });
+
+    return this.http.patch<any>(url, body, { headers: headers });
 
   }
 

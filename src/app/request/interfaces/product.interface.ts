@@ -9,4 +9,6 @@ export interface Product {
   tariff_fraction:     string;
   index?:              number;
   isReady?:            boolean;
+
+  idDb?:               number;
 }
