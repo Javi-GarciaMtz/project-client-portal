@@ -32,3 +32,4 @@ export const TEXT_CERTIFICATE_CANCELLED = 'Solicitud no aprobada'
 export const TEXT_CERTIFICATE_REVIEW = 'Espacio para el sello digital de la unidad';
 
 export const TEXT_SELLO = '[[[SELLO_01]]]';
+export const TEXT_JUMP_PAGE = '[[[JUMP_PAGE_01]]]';
