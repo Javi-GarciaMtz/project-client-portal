@@ -9,7 +9,7 @@ import moment from 'moment';
 import { LoadingOverlayService } from '../loading-overlay/loading-overlay.service';
 
 import { Montserrat64_Bold } from "./fontsBase64/montserrat-bold";
-import { INSPECT_NUMBER } from '../../../data/data';
+import { INSPECT_NUMBER, STATUS_ACCEPTED, STATUS_REVIEW, TEXT_CERTIFICATE_CANCELLED, TEXT_CERTIFICATE_REVIEW, TEXT_SELLO } from '../../../data/data';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +61,7 @@ export class GeneratePdfService {
     doc.addImage(newBase64, 'PNG', x, y, widht, height);
   }
 
+  /*
   addHeaderAndFooter(doc:jsPDF): void {
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
@@ -181,6 +182,7 @@ export class GeneratePdfService {
     });
 
   }
+  */
 
   async addImgColorsHeaderAndFooter(doc:jsPDF): Promise<void> {
 
@@ -200,7 +202,7 @@ export class GeneratePdfService {
 
       { fontSize: 8, text: `Código: FOR-14`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 45, color: `black` },
       { fontSize: 8, text: `Revisión: 0`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 55, color: `black` },
-      { fontSize: 8, text: `Inicio de vigencia: 29-07-2024`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 65, color: `black` },
+      { fontSize: 8, text: `Inicio de vigencia: ${this.dateFormatService.getMomentObj(this.certificate.created_at).format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 65, color: `black` },
     ];
 
     stringHeader.forEach((s:any) => {
@@ -212,11 +214,14 @@ export class GeneratePdfService {
 
 
     const stringFooter = [
-      { fontSize: 9, text: `ingcom.com.mx`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 737, color: `#143c81` },
-      { fontSize: 9, text: `tel: 557334 0647`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 494, y: 737, color: `#143c81` },
+      { fontSize: 9, text: `ingcom.com.mx`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 737, color: this.blueIng },
+      { fontSize: 9, text: `WhatsApp: 5580130396`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 748, color: this.blueIng },
 
-      { fontSize: 9, text: `dirección: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 757, color: `#143c81` },
-      { fontSize: 9, text: `uva@ingcom.com.mx`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 470, y: 757, color: `#143c81` },
+      { fontSize: 9, text: `tel.: 5525825612`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 470, y: 737, color: this.blueIng },
+      { fontSize: 9, text: `uva@ingcom.com.mx`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 470, y: 748, color: this.blueIng },
+
+      { fontSize: 9, text: `dirección: Nicolas San Juan No. 1307 Int. 3, Col. Del Valle Sur, C.P. 03104, Alcaldía Benito Juárez, Ciudad de México`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 759, color: `#143c81` },
+
     ];
 
     stringFooter.forEach((s:any) => {
@@ -239,45 +244,110 @@ export class GeneratePdfService {
       doc.setFontSize(s.fontSize);
       doc.setTextColor(s.color || 'black');
 
-      let splitText = doc.splitTextToSize(s.text, maxWidth);
+      if( s.text === `${TEXT_SELLO}` ) {
 
-      for (const line of splitText) {
-        const textWidth = doc.getTextWidth(line);
-        const xCenter = (pageWidth - maxWidth) / 2 + (maxWidth - textWidth) / 2;
-        const xRight = (pageWidth - maxWidth) / 2 + maxWidth - textWidth;
-        const xLeft = (pageWidth - maxWidth) / 2;
+        if(this.certificate.status_certificate === STATUS_ACCEPTED) {
 
-        if (yOffset + s.fontSize + s.spaceAfterLine > maxHeightAfterFooter) {
-          doc.addPage();
-          await this.addImgColorsHeaderAndFooter(doc);
-          yOffset = yInitAfterHeader;
+          const spaceAfertSeal = 100;
 
-          doc.setFont(s.font, s.bold);
-          doc.setFontSize(s.fontSize);
-          doc.setTextColor(s.color || 'black');
+          if (yOffset + spaceAfertSeal > maxHeightAfterFooter) {
+            doc.addPage();
+            await this.addImgColorsHeaderAndFooter(doc);
+            yOffset = yInitAfterHeader;
+
+          }
+
+          await this.addImg2Doc(doc, `./assets/images/logo-ingcom-pdf.png`, 1, 80, yOffset, 208, 60);
+
+          yOffset += spaceAfertSeal;
+
+        } else {
+          let splitText = doc.splitTextToSize( (this.certificate.status_certificate === STATUS_REVIEW) ? TEXT_CERTIFICATE_REVIEW : TEXT_CERTIFICATE_CANCELLED , maxWidth);
+
+          for (const line of splitText) {
+            const textWidth = doc.getTextWidth(line);
+            const xCenter = (pageWidth - maxWidth) / 2 + (maxWidth - textWidth) / 2;
+            const xRight = (pageWidth - maxWidth) / 2 + maxWidth - textWidth;
+            const xLeft = (pageWidth - maxWidth) / 2;
+
+            if (yOffset + s.fontSize + s.spaceAfterLine > maxHeightAfterFooter) {
+              doc.addPage();
+              await this.addImgColorsHeaderAndFooter(doc);
+              yOffset = yInitAfterHeader;
+
+              doc.setFont(s.font, s.bold);
+              doc.setFontSize(s.fontSize);
+              doc.setTextColor(s.color || 'black');
+
+            }
+
+            switch (s.textAlign) {
+              case `center`:
+                doc.text(line, xCenter, yOffset);
+                break;
+              case `right`:
+                doc.text(line, xRight, yOffset);
+                break;
+              case `left`:
+                doc.text(line, xLeft, yOffset);
+                break;
+              default:
+                doc.text(line, xRight, yOffset);
+                break;
+            }
+
+            yOffset += s.fontSize * s.lineSpacing;
+
+            if (s.spaceAfterLine !== 0) {
+              yOffset += s.spaceAfterLine;
+            }
+          }
+
         }
 
-        switch (s.textAlign) {
-          case `center`:
-            doc.text(line, xCenter, yOffset);
-            break;
-          case `right`:
-            doc.text(line, xRight, yOffset);
-            break;
-          case `left`:
-            doc.text(line, xLeft, yOffset);
-            break;
-          default:
-            doc.text(line, xRight, yOffset);
-            break;
+      } else {
+        let splitText = doc.splitTextToSize(s.text, maxWidth);
+
+        for (const line of splitText) {
+          const textWidth = doc.getTextWidth(line);
+          const xCenter = (pageWidth - maxWidth) / 2 + (maxWidth - textWidth) / 2;
+          const xRight = (pageWidth - maxWidth) / 2 + maxWidth - textWidth;
+          const xLeft = (pageWidth - maxWidth) / 2;
+
+          if (yOffset + s.fontSize + s.spaceAfterLine > maxHeightAfterFooter) {
+            doc.addPage();
+            await this.addImgColorsHeaderAndFooter(doc);
+            yOffset = yInitAfterHeader;
+
+            doc.setFont(s.font, s.bold);
+            doc.setFontSize(s.fontSize);
+            doc.setTextColor(s.color || 'black');
+          }
+
+          switch (s.textAlign) {
+            case `center`:
+              doc.text(line, xCenter, yOffset);
+              break;
+            case `right`:
+              doc.text(line, xRight, yOffset);
+              break;
+            case `left`:
+              doc.text(line, xLeft, yOffset);
+              break;
+            default:
+              doc.text(line, xRight, yOffset);
+              break;
+          }
+
+          yOffset += s.fontSize * s.lineSpacing;
+
+          if (s.spaceAfterLine !== 0) {
+            yOffset += s.spaceAfterLine;
+          }
         }
 
-        yOffset += s.fontSize * s.lineSpacing;
-
-        if (s.spaceAfterLine !== 0) {
-          yOffset += s.spaceAfterLine;
-        }
       }
+
     }
   }
 
@@ -307,24 +377,25 @@ export class GeneratePdfService {
 
     ];
 
-    const middleCertificateContentDictamen = [
-      { fontSize: 11, text: `Fecha de vigencia de la solicitud: [[data_13]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
-    ];
+    if( this.certificate.request_type === 'opinion' ) {
+      const middleCertificateContentConstancia = [
+        { fontSize: 11, text: `Modalidad de etiquetado: ${this.certificate.labeling_mode}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+        { fontSize: 11, text: `Aduana de ingreso de la mercancía: ${this.certificate.customs_office!.name}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
-    const middleCertificateContentConstancia = [
-      { fontSize: 11, text: `Modalidad de etiquetado: ${this.certificate.labeling_mode}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
-      { fontSize: 11, text: `Aduana de ingreso de la mercancía: [[data_10]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+        { fontSize: 11, text: `Número factura: ${this.certificate.invoice_number}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
-      { fontSize: 11, text: `Número factura: ${this.certificate.invoice_number}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+        { fontSize: 11, text: `Fecha probable de internación: ${this.dateFormatService.getMomentObj(this.certificate.entry_date!).format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+        { fontSize: 11, text: `Fecha de vigencia de la solicitud: ${this.dateFormatService.getMomentObj(this.certificate.created_at).add(30, 'days').format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+        { fontSize: 11, text: `Fecha tentativa para la inspección: ${this.dateFormatService.getMomentObj(this.certificate.scheduled_verification_date!).format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+      ];
 
-      { fontSize: 11, text: `Fecha probable de internación: ${this.dateFormatService.getMomentObj(this.certificate.entry_date!).format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
-      { fontSize: 11, text: `Fecha de vigencia de la solicitud: [[data_13]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
-      { fontSize: 11, text: `Fecha tentativa para la inspección: ${this.dateFormatService.getMomentObj(this.certificate.scheduled_verification_date!).format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
-    ];
-
-    if( this.certificate.request_type === 'certificate' ) {
       firstPageContent.push(...middleCertificateContentConstancia);
+
     } else {
+      const middleCertificateContentDictamen = [
+        { fontSize: 11, text: `Fecha de vigencia de la solicitud: ${this.dateFormatService.getMomentObj(this.certificate.created_at).add(30, 'days').format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+      ];
+
       firstPageContent.push(...middleCertificateContentDictamen);
     }
 
@@ -335,7 +406,7 @@ export class GeneratePdfService {
       { fontSize: 11, text: `Nombre de quien realiza el trámite: ${this.certificate.applicant_name}`, lineSpacing: 1.15, spaceAfterLine: 20, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
 
-      { fontSize: 11, text: `Espacio para el sello digital de la unidad`, lineSpacing: 1.15, spaceAfterLine: 200, font: `helvetica`, bold: `normal`, textAlign: `center` },
+      { fontSize: 11, text: `${TEXT_SELLO}`, lineSpacing: 1.15, spaceAfterLine: 100, font: `helvetica`, bold: `normal`, textAlign: `center` },
     ];
 
     firstPageContent.push(...finalCertificateContent);
@@ -381,9 +452,11 @@ export class GeneratePdfService {
     // * Agregamos la informacion de la solicitud
     await this.addInfoCertificate(doc);
 
-    doc.save('solicitud.pdf');
+    doc.save(`${ (this.certificate.request_type === 'certificate') ? 'constancia'.toUpperCase() : 'dictamen'.toUpperCase() }_${ this.certificate.code }.pdf`);
 
     this.loadingOverlayService.removeLoading();
+
+    /*
     throw new Error('XD');
 
 
@@ -526,6 +599,7 @@ export class GeneratePdfService {
     });
 
     doc.save('solicitud.pdf');
+    */
 
   }
 

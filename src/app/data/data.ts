@@ -22,3 +22,13 @@ export const NOM051SCFISSA12010_FASE2_ID: number = 6;
 export const NOM051SCFISSA12010_FASE3_ID: number = 7;
 
 export const INSPECT_NUMBER: string = `XXX`;
+
+export const STATUS_REVIEW = 'review';
+export const STATUS_CANCELLED = 'cancelled';
+export const STATUS_ACCEPTED = 'accepted';
+
+export const TEXT_CERTIFICATE_ACCEPTED = 'accepted';
+export const TEXT_CERTIFICATE_CANCELLED = 'Solicitud no aprobada'
+export const TEXT_CERTIFICATE_REVIEW = 'Espacio para el sello digital de la unidad';
+
+export const TEXT_SELLO = '[[[SELLO_01]]]';
