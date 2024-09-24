@@ -21,3 +21,4 @@ export const rfcPatternPhysical: RegExp = /^[A-ZÑ&]{4}\d{6}[A-ZÑ\d]{3}$/;
 export const NOM051SCFISSA12010_FASE2_ID: number = 6;
 export const NOM051SCFISSA12010_FASE3_ID: number = 7;
 
+export const INSPECT_NUMBER: string = `XXX`;

@@ -9,6 +9,7 @@ import moment from 'moment';
 import { LoadingOverlayService } from '../loading-overlay/loading-overlay.service';
 
 import { Montserrat64_Bold } from "./fontsBase64/montserrat-bold";
+import { INSPECT_NUMBER } from '../../../data/data';
 
 @Injectable({
   providedIn: 'root'
@@ -193,6 +194,23 @@ export class GeneratePdfService {
     doc.setLineWidth(1);
     doc.line(306, 85, 562, 85, 'S');
 
+    const stringHeader = [
+      { fontSize: 12, text: `UNIDAD DE INSPECCIÓN`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 270, y: 45, color: this.blueIng },
+      { fontSize: 12, text: `UVNOM${INSPECT_NUMBER}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 310, y: 60, color: this.blueIng },
+
+      { fontSize: 8, text: `Código: FOR-14`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 45, color: `black` },
+      { fontSize: 8, text: `Revisión: 0`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 55, color: `black` },
+      { fontSize: 8, text: `Inicio de vigencia: 29-07-2024`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 65, color: `black` },
+    ];
+
+    stringHeader.forEach((s:any) => {
+      doc.setTextColor(s.color);
+      doc.setFont(s.font, s.bold);
+      doc.setFontSize(s.fontSize);
+      doc.text(s.text, s.x, s.y);
+    });
+
+
     const stringFooter = [
       { fontSize: 9, text: `ingcom.com.mx`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 737, color: `#143c81` },
       { fontSize: 9, text: `tel: 557334 0647`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 494, y: 737, color: `#143c81` },
@@ -264,23 +282,36 @@ export class GeneratePdfService {
   }
 
   async addInfoCertificate(doc:jsPDF): Promise<void> {
-    const stringsHeader = [
-      { fontSize: 12, text: `SOLICITUD DE SERVICIO`, lineSpacing: 1.15, spaceAfterLine: 20, font: `helvetica`, bold: `normal`, textAlign: `center`, color: this.blueIng },
+
+    console.log('certificate', this.certificate);
+
+
+    const firstPageContent = [
+      { fontSize: 12, text: `SOLICITUD DE SERVICIO`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `center`, color: this.blueIng },
+
+      { fontSize: 12, text: `(${ (this.certificate.request_type === 'certificate') ? 'Constancia'.toUpperCase() : 'Dictamen'.toUpperCase() })`, lineSpacing: 1.15, spaceAfterLine: 40, font: `helvetica`, bold: `normal`, textAlign: `center`, color: `black` },
 
       { fontSize: 11, text: `Fecha de solicitud: ${this.dateFormatService.getMomentObj(this.certificate.created_at).format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `right` },
       { fontSize: 11, text: `No. de Solicitud: ${this.certificate.code}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `right` },
-      { fontSize: 11, text: `No. de Folio: ${this.certificate.folio}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `right` },
+      { fontSize: 11, text: `No. de Folio: ${this.certificate.folio}`, lineSpacing: 1.15, spaceAfterLine: 20, font: `helvetica`, bold: `normal`, textAlign: `right` },
 
       { fontSize: 11, text: `Nombre de la empresa: [[data_3]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
       { fontSize: 11, text: `Domicilio fiscal: [[data_4]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
       { fontSize: 11, text: `RFC: [[data_5]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
       { fontSize: 11, text: `Tipo de persona: [[data_6]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
-      { fontSize: 11, text: `Tipo de servicio: [[data_7]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+      { fontSize: 11, text: `Tipo de servicio: ${ (this.certificate.request_type === 'certificate') ? 'Constancia' : 'Dictamen' }`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
-      { fontSize: 11, text: `Norma requerida: [[data_8]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
-      { fontSize: 11, text: `Fase: [[data_8]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+      { fontSize: 11, text: `Norma requerida: ${this.certificate.customs_rule.name}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+      { fontSize: 11, text: `Fase: ${ (this.certificate.customs_rule.phase) ? this.certificate.customs_rule.phase : 'NA' }`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
+    ];
+
+    const middleCertificateContentDictamen = [
+      { fontSize: 11, text: `Fecha de vigencia de la solicitud: [[data_13]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+    ];
+
+    const middleCertificateContentConstancia = [
       { fontSize: 11, text: `Modalidad de etiquetado: ${this.certificate.labeling_mode}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
       { fontSize: 11, text: `Aduana de ingreso de la mercancía: [[data_10]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
@@ -289,7 +320,15 @@ export class GeneratePdfService {
       { fontSize: 11, text: `Fecha probable de internación: ${this.dateFormatService.getMomentObj(this.certificate.entry_date!).format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
       { fontSize: 11, text: `Fecha de vigencia de la solicitud: [[data_13]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
       { fontSize: 11, text: `Fecha tentativa para la inspección: ${this.dateFormatService.getMomentObj(this.certificate.scheduled_verification_date!).format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+    ];
 
+    if( this.certificate.request_type === 'certificate' ) {
+      firstPageContent.push(...middleCertificateContentConstancia);
+    } else {
+      firstPageContent.push(...middleCertificateContentDictamen);
+    }
+
+    const finalCertificateContent = [
       { fontSize: 11, text: `Domicilio donde se realizará la inspección: ${this.certificate.verification_address}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
       { fontSize: 11, text: `Notas aclaratorias: ${this.certificate.clarifications}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
@@ -297,8 +336,11 @@ export class GeneratePdfService {
 
 
       { fontSize: 11, text: `Espacio para el sello digital de la unidad`, lineSpacing: 1.15, spaceAfterLine: 200, font: `helvetica`, bold: `normal`, textAlign: `center` },
+    ];
 
+    firstPageContent.push(...finalCertificateContent);
 
+    const considerations = [
       { fontSize: 9, text: `Consideraciones`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
       { fontSize: 9, text: `1. La empresa solicita este servicio y se compromete a realizar la cancelación de la totalidad de la solicitud o de alguno de los folios en caso de que no fueran requeridos.`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `left` },
@@ -309,10 +351,11 @@ export class GeneratePdfService {
       { fontSize: 9, text: `6. Para los servicios de inspección que se realicen fuera de la Ciudad de México, se hace de su conocimiento que la empresa deberá cubrir los viáticos requeridos relacionados con trasportación, hospedaje y alimentación mismos que deberán ser cubiertos para la realización de la visita de inspección.`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `left` },
       { fontSize: 9, text: `7. La veracidad de la información contenida en las etiquetas, empaques, envases, instructivos, garantías, etc. es responsabilidad exclusiva del importador o responsable del producto.`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `left` },
       { fontSize: 9, text: `8. Toda la información relacionada con esta solicitud de servicio y los productos sujetos a la inspección son propiedad del cliente y serán manejados de manera confidencial, pudiendo proporcionarse a las autoridades competentes cuando así se lo requieran a la unidad de inspección.`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `left` },
-
     ];
 
-    await this.printText2Doc(doc, stringsHeader, 120, 512, 670, 195);
+    firstPageContent.push(...considerations)
+
+    await this.printText2Doc(doc, firstPageContent, 120, 512, 670, 195);
 
   }
 

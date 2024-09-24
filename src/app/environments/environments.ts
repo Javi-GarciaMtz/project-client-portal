@@ -1,6 +1,7 @@
 
-export const url_customs_gen: string = `http://localhost/customs-gen/public/api/`;
+// export const url_customs_gen: string = `http://localhost/customs-gen/public/api/`;
 // export const url_customs_gen: string = `https://ingcom-api.ing-javier.com/public/api/`;
+export const url_customs_gen: string = `https://customs-gen.hectorp11.com/api/`;
 
 export const encryption_key: string = `secret_key_client_portal99`;
 
