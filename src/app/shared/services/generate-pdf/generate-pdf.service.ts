@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-// import jsPDF from 'jspdf';
-// import * as jsPDF from 'jspdf';
+
 import { jsPDF } from 'jspdf';
 import { CertificatesResponse, ProductCertificatesResponse } from '../../interfaces/responseCertificates.interfaces';
 import { DateFormatService } from '../date-format/date-format.service';
-import { HttpClient } from '@angular/common/http';
-import moment from 'moment';
 import { LoadingOverlayService } from '../loading-overlay/loading-overlay.service';
 
 import { Montserrat64_Bold } from "./fontsBase64/montserrat-bold";
-import { INSPECT_NUMBER, STATUS_ACCEPTED, STATUS_REVIEW, TEXT_CERTIFICATE_CANCELLED, TEXT_CERTIFICATE_REVIEW, TEXT_JUMP_PAGE, TEXT_SELLO } from '../../../data/data';
+import { ADDRESS_INGCOM, CODE_PDF, EMAIL_CONTACT, INSPECT_NUMBER, PHONE_NUMBER, STATUS_ACCEPTED, STATUS_REVIEW, TEXT_CERTIFICATE_CANCELLED, TEXT_CERTIFICATE_REVIEW, TEXT_JUMP_PAGE, TEXT_SELLO, WEB_INGCOM, WHATSAPP_NUMBER } from '../../../data/data';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +14,16 @@ import { INSPECT_NUMBER, STATUS_ACCEPTED, STATUS_REVIEW, TEXT_CERTIFICATE_CANCEL
 export class GeneratePdfService {
 
   private certificate!: CertificatesResponse;
+
   private blueIng: string = `#143c81`;
   private orangeIng: string = `#ec7216`;
+
+  private fileIngcom: string = `./assets/images/logo-ingcom-pdf.png`;
+  private fileSeal: string = `./assets/images/seals/sealTest01.png`;
 
   constructor(
     private dateFormatService: DateFormatService,
     private loadingOverlayService: LoadingOverlayService,
-    private http: HttpClient,
   ) { }
 
   private getImageBase64(url: string): Promise<string> {
@@ -63,7 +63,7 @@ export class GeneratePdfService {
 
   async addImgColorsHeaderAndFooter(doc:jsPDF): Promise<void> {
 
-    await this.addImg2Doc(doc, `./assets/images/logo-ingcom-pdf.png`, 1, 50, 20, 208, 60);
+    await this.addImg2Doc(doc, `${this.fileIngcom}`, 1, 50, 20, 208, 60);
 
     doc.setDrawColor(this.blueIng);
     doc.setLineWidth(1);
@@ -77,7 +77,7 @@ export class GeneratePdfService {
       { fontSize: 12, text: `UNIDAD DE INSPECCIÓN`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 270, y: 45, color: this.blueIng },
       { fontSize: 12, text: `UVNOM${INSPECT_NUMBER}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 310, y: 60, color: this.blueIng },
 
-      { fontSize: 8, text: `Código: FOR-14`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 45, color: `black` },
+      { fontSize: 8, text: `Código: ${CODE_PDF}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 45, color: `black` },
       { fontSize: 8, text: `Revisión: 0`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 55, color: `black` },
       { fontSize: 8, text: `Inicio de vigencia: ${this.dateFormatService.getMomentObj(this.certificate.created_at).format("DD/MM/YYYY")}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `NA`, x: 440, y: 65, color: `black` },
     ];
@@ -91,13 +91,13 @@ export class GeneratePdfService {
 
 
     const stringFooter = [
-      { fontSize: 9, text: `ingcom.com.mx`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 737, color: this.blueIng },
-      { fontSize: 9, text: `WhatsApp: 5580130396`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 748, color: this.blueIng },
+      { fontSize: 9, text: `${WEB_INGCOM}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 737, color: this.blueIng },
+      { fontSize: 9, text: `WhatsApp: ${WHATSAPP_NUMBER}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 748, color: this.blueIng },
 
-      { fontSize: 9, text: `tel.: 5525825612`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 470, y: 737, color: this.blueIng },
-      { fontSize: 9, text: `uva@ingcom.com.mx`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 470, y: 748, color: this.blueIng },
+      { fontSize: 9, text: `tel.: ${PHONE_NUMBER}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 470, y: 737, color: this.blueIng },
+      { fontSize: 9, text: `${EMAIL_CONTACT}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 470, y: 748, color: this.blueIng },
 
-      { fontSize: 9, text: `dirección: Nicolas San Juan No. 1307 Int. 3, Col. Del Valle Sur, C.P. 03104, Alcaldía Benito Juárez, Ciudad de México`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 759, color: `#143c81` },
+      { fontSize: 9, text: `dirección: ${ADDRESS_INGCOM}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `bold`, textAlign: `NA`, x: 50, y: 759, color: `#143c81` },
 
     ];
 
@@ -140,8 +140,7 @@ export class GeneratePdfService {
 
             }
 
-            await this.addImg2Doc(doc, `./assets/images/seals/sealTest01.png`, 1, 80, yOffset, 208, 60);
-            // src/assets/images/seals
+            await this.addImg2Doc(doc, `${this.fileSeal}`, 1, 80, yOffset, 208, 60);
 
             yOffset += spaceAfertSeal;
 
@@ -248,11 +247,11 @@ export class GeneratePdfService {
       { fontSize: 11, text: `No. de Solicitud: ${this.certificate.code}`, lineSpacing: 1.15, spaceAfterLine: 0, font: `helvetica`, bold: `normal`, textAlign: `right` },
       { fontSize: 11, text: `No. de Folio: ${this.certificate.folio}`, lineSpacing: 1.15, spaceAfterLine: 20, font: `helvetica`, bold: `normal`, textAlign: `right` },
 
-      { fontSize: 11, text: `Nombre de la empresa: [[data_3]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
-      { fontSize: 11, text: `Domicilio fiscal: [[data_4]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
-      { fontSize: 11, text: `RFC: [[data_5]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+      { fontSize: 11, text: `Nombre de la empresa: ${this.certificate.user.company.name}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+      { fontSize: 11, text: `Domicilio fiscal: ${this.certificate.user.company.tax_address}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+      { fontSize: 11, text: `RFC: ${this.certificate.user.rfc}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
-      { fontSize: 11, text: `Tipo de persona: [[data_6]]`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
+      { fontSize: 11, text: `Tipo de persona: ${ (this.certificate.user.entity_type === 'physical') ? 'Física' : 'Moral' }`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
       { fontSize: 11, text: `Tipo de servicio: ${ (this.certificate.request_type === 'certificate') ? 'Constancia' : 'Dictamen' }`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
       { fontSize: 11, text: `Norma requerida: ${this.certificate.customs_rule.name}`, lineSpacing: 1.15, spaceAfterLine: 5, font: `helvetica`, bold: `normal`, textAlign: `left` },
@@ -346,7 +345,7 @@ export class GeneratePdfService {
           { fontSize: 11, text: `MARCA: ${p.brand}`, lineSpacing: 1.15, spaceAfterLine: 10, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
           { fontSize: 11, text: `MODELO: ${p.model}`, lineSpacing: 1.15, spaceAfterLine: 10, font: `helvetica`, bold: `normal`, textAlign: `left` },
-          { fontSize: 11, text: `UNIDAD DE MEDIDA: [[PENDING]]`, lineSpacing: 1.15, spaceAfterLine: 10, font: `helvetica`, bold: `normal`, textAlign: `left` },
+          { fontSize: 11, text: `UNIDAD DE MEDIDA: ${p.unit_measurement.name}`, lineSpacing: 1.15, spaceAfterLine: 10, font: `helvetica`, bold: `normal`, textAlign: `left` },
 
           { fontSize: 11, text: `CANTIDAD: ${p.total_quantity}`, lineSpacing: 1.15, spaceAfterLine: 10, font: `helvetica`, bold: `normal`, textAlign: `left` },
           { fontSize: 11, text: `TOTAL DE PRODUCTO A INSPECCIONAR: ${p.labels_to_inspecc}`, lineSpacing: 1.15, spaceAfterLine: 10, font: `helvetica`, bold: `normal`, textAlign: `left` },

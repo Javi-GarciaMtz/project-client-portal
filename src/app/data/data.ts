@@ -1,3 +1,4 @@
+// * Sidebar Elements
 export const sidebarItems = [
     { label: 'Crear solicitud', icon: 'edit_document', url: './request/create', permissions: ['admin', 'customer'] },
     { label: 'Panel Administrativo', icon: 'shield_person', url: './admin/manage', permissions: ['admin'] },
@@ -18,10 +19,18 @@ export const phoneNumberPattern: RegExp = /^\+?\d+$/;
 // export const rfcPatternMoral: RegExp = /^(?:[A-ZÑ&]-|[A-ZÑ&]{2}-|[A-ZÑ&]{3}-|[A-ZÑ&]{4})\d{6}[A-ZÑ\d]{3}$/;
 export const rfcPatternPhysical: RegExp = /^[A-ZÑ&]{4}\d{6}[A-ZÑ\d]{3}$/;
 
+// * Constant Values
 export const NOM051SCFISSA12010_FASE2_ID: number = 6;
 export const NOM051SCFISSA12010_FASE3_ID: number = 7;
 
 export const INSPECT_NUMBER: string = `XXX`;
+export const CODE_PDF: string = `FOR-14`;
+
+export const WEB_INGCOM: string = `ingcom.com.mx`;
+export const WHATSAPP_NUMBER: string = `5580130396`;
+export const PHONE_NUMBER: string = `5525825612`;
+export const EMAIL_CONTACT: string = `uva@ingcom.com.mx`;
+export const ADDRESS_INGCOM: string = `Nicolas San Juan No. 1307 Int. 3, Col. Del Valle Sur, C.P. 03104, Alcaldía Benito Juárez, Ciudad de México`;
 
 export const STATUS_REVIEW = 'review';
 export const STATUS_CANCELLED = 'cancelled';

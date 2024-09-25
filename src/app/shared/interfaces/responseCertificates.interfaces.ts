@@ -1,44 +1,3 @@
-// export interface ResponseCertificates {
-//   code:   number;
-//   status: boolean;
-//   data:   CertificatesResponse[];
-// }
-
-// export interface CertificatesResponse {
-//   id:                          number;
-//   user_id:                     number;
-//   customs_rule_id:             number;
-//   customs_office_id:           null;
-//   code:                        string;
-//   folio:                       string;
-//   applicant_name:              string;
-//   verification_address:        string;
-//   labeling_mode:               null;
-//   request_type:                string;
-//   invoice_number:              null;
-//   entry_date:                  null;
-//   scheduled_verification_date: null;
-//   clarifications:              string;
-//   status:                      string;
-//   status_certificate:          string;
-//   created_at:                  string;
-//   updated_at:                  string;
-//   customs_office:              null;
-//   customs_rule:                CustomsRuleCertificatesResponse;
-// }
-
-// export interface CustomsRuleCertificatesResponse {
-//   id:          number;
-//   name:        string;
-//   phase:       null;
-//   description: null;
-//   status:      string;
-//   created_at:  string;
-//   updated_at:  string;
-// }
-
-// ? --------------------------------------
-
 
 export interface ResponseCertificates {
   code:   number;
@@ -68,6 +27,7 @@ export interface CertificatesResponse {
   customs_office:              CustomsRuleAndOfficeCertificatesResponse | null;
   customs_rule:                CustomsRuleAndOfficeCertificatesResponse;
   products:                    ProductCertificatesResponse[];
+  user:                        UserCertificateResponse;
 }
 
 export interface CustomsRuleAndOfficeCertificatesResponse {
@@ -96,4 +56,48 @@ export interface ProductCertificatesResponse {
   status:              string;
   created_at:          string;
   updated_at:          string;
+  unit_measurement:    UnitMeasurementResponse;
+}
+
+export interface UnitMeasurementResponse {
+  id:          number;
+  name:        string;
+  description: string | null;
+  status:      string;
+  created_at:  string;
+  updated_at:  string;
+}
+
+export interface UserCertificateResponse {
+  id:                number;
+  company_id:        number;
+  name:              string;
+  middle_name:       string;
+  last_name:         string | null;
+  rfc:               string;
+  entity_type:       string;
+  phone:             string | null;
+  email:             string;
+  role:              string;
+  email_verified_at: string | null;
+  created_at:        string;
+  updated_at:        string;
+  status:            string;
+  company:           CompanyCertificateResponse;
+}
+
+export interface CompanyCertificateResponse {
+  id:          number;
+  name:        string;
+  tax_address: string;
+  email:       string | null;
+  phone:       string | null;
+  website:     string | null;
+  country:     string | null;
+  state:       string | null;
+  city:        string | null;
+  zip_code:    string | null;
+  status:      string;
+  created_at:  string;
+  updated_at:  string;
 }
