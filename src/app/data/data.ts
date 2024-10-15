@@ -5,6 +5,7 @@ export const sidebarItems = [
     // { label: 'Login', icon: 'login', url: './auth/login' },
     { label: 'Crear cuenta', icon: 'person_add', url: './admin/create-user', permissions: ['admin'] },
     { label: 'Mis solicitudes', icon: 'list_alt', url: './users/my-requests', permissions: ['customer'] },
+    { label: 'Aviso de Privacidad', icon: 'admin_panel_settings', url: './users/privacy-notice', permissions: ['admin', 'customer'] },
 ];
 
 // * Patterns

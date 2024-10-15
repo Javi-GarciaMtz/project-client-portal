@@ -18,6 +18,7 @@ export class ProductTabComponent implements OnInit, OnChanges {
   @Output() public eventSendProducts: EventEmitter<[boolean, Product]> = new EventEmitter();
   public productTabForm: FormGroup;
   public product!: Product;
+  public typeForm: number = -1;
 
   constructor(
     private requestService: RequestService,
@@ -25,17 +26,47 @@ export class ProductTabComponent implements OnInit, OnChanges {
     this.productTabForm = new FormGroup({
       brand: new FormControl(null, [Validators.required]),
       // invoice: new FormControl(null, [Validators.required]),
-      labels_to_inspecc: new FormControl(null, [Validators.required]),
+      labels_to_inspecc: new FormControl(null),
       model: new FormControl(null, [Validators.required]),
       name: new FormControl(null, [Validators.required]),
-      tariff_fraction: new FormControl(null, [Validators.required]),
-      total_quantity: new FormControl(null, [Validators.required]),
-      unit_measurement_id: new FormControl(null, [Validators.required]),
+      tariff_fraction: new FormControl(null),
+      total_quantity: new FormControl(null),
+      unit_measurement_id: new FormControl(null),
     });
 
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.typeForm = this.requestService.formRequestData.type;
+    this.handlerNewValidators();
+  }
+
+  handlerNewValidators(): void {
+    const controls = [
+      'unit_measurement_id',
+      'total_quantity',
+      'labels_to_inspecc',
+      'tariff_fraction',
+    ];
+
+    if (this.typeForm === 1) {
+      controls.forEach( (c:string) => {
+        this.productTabForm.get(c)!.clearValidators();
+        this.productTabForm.get(c)!.setValue(1);
+        this.productTabForm.get(c)!.updateValueAndValidity();
+      });
+
+    } else if (this.typeForm === 2) {
+      controls.forEach( (c:string) => {
+        this.productTabForm.get(c)!.setValidators([Validators.required]);
+        this.productTabForm.get(c)!.updateValueAndValidity();
+      });
+
+    }
+
+    this.productTabForm.updateValueAndValidity();
+
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['productRecieved'] && changes['productRecieved'].currentValue){

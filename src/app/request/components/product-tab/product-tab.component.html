@@ -46,7 +46,7 @@
         </mat-form-field>
     </div> -->
 
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-6" [ngClass]="(typeForm === 2) ? 'visible' : 'hidden'">
         <label for="" class="fw-medium">Unidad de medida:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-select placeholder="Seleccione una medida" (valueChange)="checkIfICanSedProduct2Autocomplete()" formControlName="unit_measurement_id">
@@ -60,7 +60,7 @@
         </app-show-errors-in-form>
     </div>
 
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-6" [ngClass]="(typeForm === 2) ? 'visible' : 'hidden'">
         <label for="" class="fw-medium">Cantidad total:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. 5" type="number" (input)="checkIfICanSedProduct2Autocomplete()" formControlName="total_quantity">
@@ -72,7 +72,7 @@
         </app-show-errors-in-form>
     </div>
 
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-6" [ngClass]="(typeForm === 2) ? 'visible' : 'hidden'">
         <label for="" class="fw-medium">No. de etiquetas a inspeccionar:</label>
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Ej. 2" type="number" (input)="checkIfICanSedProduct2Autocomplete()" formControlName="labels_to_inspecc">
@@ -94,7 +94,7 @@
           </mat-form-field>
     </div> -->
 
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-6" [ngClass]="(typeForm === 2) ? 'visible' : 'hidden'">
       <label for="" class="fw-medium">Fracción arancelaria:</label>
       <mat-form-field appearance="outline" style="width: 100%;">
           <input matInput placeholder="Ej.12345678" (input)="checkIfICanSedProduct2Autocomplete()" formControlName="tariff_fraction">

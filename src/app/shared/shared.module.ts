@@ -10,6 +10,7 @@ import { ShowErrorsInFormComponent } from './components/show-errors-in-form/show
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { ModifyStatusCertificateComponent } from './components/modify-status-certificate/modify-status-certificate.component';
+import { PrivacyNoticeComponent } from './components/privacy-notice/privacy-notice.component';
 
 
 
@@ -23,6 +24,7 @@ import { ModifyStatusCertificateComponent } from './components/modify-status-cer
     LoadingOverlayComponent,
     SnackbarComponent,
     ModifyStatusCertificateComponent,
+    PrivacyNoticeComponent,
   ],
   imports: [
     CommonModule,

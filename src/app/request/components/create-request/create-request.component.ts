@@ -68,6 +68,8 @@ export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
   ngOnInit(): void {
     this.loadingOverlayService.addLoading();
 
+    this.setInspectionAddress(1);
+
     // * Traemos los datos de la compañia y de las reglas
     this.arrSubs.push(
       forkJoin({
@@ -113,8 +115,27 @@ export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
 
   // * Manejo del evento de continuar con la solicitud
   onSubmit(): void {
-    this.requestService.formRequestData = this.formCreateRequest.value;
+    this.requestService.formRequestData = {
+      ... this.formCreateRequest.value,
+      inspectionAddress: this.formCreateRequest.get('inspectionAddress')!.value
+    };
     this.requestService.setOption(1);
+
+  }
+
+  setInspectionAddress(typeForm: number): void {
+    const inspectionAddress = this.formCreateRequest.get('inspectionAddress')!;
+    inspectionAddress.clearValidators();
+
+    if( typeForm === 1 ) {
+      inspectionAddress.setValue('INGCOM');
+      inspectionAddress.disable();
+    } else if ( this.typeForm === 2 ) {
+      inspectionAddress.setValue(null);
+      inspectionAddress.enable();
+    }
+
+    inspectionAddress.updateValueAndValidity();
 
   }
 
@@ -142,6 +163,9 @@ export class CreateRequestComponent implements OnInit, OnDestroy, DoCheck{
       });
 
     }
+
+    this.setInspectionAddress(this.typeForm);
+
     this.formCreateRequest.updateValueAndValidity();
 
   }
