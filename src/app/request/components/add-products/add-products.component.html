@@ -34,14 +34,16 @@
                                             color="primary"
                                             class="example-delete-tab-button"
                                             [disabled]="tabs.length === 1"
-                                            (click)="removeTab(index)">
+                                            (click)="removeTab(index)"
+                                            *ngIf="!isModifyProducts">
                                             Eliminar producto
                                         </button>
 
                                         <button mat-flat-button
                                             color="primary"
                                             class="example-add-tab-button"
-                                            (click)="addTab()">
+                                            (click)="addTab()"
+                                            *ngIf="!isModifyProducts">
                                             Agregar producto
                                         </button>
 
@@ -59,7 +61,7 @@
                                           color="primary"
                                           class="example-delete-tab-button"
                                           (click)="saveProduct(index)">
-                                          Guardar cambio en el producto
+                                          Guardar cambio en el producto {{ index + 1}}
                                       </button>
 
                                       <!-- <button mat-flat-button

@@ -105,6 +105,20 @@ export class ModifyRequestComponent implements OnInit, OnDestroy {
     // * Pre cargar la informacion del data que se manda al modificar
     this.uploadCertificateData();
 
+    // * Enviamos la info de la solicitud a la pestaña de productos
+    this.requestService.formRequestData = {
+      type: ( this.certificate.request_type === 'certificate' ) ? 1 : 2,
+      inspectionAddress: this.certificate.verification_address,
+      rule: this.certificate.customs_rule_id,
+      phaseNom051: null,
+      customsOfEntry: null,
+      labelingMode: null,
+      invoiceNumber: null,
+      probableInternmentDate: null,
+      tentativeInspectionDate: null,
+      clarifications: ''
+    };
+
   }
 
   ngOnDestroy(): void {
@@ -113,15 +127,18 @@ export class ModifyRequestComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     this.loadingOverlayService.addLoading();
+    this.formModifyRequest.controls[`inspectionAddress`].enable();
     this.arrSubs.push(
       this.requestService.updateOnlyRequest(this.formModifyRequest.value, this.certificate.id, this.typeForm).subscribe({
         next: (res: ResponseUpdateOnlyCertificate) => {
+          this.formModifyRequest.controls[`inspectionAddress`].disable();
           this.loadingOverlayService.removeLoading();
           this.toastService.showSnackbar(true, res.data.message, 7000);
           this.dialogRef.close(['certificate', this.certificate, this.formModifyRequest.value]);
 
         },
         error: (e: any) => {
+          this.formModifyRequest.controls[`inspectionAddress`].disable();
           this.loadingOverlayService.removeLoading();
           this.toastService.showSnackbar(false, `Error desconocido al actualizar la solicitud. (UNKNOWN 001)`, 7000);
 
@@ -133,6 +150,7 @@ export class ModifyRequestComponent implements OnInit, OnDestroy {
   uploadCertificateData(): void {
     // * LLenamos el domicilio de inspeccion
     this.formModifyRequest.controls[`inspectionAddress`].setValue(this.certificate.verification_address);
+    this.formModifyRequest.controls[`inspectionAddress`].disable();
 
     // * Llenamos la norma y verificamos si el form tenia la norma 51
     this.formModifyRequest.controls[`rule`].setValue( ( this.certificate.customs_rule_id === NOM051SCFISSA12010_FASE2_ID || this.certificate.customs_rule_id === NOM051SCFISSA12010_FASE3_ID) ? 51 : this.certificate.customs_rule_id );

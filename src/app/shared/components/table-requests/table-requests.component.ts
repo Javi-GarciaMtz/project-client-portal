@@ -89,6 +89,7 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
   modifyCertificate(certifcate: CertificatesResponse): void {
     const dialogRef = this.dialog.open(TabsModifyComponent, {
       // width: '400px',
+      // height: '90%',
       data: { certificate: certifcate },
       autoFocus: false, // * Deshabilita el autofocus
       // disableClose: true, // * Deshabilita el cierre al hacer clic fuera del modal o presionar ESC
@@ -216,5 +217,3 @@ export class TableRequestsComponent implements AfterViewInit, OnChanges, OnInit 
   }
 
 }
-
-

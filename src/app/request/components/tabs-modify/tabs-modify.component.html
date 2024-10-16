@@ -1,10 +1,10 @@
 
 <!-- <form [formGroup]="formChangeStatus"> -->
-  <div class="p-2">
+  <div class="p-4">
 
     <h1 mat-dialog-title>Modificación de la solicitud</h1>
 
-    <div mat-dialog-content>
+    <div mat-dialog-content style="padding: 0;">
 
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
@@ -31,11 +31,8 @@
     </div>
 
     <!-- <div mat-dialog-actions style="display: flex; justify-content: flex-end;">
-      <button mat-button (click)="onNoClick()">Cancelar</button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="!formChangeStatus.valid" (click)="updateStatus()">Aceptar</button>
+      <button mat-button mat-dialog-close>Cancelar cambios</button>
     </div> -->
 
   </div>
 <!-- </form> -->
-
-

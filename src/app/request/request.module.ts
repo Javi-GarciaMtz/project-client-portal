@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
 import { ProductTabComponent } from './components/product-tab/product-tab.component';
 import { SharedModule } from '../shared/shared.module';
 import { ModifyRequestComponent } from './components/modify-request/modify-request.component';
-import { ModifyProductsComponent } from './components/modify-products/modify-products.component';
 import { DeleteRequestComponent } from './components/delete-request/delete-request.component';
 import { TabsModifyComponent } from './components/tabs-modify/tabs-modify.component';
 
@@ -26,7 +25,6 @@ import { TabsModifyComponent } from './components/tabs-modify/tabs-modify.compon
     SearchBarProductsComponent,
     ProductTabComponent,
     ModifyRequestComponent,
-    ModifyProductsComponent,
     DeleteRequestComponent,
     TabsModifyComponent
   ],

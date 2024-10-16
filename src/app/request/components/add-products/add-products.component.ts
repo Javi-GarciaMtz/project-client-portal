@@ -10,6 +10,7 @@ import { CertificatesResponse, ProductCertificatesResponse } from '../../../shar
 import { MatDialogRef } from '@angular/material/dialog';
 import { ModifyStatusCertificateComponent } from '../../../shared/components/modify-status-certificate/modify-status-certificate.component';
 import { ResponseDeleteProduct } from '../../interfaces/responseDeleteProduct.interface';
+import { ResponseUpdateProduct } from '../../interfaces/responseUpdateProduct.interface';
 
 @Component({
   selector: 'app-add-products',
@@ -74,6 +75,7 @@ export class AddProductsComponent implements OnInit, OnDestroy {
               labels_to_inspecc: p.labels_to_inspecc,
               tariff_fraction: p.tariff_fraction,
               idDb: p.id,
+              folio: p.folio,
             }
           );
         }
@@ -208,21 +210,19 @@ export class AddProductsComponent implements OnInit, OnDestroy {
 
   }
 
-  storeProduct(p:Product): void {
-    console.log('store product', p);
-
-  }
-
   updateProduct(p: Product): void {
-    console.log('update product', p);
+    this.loadingOverlayService.addLoading();
     this.requestService.updateProduct(p).subscribe({
-      next: (r:any) => {
-        console.log('success', r);
-
+      next: ( r:ResponseUpdateProduct ) => {
+        // console.log('success', r);
+        this.loadingOverlayService.removeLoading();
+        this.toastService.showSnackbar(true, r.data.message, 7000);
+        this.dialogRef.close(['certificate', this.certificate, '']);
       },
-      error: (e:any) => {
-        console.log(e);
-
+      error: ( e:any ) => {
+        // console.log(e);
+        this.loadingOverlayService.removeLoading();
+        this.toastService.showSnackbar(false, `Error desconocido al actualizar la solicitud. (UNKNOWN 001)`, 7000);
       }
     });
   }
@@ -232,8 +232,6 @@ export class AddProductsComponent implements OnInit, OnDestroy {
 
     if(p!.idDb && p!.idDb !== -1) {
       this.updateProduct(p!);
-    } else {
-      this.storeProduct(p!);
     }
 
 

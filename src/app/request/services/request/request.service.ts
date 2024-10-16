@@ -13,6 +13,7 @@ import { ResponseAllMeasurements } from '../../interfaces/responseAllMeasurement
 import { ResponseCreateCertificate } from '../../interfaces/responsesCreateCertificate.interface';
 import { ResponseUpdateOnlyCertificate } from '../../interfaces/responseUpdateOnlyCertificate.interface';
 import { ResponseDeleteProduct } from '../../interfaces/responseDeleteProduct.interface';
+import { ResponseUpdateProduct } from '../../interfaces/responseUpdateProduct.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -215,7 +216,7 @@ export class RequestService {
   }
 
   // * Metodo para actualizar un producto
-  updateProduct(p: Product): Observable<any> {
+  updateProduct(p: Product): Observable<ResponseUpdateProduct> {
     const url = `${url_customs_gen}products/update`;
 
     const body = {
@@ -224,7 +225,7 @@ export class RequestService {
       name: p.name,
       brand: p.brand,
       model: p.model,
-      // folio: p.,
+      folio: p.folio,
       total_quantity: p.total_quantity,
       labels_to_inspecc: p.labels_to_inspecc,
       tariff_fraction: p.tariff_fraction
@@ -235,7 +236,7 @@ export class RequestService {
       'Authorization': `Bearer ${this.storageService.retrieveAndDecryptUser().token}`
     });
 
-    return this.http.patch<any>(url, body, { headers: headers });
+    return this.http.patch<ResponseUpdateProduct>(url, body, { headers: headers });
 
   }
 

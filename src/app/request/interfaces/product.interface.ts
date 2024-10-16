@@ -11,4 +11,5 @@ export interface Product {
   isReady?:            boolean;
 
   idDb?:               number;
+  folio?:              string;
 }

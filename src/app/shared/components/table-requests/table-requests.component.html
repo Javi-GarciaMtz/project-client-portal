@@ -1,105 +1,115 @@
 <div class="row mt-5">
     <div class="col-sm-12">
 
-        <div class="overflow-container">
-            <table mat-table [dataSource]="dataSourceFinal">
+      <mat-card>
+        <mat-card-content>
 
-              <ng-container matColumnDef="user">
-                <th mat-header-cell *matHeaderCellDef class="center-header">Usuario</th>
-                <td mat-cell *matCellDef="let element" class="center-cell">{{ element.applicant_name }}</td>
-              </ng-container>
+          <div class="p-2">
+            <div class="overflow-container">
+              <table mat-table [dataSource]="dataSourceFinal">
 
-                <ng-container matColumnDef="key">
-                    <th mat-header-cell *matHeaderCellDef class="center-header">Clave de la solicitud</th>
-                    <td mat-cell *matCellDef="let element" class="center-cell">{{ element.code }}</td>
+                <ng-container matColumnDef="user">
+                  <th mat-header-cell *matHeaderCellDef class="center-header">Usuario</th>
+                  <td mat-cell *matCellDef="let element" class="center-cell">{{ element.applicant_name }}</td>
                 </ng-container>
 
-                <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef class="center-header">Fecha de elaboración</th>
-                    <td mat-cell *matCellDef="let element" class="center-cell">{{ getDateString(element.created_at) }}</td>
-                </ng-container>
+                  <ng-container matColumnDef="key">
+                      <th mat-header-cell *matHeaderCellDef class="center-header">Clave de la solicitud</th>
+                      <td mat-cell *matCellDef="let element" class="center-cell">{{ element.code }}</td>
+                  </ng-container>
 
-                <ng-container matColumnDef="service">
-                    <th mat-header-cell *matHeaderCellDef class="center-header">Servicio</th>
-                    <td mat-cell *matCellDef="let element" class="center-cell">{{ (element.request_type === 'certificate') ? 'Constancia' : 'Dictamen' }}</td>
-                </ng-container>
+                  <ng-container matColumnDef="date">
+                      <th mat-header-cell *matHeaderCellDef class="center-header">Fecha de elaboración</th>
+                      <td mat-cell *matCellDef="let element" class="center-cell">{{ getDateString(element.created_at) }}</td>
+                  </ng-container>
 
-                <ng-container matColumnDef="rule">
-                    <th mat-header-cell *matHeaderCellDef class="center-header">Norma</th>
-                    <td mat-cell *matCellDef="let element" class="center-cell">{{ element.customs_rule.name }}</td>
-                </ng-container>
+                  <ng-container matColumnDef="service">
+                      <th mat-header-cell *matHeaderCellDef class="center-header">Servicio</th>
+                      <td mat-cell *matCellDef="let element" class="center-cell">{{ (element.request_type === 'certificate') ? 'Constancia' : 'Dictamen' }}</td>
+                  </ng-container>
 
-                <ng-container matColumnDef="products">
-                    <th mat-header-cell *matHeaderCellDef class="center-header">Número de productos</th>
-                    <td mat-cell *matCellDef="let element" class="center-cell">{{ element.products.length }}</td>
-                </ng-container>
+                  <ng-container matColumnDef="rule">
+                      <th mat-header-cell *matHeaderCellDef class="center-header">Norma</th>
+                      <td mat-cell *matCellDef="let element" class="center-cell">{{ element.customs_rule.name }}</td>
+                  </ng-container>
 
-                <ng-container matColumnDef="verify">
-                    <th mat-header-cell *matHeaderCellDef class="center-header">Verificación</th>
-                    <td mat-cell *matCellDef="let element" class="center-cell">{{ getVerificationDate(element.created_at) }}</td>
-                </ng-container>
+                  <ng-container matColumnDef="products">
+                      <th mat-header-cell *matHeaderCellDef class="center-header">Número de productos</th>
+                      <td mat-cell *matCellDef="let element" class="center-cell">{{ element.products.length }}</td>
+                  </ng-container>
 
-                <ng-container matColumnDef="state">
-                    <th mat-header-cell *matHeaderCellDef class="center-header">Estado</th>
-                    <td mat-cell *matCellDef="let element" class="center-cell"><div class="p-2" [innerHTML]="getStatusCertificate(element.status_certificate	)"></div></td>
-                </ng-container>
+                  <ng-container matColumnDef="verify">
+                      <th mat-header-cell *matHeaderCellDef class="center-header">Verificación</th>
+                      <td mat-cell *matCellDef="let element" class="center-cell">{{ getVerificationDate(element.created_at) }}</td>
+                  </ng-container>
 
-                <ng-container matColumnDef="modifyStatus">
-                  <th mat-header-cell *matHeaderCellDef class="center-header">Modificar estatus</th>
-                  <td mat-cell *matCellDef="let element" class="center-cell">
-                    <button mat-stroked-button color="primary" (click)="modifyStatus(element)" [disabled]="element.status_certificate === 'cancelled' || element.status_certificate === 'accepted'">
-                      <span class="p-1 text-center" style="display: flex; align-items: center; white-space: nowrap;">
-                        <!-- Descargar PDF -->
-                        <mat-icon aria-hidden="false" aria-label="download icon" fontIcon="admin_panel_settings"></mat-icon>
-                      </span>
-                    </button>
-                  </td>
-              </ng-container>
+                  <ng-container matColumnDef="state">
+                      <th mat-header-cell *matHeaderCellDef class="center-header">Estado</th>
+                      <td mat-cell *matCellDef="let element" class="center-cell"><div class="p-2" [innerHTML]="getStatusCertificate(element.status_certificate	)"></div></td>
+                  </ng-container>
 
-                <ng-container matColumnDef="pdf">
-                    <th mat-header-cell *matHeaderCellDef class="center-header">Ver PDF</th>
+                  <ng-container matColumnDef="modifyStatus">
+                    <th mat-header-cell *matHeaderCellDef class="center-header">Modificar estatus</th>
                     <td mat-cell *matCellDef="let element" class="center-cell">
-                      <button mat-stroked-button color="primary" (click)="generatePDF2(element)" [disabled]="element.status_certificate === 'cancelled'">
+                      <button mat-stroked-button color="primary" (click)="modifyStatus(element)" [disabled]="element.status_certificate === 'cancelled' || element.status_certificate === 'accepted'">
                         <span class="p-1 text-center" style="display: flex; align-items: center; white-space: nowrap;">
                           <!-- Descargar PDF -->
-                          <mat-icon aria-hidden="false" aria-label="download icon" fontIcon="download"></mat-icon>
+                          <mat-icon aria-hidden="false" aria-label="download icon" fontIcon="admin_panel_settings"></mat-icon>
                         </span>
                       </button>
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="edit">
-                    <th mat-header-cell *matHeaderCellDef class="center-header">Modificar</th>
+                  <ng-container matColumnDef="pdf">
+                      <th mat-header-cell *matHeaderCellDef class="center-header">Ver PDF</th>
+                      <td mat-cell *matCellDef="let element" class="center-cell">
+                        <button mat-stroked-button color="primary" (click)="generatePDF2(element)" [disabled]="element.status_certificate === 'cancelled'">
+                          <span class="p-1 text-center" style="display: flex; align-items: center; white-space: nowrap;">
+                            <!-- Descargar PDF -->
+                            <mat-icon aria-hidden="false" aria-label="download icon" fontIcon="download"></mat-icon>
+                          </span>
+                        </button>
+                      </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="edit">
+                      <th mat-header-cell *matHeaderCellDef class="center-header">Modificar</th>
+                      <td mat-cell *matCellDef="let element" class="center-cell">
+                        <button mat-stroked-button color="primary" (click)="modifyCertificate(element)" [disabled]="element.status_certificate === 'cancelled' || element.status_certificate === 'accepted'">
+                          <span class="p-1 text-center" style="display: flex; align-items: center; white-space: nowrap;">
+                            <!-- Modificar -->
+                            <mat-icon aria-hidden="false" aria-label="edit icon" fontIcon="edit"></mat-icon>
+                          </span>
+                        </button>
+                      </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="delete">
+                    <th mat-header-cell *matHeaderCellDef class="center-header">Eliminar solicitud</th>
                     <td mat-cell *matCellDef="let element" class="center-cell">
-                      <button mat-stroked-button color="primary" (click)="modifyCertificate(element)" [disabled]="element.status_certificate === 'cancelled' || element.status_certificate === 'accepted'">
+                      <button mat-stroked-button color="primary" (click)="deleteCertificate(element)" [disabled]="element.status_certificate === 'cancelled' || element.status_certificate === 'accepted'">
                         <span class="p-1 text-center" style="display: flex; align-items: center; white-space: nowrap;">
                           <!-- Modificar -->
-                          <mat-icon aria-hidden="false" aria-label="edit icon" fontIcon="edit"></mat-icon>
+                          <mat-icon aria-hidden="false" aria-label="delete icon" fontIcon="delete"></mat-icon>
                         </span>
                       </button>
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="delete">
-                  <th mat-header-cell *matHeaderCellDef class="center-header">Eliminar solicitud</th>
-                  <td mat-cell *matCellDef="let element" class="center-cell">
-                    <button mat-stroked-button color="primary" (click)="deleteCertificate(element)" [disabled]="element.status_certificate === 'cancelled' || element.status_certificate === 'accepted'">
-                      <span class="p-1 text-center" style="display: flex; align-items: center; white-space: nowrap;">
-                        <!-- Modificar -->
-                        <mat-icon aria-hidden="false" aria-label="delete icon" fontIcon="delete"></mat-icon>
-                      </span>
-                    </button>
-                  </td>
-              </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumnsFinal"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumnsFinal;"></tr>
+              </table>
+          </div>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumnsFinal"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumnsFinal;"></tr>
-            </table>
-        </div>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+              aria-label="Select page of periodic elements">
+          </mat-paginator>
+          </div>
 
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-            aria-label="Select page of periodic elements">
-        </mat-paginator>
+        </mat-card-content>
+      </mat-card>
+
+
 
 
     </div>
