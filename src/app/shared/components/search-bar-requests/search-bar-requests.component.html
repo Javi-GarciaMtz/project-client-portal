@@ -37,9 +37,8 @@
     <div class="col-sm-12 col-md-4 d-flex align-items-center justify-content-md-end">
       <button mat-flat-button color="primary" [disabled]="!flagClean" (click)="clean()">Limpiar</button>
         <button mat-flat-button color="primary" [disabled]="!canISearch()" style="margin-left: 20px;">Buscar</button>
-        <button *ngIf="user.user.role === 'customer'" mat-flat-button color="primary" style="margin-left: 20px;" (click)="exportXLSXUser()">Exportar</button>
+        <!-- <button *ngIf="user.user.role === 'customer'" mat-flat-button color="primary" style="margin-left: 20px;" (click)="exportXLSXUser()">Exportar</button> -->
     </div>
 
 </div>
 </form>
-
